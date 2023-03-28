@@ -1,34 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
+import { useLocalStorage } from 'usehooks-ts'
 import './App.css'
+import Home from './Pages/Home'
+import SignIn from './Pages/SignIn'
+import SignUp from './Pages/SignUp'
+import {
+  LoginResponse
+} from "./Utils/Types";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const queryClient = new QueryClient()
+  const [user, setUser] = useLocalStorage<LoginResponse>("user", {
+    id: 0,
+    name: "",
+    token: "",
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.id === 0) {
+      navigate("/login");
+    }
+  }, [user]);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <QueryClientProvider client={queryClient}>
+    <Routes>
+        <Route path="/" element={<Home user={user} setUser={setUser}/>}></Route>
+        <Route path="/login" element={<SignIn setUser={setUser} />}></Route>
+        <Route path="/signup" element={<SignUp />}></Route>
+    </Routes>
+    </QueryClientProvider>
   )
 }
 
