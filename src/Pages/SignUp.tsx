@@ -14,6 +14,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { RegisterRequest } from "../Utils/Types";
 import { useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
+import { signUpUser } from "../Utils/HelperFunctions";
 
 const theme = createTheme();
 
@@ -47,29 +48,9 @@ export default function SignUp() {
     setOpenSuccess(false);
   };
 
-  const signUpUser = async () => {
-    try {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...signupRequest,
-        }),
-      };
-
-      const response = await fetch(
-        `https://localhost:7031/api/UsersAuthentication/register`,
-        requestOptions
-      );
-      return response.ok;
-    } catch (e: any) {
-      throw new Error("Problems");
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const didSignUp = await signUpUser();
+    const didSignUp = await signUpUser(signupRequest);
     if (didSignUp) {
       setSignupRequest({
         username: "",

@@ -4,17 +4,17 @@ export const theme = createTheme({
     palette: {
         mode: "light",
         primary: {
-            main: "#5e33ff",
+            main: "#000000",
         },
         secondary: {
-            main: "#ff4633",
+            main: "#FFFFFF",
         },
     },
     breakpoints: {
         values: {
           xs: 0,
-          tablet: 450,
-          desktop: 700,
+          tablet: 420,
+          desktop: 820,
         },
     },
 });

@@ -6,9 +6,7 @@ import './App.css'
 import Home from './Pages/Home'
 import SignIn from './Pages/SignIn'
 import SignUp from './Pages/SignUp'
-import {
-  LoginResponse
-} from "./Utils/Types";
+import { LoginResponse } from "./Utils/Types";
 
 function App() {
   const queryClient = new QueryClient()

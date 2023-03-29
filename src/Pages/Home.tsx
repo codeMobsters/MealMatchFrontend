@@ -1,11 +1,12 @@
-import React from 'react'
 import InfiniteScroll from "react-infinite-scroller";
-import { QueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Box } from '@mui/material';
 import { LoginResponse, SetValue, EdamamResponse } from '../Utils/Types';
 import RecipeReviewCard from '../Components/RecipeCard';
 import Navbar from '../Components/Navbar';
 import '../App.css'
+import HeaderComp from '../Components/Header';
+import { baseUrl } from "../Utils/Constants";
 
 
 interface HomeProps {
@@ -18,13 +19,13 @@ const Home = (props: HomeProps) => {
   const fetchRecipes = async ({pageParam = 0}) : Promise<EdamamResponse> => {
     let res;
     (pageParam !== 0 && hasNextPage) ?
-    res = await fetch(`https://localhost:7031/Recipes/Edamam/Next?nextUrl=${encodeURIComponent(data!.pages.reverse()[0].url)}`, {
+    res = await fetch(`${baseUrl}/api/Recipes/Edamam/Next?nextUrl=${encodeURIComponent(data!.pages.reverse()[0].url)}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${props.user.token}`,
       },
     }) :
-    res = await fetch('https://localhost:7031/Recipes/Edamam', {
+    res = await fetch(`${baseUrl}/api/Recipes/Edamam`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${props.user.token}`,
@@ -51,6 +52,7 @@ const Home = (props: HomeProps) => {
 
   return (
     <Box className="App">
+      <HeaderComp />
       <Navbar user={props.user} setUser={props.setUser}/>
       <main style={{ width: "100%" }}>
         {data && (

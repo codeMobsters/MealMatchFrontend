@@ -37,13 +37,12 @@ export type RecipeReviewCardProps = {
 
 export default function RecipeReviewCard(props: RecipeReviewCardProps) {
   const [expanded, setExpanded] = React.useState(false);
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card>
+    <Card sx={{maxWidth: {xs: '100vw', tablet: '450px', desktop: '550px'}, margin: 'auto', paddingTop: '56px'}}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

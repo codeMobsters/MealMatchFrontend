@@ -1,46 +1,98 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { NavbarProps } from '../Utils/Types';
-import { Logout } from '@mui/icons-material';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import TravelExploreOutlinedIcon from '@mui/icons-material/TravelExploreOutlined';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
 export default function Navbar(props: NavbarProps) {
-    const navigate = useNavigate();
-    
-    function handleLogout() {
-        console.log(props.user);
-        props.setUser({
-          id: 0,
-          name: "",
-          token: "",
-        });
-        navigate("/");
-      }
+  const navigate = useNavigate();
+
+  function handleGoHome() {
+    navigate("/");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function handleExplore() {
+    // navigate("/");
+    console.log("explore!");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function handleSearch() {
+    // navigate("/");
+    console.log("search!");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function handleProfile() {
+    // navigate("/");
+    console.log("profile!");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
 
   return (
       <AppBar sx={{
-            position: 'static',
-            display: 'block',
-            // position: {xs: 'fixed', tablet: 'fixed', desktop: 'static'},
-            // top: {xs: 'auto', tablet: 'auto'},
-            // bottom : {xs: 0, tablet: 0},
+            top: {xs: 'auto', tablet: 'auto'},
+            display: {xs: 'block', tablet: 'block', desktop: 'none'},
+            position: 'fixed',
+            bottom : {xs: 0, tablet: 0}
       }}>
       <Toolbar>
-          <IconButton aria-label="open drawer">
-            <MenuIcon  color="secondary"/>
-          </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit">
-            <SearchIcon  color="secondary"/>
-          </IconButton>
-          <IconButton onClick={() => handleLogout()}>
-            <Logout  color="secondary"/>
-          </IconButton>
+          <HomeOutlinedIcon sx={{
+            display: {tablet: 'block', desktop: 'block'},
+            borderRadius: "8px"
+          }}
+          onClick={() => handleGoHome()}
+          fontSize='large' 
+          color="secondary"
+          />
+
+          <Box sx={{ flexGrow: 1 }}/>
+          <ExploreOutlinedIcon onClick={() => handleExplore()} 
+            sx={{
+            display: {tablet: 'block', desktop: 'block'}
+            }}
+            fontSize='large'
+            color="secondary"
+          />
+          
+          <Box sx={{ flexGrow: 1 }}/>
+          <TravelExploreOutlinedIcon onClick={() => handleSearch()}
+            sx={{
+              display: {tablet: 'block', desktop: 'block'}
+            }}
+            fontSize='large'
+            color="secondary"
+          />
+        
+          <Box sx={{ flexGrow: 1 }}/>
+          <ManageAccountsOutlinedIcon  onClick={() => handleProfile()}
+            sx={{
+              display: {tablet: 'block', desktop: 'block'}
+            }}
+            fontSize='large'
+            color="secondary"
+          />
         </Toolbar>
     </AppBar>
   );
