@@ -22,7 +22,7 @@ const Home = (props: HomeProps) => {
     let res;
     pageParam !== 0 && hasNextPage
       ? (res = await fetch(
-          `${baseUrl}/api/Recipes/Edamam/Next?nextUrl=${encodeURIComponent(
+          `${baseUrl}/Recipes/Edamam/Next?nextUrl=${encodeURIComponent(
             data!.pages.reverse()[0].url
           )}`,
           {
@@ -32,7 +32,7 @@ const Home = (props: HomeProps) => {
             },
           }
         ))
-      : (res = await fetch(`${baseUrl}/api/Recipes/Edamam`, {
+      : (res = await fetch(`${baseUrl}/Recipes/Edamam`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${props.user.token}`,

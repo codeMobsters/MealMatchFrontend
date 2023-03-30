@@ -67,7 +67,7 @@ export default function SignIn(props: signInProps) {
       };
 
       const response = await fetch(
-        `https://localhost:7031/api/Users/Authentication/login`,
+        `https://localhost:7031/Users/Authentication/login`,
         requestOptions
       );
       if (response.ok) {
@@ -100,7 +100,6 @@ export default function SignIn(props: signInProps) {
       className="max-w-screen-xl mx-auto items-start shadow-2xl h-screen min-h-full mt-0"
     >
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
           <Box
             sx={{
               marginTop: 0,
@@ -109,6 +108,21 @@ export default function SignIn(props: signInProps) {
               alignItems: "center",
             }}
           >
+            <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              display: "flex",
+              fontFamily: "monospace",
+              fontWeight: 700,
+              fontSize: '2rem',
+              letterSpacing: ".4rem",
+              color: "secondary.main",
+              textDecoration: "none",
+            }}
+          >
+            MealMatch
+          </Typography>
             <Avatar sx={{ m: 1, mt: 6, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
@@ -123,6 +137,15 @@ export default function SignIn(props: signInProps) {
             >
               <TextField
                 margin="normal"
+                color="primary"
+                sx ={{"& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "text.secondary"
+                  }
+                },
+                "& label.Mui-focused": {
+                  color: "text.secondary"
+                }}}
                 required
                 fullWidth
                 id="username"
@@ -140,6 +163,15 @@ export default function SignIn(props: signInProps) {
               />
               <TextField
                 margin="normal"
+                color="primary"
+                sx ={{"& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "text.secondary"
+                  }
+                },
+                "& label.Mui-focused": {
+                  color: "text.secondary"
+                }}}
                 required
                 fullWidth
                 name="password"
@@ -156,14 +188,14 @@ export default function SignIn(props: signInProps) {
                 }
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={<Checkbox value="remember" color="secondary" />}
                 label="Remember me"
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, height: "56px" }}
               >
                 Sign In
               </Button>
@@ -172,6 +204,7 @@ export default function SignIn(props: signInProps) {
                   <Link
                     component={RouterLink}
                     to="/login"
+                    color="secondary"
                     variant="body2"
                     onClick={handleClickForgotPassword}
                   >
@@ -179,7 +212,8 @@ export default function SignIn(props: signInProps) {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link component={RouterLink} to="/signup" variant="body2">
+                  <Link component={RouterLink} to="/signup" variant="body2" 
+                    color="secondary">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

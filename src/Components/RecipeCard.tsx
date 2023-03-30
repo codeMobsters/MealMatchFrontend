@@ -15,6 +15,7 @@ import { MouseEvent, useState } from "react";
 import { baseUrl } from '../Utils/Constants';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import CommentsDialog from './CommentDialog';
+import { addNewRecipeEdamam } from '../Utils/HelperFunctions';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -49,25 +50,7 @@ export default function RecipeReviewCard(props: RecipeReviewCardProps) {
     // check for favorites, if it is in there already, call the delete
     // make the icon change to red comehow, or just give any feedback
     if (props.user?.token) {
-      const addNewRecipeEdamam = async (token: string, newRecipe: Recipe) => {
-        try {
-          const requestOptions = {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json" },
-            body: JSON.stringify(newRecipe),
-          };
-          const response = await fetch(
-            `${baseUrl}/api/Recipes`,
-            requestOptions
-          );
-          return response.ok;
-        } catch (e: any) {
-          throw new Error("Problems");
-        }
-      }
-      addNewRecipeEdamam(props.user?.token, props.recipe);
+      addNewRecipeEdamam(props.user!.token, props.recipe);
     }
   }
 

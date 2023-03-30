@@ -12,7 +12,7 @@ export const signUpUser = async (signupRequest: RegisterRequest) => {
       };
 
       const response = await fetch(
-        `${baseUrl}//api/UsersAuthentication/register`,
+        `${baseUrl}/UsersAuthentication/register`,
         requestOptions
       );
       return response.ok;
@@ -22,7 +22,7 @@ export const signUpUser = async (signupRequest: RegisterRequest) => {
 };
 
 export const fetchUser = async (id: number, token: string) : Promise<User> => {
-    let res = await fetch(`${baseUrl}/api/Users/${id}`, {
+    let res = await fetch(`${baseUrl}/Users/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const fetchUser = async (id: number, token: string) : Promise<User> => {
 };
 
 export const fetchComments = async (token: string) : Promise<Comment[]> => {
-    let res = await fetch(`${baseUrl}/api/Users/comments`, {
+    let res = await fetch(`${baseUrl}/Users/comments`, {
         method: "GET",
         headers: {
         Authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ export const fetchComments = async (token: string) : Promise<Comment[]> => {
 };
 
 export const fetchUserOwnedRecipes = async (token: string) : Promise<Recipe[]> => {
-    let res = await fetch(`${baseUrl}/api/Users/recipes`, {
+    let res = await fetch(`${baseUrl}/Users/recipes`, {
         method: "GET",
         headers: {
         Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ export const fetchUserOwnedRecipes = async (token: string) : Promise<Recipe[]> =
 };
 
 export const fetchUserFavoriteRecipes = async (token: string) : Promise<FavoriteRecipe> => {
-    let res = await fetch(`${baseUrl}/api/FavoriteRecipes`, {
+    let res = await fetch(`${baseUrl}/FavoriteRecipes`, {
         method: "GET",
         headers: {
         Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ export const addNewRecipeFromForm = async (token: string, newRecipe: NewRecipe) 
         body: formData,
       };
       const response = await fetch(
-        `${baseUrl}/api/Recipes/New`,
+        `${baseUrl}/Recipes/New`,
         requestOptions
       );
       return response.ok;
@@ -104,3 +104,21 @@ export const addNewRecipeFromForm = async (token: string, newRecipe: NewRecipe) 
     }
   }
 
+export const addNewRecipeEdamam = async (token: string, newRecipe: Recipe) => {
+  try {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json" },
+      body: JSON.stringify(newRecipe),
+    };
+    const response = await fetch(
+      `${baseUrl}/Recipes`,
+      requestOptions
+    );
+    return response.ok;
+  } catch (e: any) {
+    throw new Error("Problems");
+  }
+}
