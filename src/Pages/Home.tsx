@@ -43,6 +43,7 @@ const Home = (props: HomeProps) => {
     status,
   } = useInfiniteQuery({
     queryKey: ['recipes'],
+    refetchOnWindowFocus: false,
     queryFn: fetchRecipes,
     getNextPageParam: (lastPage, pages) => {
         return lastPage.url;
