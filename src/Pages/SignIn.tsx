@@ -13,13 +13,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import {
-  LoginRequest,
-  LoginResponse,
-  SetValue,
-} from "../Utils/Types";
+import { LoginRequest, LoginResponse, SetValue } from "../Utils/Types";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
+import { baseUrl } from "../Utils/Constants";
 
 const theme = createTheme();
 
@@ -67,7 +64,7 @@ export default function SignIn(props: signInProps) {
       };
 
       const response = await fetch(
-        `https://localhost:7031/Users/Authentication/login`,
+        `${baseUrl}/Users/Authentication/login`,
         requestOptions
       );
       if (response.ok) {
@@ -99,23 +96,23 @@ export default function SignIn(props: signInProps) {
       // style={{ height: "100vh" }}
       className="max-w-screen-xl mx-auto items-start shadow-2xl h-screen min-h-full mt-0"
     >
-        <Container component="main" maxWidth="xs">
-          <Box
-            sx={{
-              marginTop: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
             variant="h6"
             noWrap
             sx={{
               display: "flex",
               fontFamily: "monospace",
               fontWeight: 700,
-              fontSize: '2rem',
+              fontSize: "2rem",
               letterSpacing: ".4rem",
               color: "secondary.main",
               textDecoration: "none",
@@ -123,104 +120,112 @@ export default function SignIn(props: signInProps) {
           >
             MealMatch
           </Typography>
-            <Avatar sx={{ m: 1, mt: 6, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
+          <Avatar sx={{ m: 1, mt: 6, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              color="primary"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "text.secondary",
+                  },
+                },
+                "& label.Mui-focused": {
+                  color: "text.secondary",
+                },
+              }}
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              value={loginRequest.username}
+              onChange={e =>
+                setLoginRequest({
+                  ...loginRequest,
+                  username: e.target.value,
+                })
+              }
+            />
+            <TextField
+              margin="normal"
+              color="primary"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "text.secondary",
+                  },
+                },
+                "& label.Mui-focused": {
+                  color: "text.secondary",
+                },
+              }}
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={loginRequest.password}
+              onChange={e =>
+                setLoginRequest({
+                  ...loginRequest,
+                  password: e.target.value,
+                })
+              }
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="secondary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, height: "56px" }}
             >
-              <TextField
-                margin="normal"
-                color="primary"
-                sx ={{"& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "text.secondary"
-                  }
-                },
-                "& label.Mui-focused": {
-                  color: "text.secondary"
-                }}}
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                value={loginRequest.username}
-                onChange={e =>
-                  setLoginRequest({
-                    ...loginRequest,
-                    username: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                margin="normal"
-                color="primary"
-                sx ={{"& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "text.secondary"
-                  }
-                },
-                "& label.Mui-focused": {
-                  color: "text.secondary"
-                }}}
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={loginRequest.password}
-                onChange={e =>
-                  setLoginRequest({
-                    ...loginRequest,
-                    password: e.target.value,
-                  })
-                }
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="secondary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, height: "56px" }}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link
-                    component={RouterLink}
-                    to="/login"
-                    color="secondary"
-                    variant="body2"
-                    onClick={handleClickForgotPassword}
-                  >
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link component={RouterLink} to="/signup" variant="body2" 
-                    color="secondary">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link
+                  component={RouterLink}
+                  to="/login"
+                  color="secondary"
+                  variant="body2"
+                  onClick={handleClickForgotPassword}
+                >
+                  Forgot password?
+                </Link>
               </Grid>
-            </Box>
+              <Grid item>
+                <Link
+                  component={RouterLink}
+                  to="/signup"
+                  variant="body2"
+                  color="secondary"
+                >
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
-        </Container>
+        </Box>
+      </Container>
       <Snackbar
         open={openForgotPassword}
         autoHideDuration={2000}

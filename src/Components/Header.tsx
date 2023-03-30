@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import PostRecipeDialog from "./PostRecipeDialog";
 
-function HeaderComp() {
+function Header() {
   const navigate = useNavigate();
   const [openPostDialog, setOpenPostDialog] = React.useState(false);
   const handlePostAction = () => {
@@ -16,7 +16,7 @@ function HeaderComp() {
   };
 
   function handleGoHome() {
-    navigate("/", { state: { favoriteIdWhenRouted: 0 } });
+    navigate("/", { state: { dummyVariable: 0 } });
     window.scrollTo({
       top: 0,
       left: 0,
@@ -65,4 +65,4 @@ function HeaderComp() {
     </AppBar>
   );
 }
-export default HeaderComp;
+export default Header;

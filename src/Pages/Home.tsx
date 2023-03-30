@@ -5,14 +5,13 @@ import { LoginResponse, SetValue, EdamamResponse } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
 import Navbar from "../Components/Navbar";
 import "../App.css";
-import HeaderComp from "../Components/Header";
+import Header from "../Components/Header";
 import { baseUrl } from "../Utils/Constants";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 interface HomeProps {
   user: LoginResponse;
-  setUser: SetValue<LoginResponse>;
 }
 
 const Home = (props: HomeProps) => {
@@ -64,8 +63,6 @@ const Home = (props: HomeProps) => {
 
   return (
     <Box className="App">
-      <HeaderComp />
-      <Navbar user={props.user} setUser={props.setUser} />
       <main style={{ width: "100%", marginTop: "56px", marginBottom: "56px" }}>
         {data && (
           <InfiniteScroll
@@ -79,6 +76,7 @@ const Home = (props: HomeProps) => {
                   key={index}
                   recipe={recipe}
                   user={props.user}
+                  isFavorite={false}
                 />
               ))
             )}
