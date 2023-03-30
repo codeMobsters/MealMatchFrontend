@@ -1,6 +1,11 @@
 import { Box, FormControl, InputLabel, Input, FormHelperText, Typography } from '@mui/material'
 import { Container } from '@mui/system'
-import { PostRecipeFormProps } from '../Utils/Types'
+import { NewRecipe } from '../Utils/Types'
+
+type PostRecipeFormProps = {
+    formState: NewRecipe;
+    setFormState: React.Dispatch<React.SetStateAction<NewRecipe>>;
+  };
 
 const PostRecipeForm = (props :PostRecipeFormProps) => {
   return (

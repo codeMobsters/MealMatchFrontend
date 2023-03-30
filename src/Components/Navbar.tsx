@@ -2,11 +2,16 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useNavigate } from 'react-router-dom';
-import { NavbarProps } from '../Utils/Types';
+import { LoginResponse, SetValue } from '../Utils/Types';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import TravelExploreOutlinedIcon from '@mui/icons-material/TravelExploreOutlined';
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+
+interface NavbarProps {
+  user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
+}
 
 export default function Navbar(props: NavbarProps) {
   const navigate = useNavigate();

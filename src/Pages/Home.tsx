@@ -2,13 +2,13 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Box } from "@mui/material";
 import { LoginResponse, SetValue, EdamamResponse } from "../Utils/Types";
-import RecipeReviewCard from "../Components/RecipeCard";
+import RecipeCard from "../Components/RecipeCard";
 import Navbar from "../Components/Navbar";
 import "../App.css";
 import HeaderComp from "../Components/Header";
 import { baseUrl } from "../Utils/Constants";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface HomeProps {
   user: LoginResponse;
@@ -75,7 +75,7 @@ const Home = (props: HomeProps) => {
           >
             {data.pages.map(page =>
               page.recipes.map((recipe, index) => (
-                <RecipeReviewCard
+                <RecipeCard
                   key={index}
                   recipe={recipe}
                   user={props.user}

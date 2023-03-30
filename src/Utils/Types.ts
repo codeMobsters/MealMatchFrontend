@@ -17,10 +17,10 @@ export interface LoginResponse {
   id: number;
   name: string;
   token: string;
-}
-export interface NavbarProps {
-  user: LoginResponse;
-  setUser: SetValue<LoginResponse>;
+  profilePictureUrl: string;
+  profileSettings: string[];
+  dietLabels: string[];
+  healthLabels: string[];
 }
 
 export interface EdamamResponse {
@@ -90,7 +90,14 @@ export interface NewRecipe {
   MealType?: string[];
   RecipePicture?: File;
 }
-export type PostRecipeFormProps = {
-  formState: NewRecipe;
-  setFormState: React.Dispatch<React.SetStateAction<NewRecipe>>;
-};
+
+export interface NewComment {
+  commentText: string;
+  recipeId: number;
+}
+
+export interface NewFavoriteRecipe {
+  recipeId: number;
+}
+
+

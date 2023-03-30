@@ -15,6 +15,10 @@ function App() {
     id: 0,
     name: "",
     token: "",
+    profilePictureUrl: "",
+    profileSettings: [],
+    dietLabels: [],
+    healthLabels: []
   });
   const navigate = useNavigate();
 

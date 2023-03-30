@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { LoginResponse, SetValue, Recipe } from '../Utils/Types';
-import RecipeReviewCard from '../Components/RecipeCard';
+import RecipeCard from '../Components/RecipeCard';
 import { useEffect, useState } from "react";
 import { fetchUserOwnedRecipes } from '../Utils/HelperFunctions';
 import HeaderComp from '../Components/Header';
@@ -28,7 +28,7 @@ const SocialHome = (props: HomeProps) => {
         <Navbar user={props.user} setUser={props.setUser}/>
         <Box sx={{height: '100vh',overflow: 'scroll', marginTop: '56px', marginBottom: '56px'}}>
         {ownRecipes&& ownRecipes.map((recipe, index) => 
-            <RecipeReviewCard 
+            <RecipeCard 
             key={index} 
             recipe={recipe}
             user={props.user}

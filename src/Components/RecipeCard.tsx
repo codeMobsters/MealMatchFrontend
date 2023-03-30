@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { LoginResponse, Recipe } from '../Utils/Types';
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { baseUrl } from '../Utils/Constants';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import CommentsDialog from './CommentDialog';
@@ -32,14 +32,15 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export type RecipeReviewCardProps = {
+export type RecipeCardProps = {
     recipe :Recipe,
     user : LoginResponse | undefined
 };
 
-export default function RecipeReviewCard(props: RecipeReviewCardProps) {
+export default function RecipeCard(props: RecipeCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [openCommentsDialog, setOpenCommentsDialog] = useState(false);
+  const [commentList, setCommentList] = useState(props.recipe.comments?.sort((a, b) => b.commentId - a.commentId));
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -113,7 +114,7 @@ export default function RecipeReviewCard(props: RecipeReviewCardProps) {
           }
         </CardContent>
       </Collapse>
-      <CommentsDialog comments={props.recipe.comments} openCommentsDialog={openCommentsDialog} setOpenCommentsDialog={setOpenCommentsDialog} />
+      <CommentsDialog recipe={props.recipe} user={props.user} comments={commentList} setCommentList={setCommentList} openCommentsDialog={openCommentsDialog} setOpenCommentsDialog={setOpenCommentsDialog} />
     </Card>
   );
 }
