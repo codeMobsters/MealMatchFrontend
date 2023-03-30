@@ -79,9 +79,9 @@ export default function RecipeReviewCard(props: RecipeReviewCardProps) {
       <CardHeader
         avatar={
           <Avatar
-            aria-label="recipe" 
-            alt="{postingUserData?.name}" 
-            src="{postingUserData?.profilePictureUrl}">
+            aria-label="recipe"
+            alt={props.recipe.recipeOwnerName}
+            src={props.recipe.userProfilePictureUrl}>
           </Avatar>
         }
         title={props.recipe.label}
@@ -101,7 +101,7 @@ export default function RecipeReviewCard(props: RecipeReviewCardProps) {
         </CardContent>
       }
       <CardActions disableSpacing>
-        <FavoriteIcon aria-label="add to favorites" onClick={(e) => handleFavorite(e)}/>
+        <FavoriteIcon sx={{marginRight: 1}} aria-label="add to favorites" onClick={(e) => handleFavorite(e)}/>
         <MessageOutlinedIcon aria-label="go to comments" onClick={() => setOpenCommentsDialog(true)}/>
           <ExpandMore
             expand={expanded}

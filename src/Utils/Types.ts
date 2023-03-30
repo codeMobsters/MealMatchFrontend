@@ -55,6 +55,7 @@ export interface Recipe {
   recipeOwnerId: number;
   recipeOwnerName?: string;
   comments?: Comment[];
+  userProfilePictureUrl? :string;
 }
 
 export interface Comment {
