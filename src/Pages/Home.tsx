@@ -15,7 +15,6 @@ interface HomeProps {
 }
 
 const Home = (props: HomeProps) => {
-
   const fetchRecipes = async ({pageParam = 0}) : Promise<EdamamResponse> => {
     let res;
     (pageParam !== 0 && hasNextPage) ?
@@ -48,17 +47,24 @@ const Home = (props: HomeProps) => {
     getNextPageParam: (lastPage, pages) => {
         return lastPage.url;
       }
-  })
+  });
 
   return (
     <Box className="App">
       <HeaderComp />
       <Navbar user={props.user} setUser={props.setUser}/>
-      <main style={{ width: "100%" }}>
+      <main style={{ width: "100%",
+        marginTop: '56px',
+        marginBottom: '56px' }}>
         {data && (
           <InfiniteScroll hasMore={hasNextPage} loadMore={() => fetchNextPage()} >
             {data.pages.map((page) =>
-              page.recipes.map((recipe, index) => <RecipeReviewCard key={index} recipe={recipe} />)
+              page.recipes.map((recipe, index) => 
+              <RecipeReviewCard 
+                key={index} 
+                recipe={recipe}
+                user={props.user}
+              />)
             )}
           </InfiniteScroll>)}
       </main>

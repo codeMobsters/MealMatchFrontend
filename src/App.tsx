@@ -6,6 +6,7 @@ import './App.css'
 import Home from './Pages/Home'
 import SignIn from './Pages/SignIn'
 import SignUp from './Pages/SignUp'
+import SocialHome from './Pages/SocialHome'
 import { LoginResponse } from "./Utils/Types";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
     <Routes>
         <Route path="/" element={<Home user={user} setUser={setUser}/>}></Route>
+        <Route path="/feed" element={<SocialHome user={user} setUser={setUser}/>}></Route>
         <Route path="/login" element={<SignIn setUser={setUser} />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
     </Routes>

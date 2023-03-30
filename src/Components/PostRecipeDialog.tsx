@@ -81,15 +81,3 @@ export default function PostRecipeDialog(props :PostRecipeDialogProps) {
     </div>
   );
 }
-{/* <List>
-          <ListItem>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItem>
-        </List> */}

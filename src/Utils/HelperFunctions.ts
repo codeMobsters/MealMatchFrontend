@@ -104,22 +104,3 @@ export const addNewRecipeFromForm = async (token: string, newRecipe: NewRecipe) 
     }
   }
 
-  export const addNewRecipeEdamam = async (token: string, newRecipe: Recipe) => {
-    try {
-      const requestOptions = {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json" },
-        body: JSON.stringify(newRecipe),
-      };
-      const response = await fetch(
-        `${baseUrl}/api/Recipes`,
-        requestOptions
-      );
-      return response.ok;
-    } catch (e: any) {
-      throw new Error("Problems");
-    }
-  }
-

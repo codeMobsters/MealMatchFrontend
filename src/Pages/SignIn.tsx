@@ -67,7 +67,7 @@ export default function SignIn(props: signInProps) {
       };
 
       const response = await fetch(
-        `https://localhost:7031/api/UsersAuthentication/login`,
+        `https://localhost:7031/api/Users/Authentication/login`,
         requestOptions
       );
       if (response.ok) {

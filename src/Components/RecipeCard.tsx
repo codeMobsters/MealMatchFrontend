@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -9,12 +8,13 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Recipe } from '../Utils/Types';
+import { LoginResponse, Recipe } from '../Utils/Types';
+import { MouseEvent, useState } from "react";
+import { baseUrl } from '../Utils/Constants';
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import CommentsDialog from './CommentDialog';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -32,71 +32,105 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export type RecipeReviewCardProps = {
-    recipe :Recipe
+    recipe :Recipe,
+    user : LoginResponse | undefined
 };
 
 export default function RecipeReviewCard(props: RecipeReviewCardProps) {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [openCommentsDialog, setOpenCommentsDialog] = useState(false);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  function handleFavorite(e: MouseEvent<SVGSVGElement, globalThis.MouseEvent>) {
+
+    // check for favorites, if it is in there already, call the delete
+    // make the icon change to red comehow, or just give any feedback
+    if (props.user?.token) {
+      const addNewRecipeEdamam = async (token: string, newRecipe: Recipe) => {
+        try {
+          const requestOptions = {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json" },
+            body: JSON.stringify(newRecipe),
+          };
+          const response = await fetch(
+            `${baseUrl}/api/Recipes`,
+            requestOptions
+          );
+          return response.ok;
+        } catch (e: any) {
+          throw new Error("Problems");
+        }
+      }
+      addNewRecipeEdamam(props.user?.token, props.recipe);
+    }
+  }
+
   return (
-    <Card sx={{maxWidth: {xs: '100vw', tablet: '450px', desktop: '550px'}, margin: 'auto', paddingTop: '56px'}}>
+    <Card 
+      sx={{maxWidth: {xs: '100vw', tablet: '450px', desktop: '550px'}, 
+        margin: 'auto'
+      }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+          <Avatar
+            aria-label="recipe" 
+            alt="{postingUserData?.name}" 
+            src="{postingUserData?.profilePictureUrl}">
           </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
         }
         title={props.recipe.label}
         subheader={props.recipe.createdAt}
       />
       <CardMedia
         component="img"
-        height="194"
+        height="350"
         image={props.recipe.image}
         alt={props.recipe.label}
       />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
-      </CardContent>
+      {props.recipe.instructions &&
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {props.recipe.instructions}
+          </Typography>
+        </CardContent>
+      }
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
+        <FavoriteIcon aria-label="add to favorites" onClick={(e) => handleFavorite(e)}/>
+        <MessageOutlinedIcon aria-label="go to comments" onClick={() => setOpenCommentsDialog(true)}/>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            {props.recipe.ingredientLines}
-          </Typography>
-          <Typography>
-          {props.recipe.url}
-          </Typography>
+          <Typography paragraph><b>Ingredients</b></Typography>
+          {props.recipe.ingredientLines && props.recipe.ingredientLines.map(ingredients =>
+           <Typography key={ingredients}>{ingredients}</Typography>)
+          }
+          <Typography paragraph sx={{marginTop: 2}}><b>Method</b></Typography>
+          {props.recipe.instructions && props.recipe.instructions.map(instruction =>
+           <Typography key={instruction}>{instruction}</Typography>)
+          }
+          {props.recipe.url &&
+              <Typography>
+                  <a href={props.recipe.url} target="_blank">{props.recipe.url}</a>
+              </Typography>
+          }
         </CardContent>
       </Collapse>
+      <CommentsDialog comments={props.recipe.comments} openCommentsDialog={openCommentsDialog} setOpenCommentsDialog={setOpenCommentsDialog} />
     </Card>
   );
 }

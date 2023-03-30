@@ -12,7 +12,9 @@ export default function Navbar(props: NavbarProps) {
   const navigate = useNavigate();
 
   function handleGoHome() {
-    navigate("/");
+    // do it without navigate, or make it not fetch when there ias already data there
+    navigate("/feed");
+    console.log("feed!");
     window.scrollTo({
       top: 0,
       left: 0,
@@ -21,7 +23,7 @@ export default function Navbar(props: NavbarProps) {
   }
 
   function handleExplore() {
-    // navigate("/");
+    navigate("/");
     console.log("explore!");
     window.scrollTo({
       top: 0,
