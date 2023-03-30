@@ -57,7 +57,7 @@ const Home = (props: HomeProps) => {
         marginTop: '56px',
         marginBottom: '56px' }}>
         {data && (
-          <InfiniteScroll hasMore={hasNextPage} loadMore={() => fetchNextPage()} >
+          <InfiniteScroll threshold={1000} hasMore={hasNextPage} loadMore={() => fetchNextPage()} >
             {data.pages.map((page) =>
               page.recipes.map((recipe, index) => 
               <RecipeReviewCard 

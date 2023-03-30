@@ -12,7 +12,6 @@ function HeaderComp() {
   const navigate = useNavigate();
   const [openPostDialog, setOpenPostDialog] = React.useState(false);
   const handlePostAction = () => {
-    console.log("redirect to post!");
     setOpenPostDialog(true);
   };
 
