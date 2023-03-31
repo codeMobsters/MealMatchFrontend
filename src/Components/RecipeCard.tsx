@@ -61,6 +61,7 @@ export default function RecipeCard(props: RecipeCardProps) {
         );
         if (newRecipe.recipeId != undefined) {
           setRecipeId(newRecipe.recipeId);
+          setIsFavorite(!isFavorite);
         }
       } else if (props.user.id !== props.recipe.recipeOwnerId) {
         await deleteFavorite(props.user!.token, recipeId);

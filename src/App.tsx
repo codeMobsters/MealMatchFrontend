@@ -11,6 +11,7 @@ import SignUp from "./Pages/SignUp";
 import OwnedFeed from "./Pages/OwnedFeed";
 import Profile from "./Pages/Profile";
 import { LoginResponse } from "./Utils/Types";
+import FavoriteFeed from "./Pages/FavoriteFeed";
 
 function App() {
   const queryClient = new QueryClient();
@@ -33,7 +34,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {user.id && (
+      {user.name && (
         <>
           <Header />
           <Navbar user={user} setUser={setUser} />
@@ -41,7 +42,7 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<Home user={user} />}></Route>
-        <Route path="/feed" element={<OwnedFeed user={user} />}></Route>
+        <Route path="/feed" element={<FavoriteFeed user={user} />}></Route>
         <Route
           path=":userId"
           element={<Profile user={user} setUser={setUser} />}

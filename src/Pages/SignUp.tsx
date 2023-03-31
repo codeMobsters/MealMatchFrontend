@@ -70,9 +70,7 @@ export default function SignUp() {
       // style={{ height: "100%" }}
       className="max-w-screen-xl mx-auto items-start shadow-2xl h-screen mt-0"
     >
-      <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
           <Box
             sx={{
               marginTop: 0,
@@ -165,7 +163,6 @@ export default function SignUp() {
             </Box>
           </Box>
         </Container>
-      </ThemeProvider>
       <Snackbar open={openError} autoHideDuration={2500} onClose={handleClose}>
         <Alert
           variant="filled"

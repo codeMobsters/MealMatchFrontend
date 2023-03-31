@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { LoginResponse, SetValue, Recipe } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
 import { useEffect, useState } from "react";
-import { fetchUserOwnedRecipes } from "../Utils/HelperFunctions";
+import { fetchUserFavoriteRecipes, fetchUserOwnedRecipes } from "../Utils/HelperFunctions";
 import { useQuery } from "@tanstack/react-query";
 
 interface OwnedFeedProps {
@@ -14,8 +14,8 @@ const OwnedFeed = (props: OwnedFeedProps) => {
     queryKey: ["ownedRecipes"],
     queryFn: async () =>
       (await fetchUserOwnedRecipes(props.user.token)).sort((a, b) => {
-        if (a.recipeId !== undefined && b.recipeId !== undefined) {
-          return b.recipeId - a.recipeId;
+        if (a.recipeOwnerId !== undefined && b.recipeOwnerId !== undefined) {
+          return b.recipeOwnerId - a.recipeOwnerId;
         }
         return 1;
       }),
@@ -33,10 +33,10 @@ const OwnedFeed = (props: OwnedFeedProps) => {
     <Box className="App">
       <Box
         sx={{
-          height: "100vh",
+          height: "100%",
           overflow: "scroll",
           marginTop: "56px",
-          marginBottom: "56px",
+          marginBottom: '56px'
         }}
       >
         {data.map((recipe, index) => (

@@ -1,32 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
   Avatar,
   IconButton,
-  CardContent,
-  Typography,
-  Divider,
-  CardActions,
-  Button,
   Box,
   useScrollTrigger,
   Slide,
   AppBar,
-  Toolbar,
   Tab,
   Tabs,
+  CardContent,
+  Typography,
 } from "@mui/material";
 import {
   Edit as EditIcon,
-  Favorite as FavoriteIcon,
-  Message as MessageIcon,
-  Share as ShareIcon,
+  Logout as LogoutIcon
 } from "@mui/icons-material";
 import { LoginResponse, SetValue } from "../Utils/Types";
-import { theme } from "../Utils/Theme";
 import FavoriteFeed from "./FavoriteFeed";
 import OwnedFeed from "./OwnedFeed";
+import "../App.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchUser } from "../Utils/HelperFunctions";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,11 +41,11 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tab-${index}`}
       aria-labelledby={`tab-${index}`}
-      style={{ position: "relative", top: "120px" }}
+      style={{ marginTop: '155px'}}
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -79,6 +77,35 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const [value, setValue] = useState(0);
+  const params = useParams();
+  const navigate = useNavigate();
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ["profileUser"],
+    queryFn: async () => fetchUser(params.userId, props.user.token)
+  });
+  const queryClient = useQueryClient()
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: Could not load.</span>;
+  }
+
+const handleLogout = () => {
+    props.setUser({
+      id: 0,
+      name: "",
+      token: "",
+      profilePictureUrl: "",
+      profileSettings: [],
+      dietLabels: [],
+      healthLabels: [],
+    })
+    queryClient.invalidateQueries();
+    navigate("/");
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -89,34 +116,69 @@ const Profile = (props: ProfileProps) => {
   };
 
   return (
-    <>
+    <Box className='App'>
       <HideOnScroll>
         <Box
           sx={{
             width: "100%",
-            margin: "16px",
-            marginTop: 7,
             top: { xs: 0, tablet: 0 },
             zIndex: "1",
             position: "fixed",
-            background: "primary.main",
+            backgroundColor: "primary.main",
+            marginTop: "56px",
           }}
         >
           <CardHeader
             avatar={
               <Avatar
                 aria-label="Profile Picture"
-                src={props.user.profilePictureUrl}
+                src={data.profilePictureUrl}
               />
             }
-            title={props.user.name}
+            title={data.name}
             subheader="The recipe master"
             action={
+              <>
               <IconButton aria-label="Edit Profile">
                 <EditIcon />
               </IconButton>
+              <IconButton aria-label="Edit Profile" onClick={() => handleLogout()}>
+                <LogoutIcon sx={{ color: "white", background: "red", borderRadius: "30px", padding: "3px" }} /> 
+             </IconButton>
+             </>
             }
+            sx={{
+              margin: 2,
+            }}
           />
+          <CardContent sx={{
+              padding: '5px',
+              textAlign: 'center',
+              fontSize: '0.5rem',
+              display: 'flex',
+              flexDirection: 'row'
+            }}>
+            <Typography sx={{
+              flexGrow: 1
+            }}>
+              favorites
+            </Typography>
+            <Typography sx={{
+              flexGrow: 1
+            }}>
+              {}owned recipes
+            </Typography>
+            <Typography sx={{
+              flexGrow: 1
+            }}>
+              followers
+            </Typography>
+            <Typography sx={{
+              flexGrow: 1
+            }}>
+              followed
+            </Typography>
+          </CardContent>
           <AppBar position="static">
             <Tabs
               value={value}
@@ -124,7 +186,6 @@ const Profile = (props: ProfileProps) => {
               indicatorColor="secondary"
               textColor="inherit"
               variant="fullWidth"
-              aria-label="full width tabs example"
             >
               <Tab
                 label="Favorited Recipes"
@@ -146,7 +207,7 @@ const Profile = (props: ProfileProps) => {
       <TabPanel value={value} index={1}>
         <OwnedFeed user={props.user} />
       </TabPanel>
-    </>
+    </Box>
   );
 };
 

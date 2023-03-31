@@ -97,5 +97,5 @@ export const Preferences = {
   ],
 };
 
-export const baseUrl = "https://localhost:7031";
-// export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+// export const baseUrl = "https://localhost:7031";
+export const baseUrl = 'https://mealmatchapi.azurewebsites.net'

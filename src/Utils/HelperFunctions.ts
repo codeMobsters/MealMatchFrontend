@@ -11,7 +11,7 @@ import {
   NewFavoriteRecipe,
 } from "./Types";
 
-// SIGNUP
+// SIGNUP AND LOGOUT
 export const signUpUser = async (signupRequest: RegisterRequest) => {
   try {
     const requestOptions = {
@@ -23,7 +23,7 @@ export const signUpUser = async (signupRequest: RegisterRequest) => {
     };
 
     const response = await fetch(
-      `${baseUrl}/UsersAuthentication/register`,
+      `${baseUrl}/Users/Authentication/register`,
       requestOptions
     );
     return response.ok;
@@ -33,7 +33,7 @@ export const signUpUser = async (signupRequest: RegisterRequest) => {
 };
 
 // GET METHODS
-export const fetchUser = async (id: number, token: string): Promise<User> => {
+export const fetchUser = async (id: string | undefined, token: string): Promise<User> => {
   let res = await fetch(`${baseUrl}/Users/${id}`, {
     method: "GET",
     headers: {
@@ -248,3 +248,5 @@ export const deleteOwnedRecipe = async (token: string, recipeId: number) => {
     throw new Error("Problems");
   }
 };
+
+

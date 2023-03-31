@@ -4,11 +4,11 @@ import RecipeCard from "../Components/RecipeCard";
 import { fetchUserFavoriteRecipes } from "../Utils/HelperFunctions";
 import { useQuery } from "@tanstack/react-query";
 
-interface HomeProps {
+interface FavoriteFeedProps {
   user: LoginResponse;
 }
 
-const FavoriteFeed = (props: HomeProps) => {
+const FavoriteFeed = (props: FavoriteFeedProps) => {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["favoriteRecipes"],
     queryFn: async () =>
@@ -38,7 +38,7 @@ const FavoriteFeed = (props: HomeProps) => {
           height: "100%",
           overflow: "scroll",
           marginTop: "56px",
-          marginBottom: "56px",
+          marginBottom: '56px'
         }}
       >
         {data.map((recipe, index) => (
