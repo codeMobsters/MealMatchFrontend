@@ -50,6 +50,13 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (signupRequest.name.trim() == "" || 
+    signupRequest.password.trim() == "" || 
+    signupRequest.username.trim() == "") {
+      setOpenError(true);
+      return;
+    }
+    setOpenError(false);
     const didSignUp = await signUpUser(signupRequest);
     if (didSignUp) {
       setSignupRequest({
