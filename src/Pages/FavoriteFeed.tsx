@@ -35,7 +35,7 @@ const FavoriteFeed = (props: HomeProps) => {
     <Box className="App">
       <Box
         sx={{
-          height: "100vh",
+          height: "100%",
           overflow: "scroll",
           marginTop: "56px",
           marginBottom: "56px",
