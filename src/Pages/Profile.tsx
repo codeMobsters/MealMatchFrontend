@@ -43,6 +43,7 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tab-${index}`}
       aria-labelledby={`tab-${index}`}
+      style={{ position: "relative", top: "120px" }}
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
@@ -93,12 +94,12 @@ const Profile = (props: ProfileProps) => {
         <Box
           sx={{
             width: "100%",
-            margin: "auto",
-            marginTop: 10,
-            marginBottom: 10,
-            paddingBottom: 10,
-            position: "fixed",
+            margin: "16px",
+            marginTop: 7,
             top: { xs: 0, tablet: 0 },
+            zIndex: "1",
+            position: "fixed",
+            background: "primary.main",
           }}
         >
           <CardHeader
@@ -116,7 +117,6 @@ const Profile = (props: ProfileProps) => {
               </IconButton>
             }
           />
-
           <AppBar position="static">
             <Tabs
               value={value}
