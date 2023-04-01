@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 interface OwnedFeedProps {
   user: LoginResponse;
   userId: number;
+  setUser: SetValue<LoginResponse>;
 }
 
 const OwnedFeed = (props: OwnedFeedProps) => {
@@ -45,7 +46,7 @@ const OwnedFeed = (props: OwnedFeedProps) => {
             key={index}
             recipe={recipe}
             user={props.user}
-            isFavorite={true}
+            setUser={props.setUser}
           />
         ))}
       </Box>

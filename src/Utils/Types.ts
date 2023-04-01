@@ -21,6 +21,8 @@ export interface LoginResponse {
   profileSettings: string[];
   dietLabels: string[];
   healthLabels: string[];
+  favoriteRecipes: number[];
+  likedRecipes: number[];
 }
 
 export interface EdamamResponse {
@@ -56,6 +58,7 @@ export interface Recipe {
   recipeOwnerName?: string;
   comments?: Comment[];
   userProfilePictureUrl? :string;
+  likes?: number[];
 }
 
 export interface Comment {
@@ -74,6 +77,15 @@ export interface User {
   profileSettings: string[];
   dietLabels: string[];
   healthLabels: string[];
+  favoriteRecipes: number;
+  ownedRecipes: number;
+  followers: Follower[];
+  followedBy: Follower[];
+}
+
+export interface Follower {
+  followerId: number;
+  followerName: string;
 }
 
 export interface HeaderProps {
@@ -106,7 +118,9 @@ export interface NewFavoriteRecipe {
 
 export interface MultipleSelectChipProps {
   seedData : string[];
-  seedType : string;
+  seedValues? : string[];
+  seedType? : string;
+  filledValues? : boolean;
   onChange :(actualValue : string[]) => void
 }
 
@@ -114,4 +128,11 @@ export type PostRecipeDialogProps = {
   openPostDialog :boolean,
   setOpenPostDialog : React.Dispatch<React.SetStateAction<boolean>>;
   user :LoginResponse
+}
+
+export type UserUpdateDialogProps = {
+  openUserUpdateDialog :string,
+  setOpenUserUpdateDialog : React.Dispatch<React.SetStateAction<string>>;
+  user :LoginResponse;
+  setUser :SetValue<LoginResponse>
 }

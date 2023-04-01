@@ -20,19 +20,6 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
   return {
     fontWeight:
@@ -42,50 +29,55 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
   };
 }
 
-export default function MultipleSelectChip(props : MultipleSelectChipProps) {
+export default function MultipleSelectChip(props: MultipleSelectChipProps) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [selectedValue, setSelectedValue] = React.useState<string[]>(
+    props.filledValues == true 
+    ? props.seedData 
+    : props.seedValues ? props.seedValues : []
+  );
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChange = (event: SelectChangeEvent<typeof selectedValue>) => {
     const {
       target: { value },
     } = event;
     props.onChange(typeof value === 'string' ? value.split(',') : value);
-    setPersonName(
+    setSelectedValue(
       typeof value === 'string' ? value.split(',') : value,
     );
   };
 
 
   return (
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">{props.seedType}</InputLabel>
-        <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-          MenuProps={MenuProps}
-        >
-          {props.seedData.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+    <FormControl sx={{ m: 1, width: 300 }}>
+      <InputLabel id="multiple-chip-label">{props.seedType}</InputLabel>
+      <Select
+        labelId="multiple-chip-label"
+        id="multiple-chip"
+        multiple
+        value={selectedValue}
+        sx={{ borderRadius: 2}}
+        onChange={handleChange}
+        input={<OutlinedInput id="select-multiple-chip" />}
+        renderValue={(selected) => (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            {selected.map((value) => (
+              <Chip key={value} label={value} />
+            ))}
+          </Box>
+        )}
+        MenuProps={MenuProps}
+      >
+        {props.seedData.map((name) => (
+          <MenuItem
+            key={name}
+            value={name}
+            style={getStyles(name, selectedValue, theme)}
+          >
+            {name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

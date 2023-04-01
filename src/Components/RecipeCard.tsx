@@ -10,7 +10,7 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LoginResponse, Recipe } from "../Utils/Types";
+import { LoginResponse, Recipe, SetValue } from "../Utils/Types";
 import { useState } from "react";
 import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 import CommentsDialog from "./CommentDialog";
@@ -33,8 +33,8 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface RecipeCardProps {
   recipe: Recipe;
-  user: LoginResponse | undefined;
-  isFavorite: boolean;
+  user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
 }
 
 export default function RecipeCard(props: RecipeCardProps) {
@@ -43,7 +43,11 @@ export default function RecipeCard(props: RecipeCardProps) {
   const [recipeId, setRecipeId] = useState(
     props.recipe.recipeId == undefined ? 0 : props.recipe.recipeId
   );
-  const [isFavorite, setIsFavorite] = useState(props.isFavorite);
+  const [isFavorite, setIsFavorite] = useState(
+    props.recipe.recipeId != undefined && props.user.favoriteRecipes != undefined
+    ? props.user.favoriteRecipes.includes(props.recipe.recipeId) 
+    : false
+  );
   const [commentList, setCommentList] = useState(
     props.recipe.comments?.sort((a, b) => b.commentId - a.commentId)
   );
@@ -62,11 +66,14 @@ export default function RecipeCard(props: RecipeCardProps) {
         if (newRecipe.recipeId != undefined) {
           setRecipeId(newRecipe.recipeId);
           setIsFavorite(!isFavorite);
+          let favRecipes = [...props.user.favoriteRecipes, newRecipe.recipeId];
+          props.setUser({...props.user, favoriteRecipes: [...props.user.favoriteRecipes, newRecipe.recipeId]});
         }
       } else if (props.user.id !== props.recipe.recipeOwnerId) {
         await deleteFavorite(props.user!.token, recipeId);
         setRecipeId(0);
         setIsFavorite(!isFavorite);
+        props.setUser({...props.user, favoriteRecipes: props.user.favoriteRecipes.filter(id => id !== recipeId)});
       }
     }
   };
@@ -115,7 +122,7 @@ export default function RecipeCard(props: RecipeCardProps) {
           aria-label="add to favorites"
           onClick={() => handleFavorite()}
         >
-          <FavoriteIcon sx={{ color: `${recipeId ? "red" : "default"}` }} />
+          <FavoriteIcon sx={{ color: `${isFavorite ? "#D2042D" : "inherit"}` }} />
         </IconButton>
         <IconButton
           aria-label="go to comments"

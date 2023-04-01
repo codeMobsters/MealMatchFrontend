@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import PostRecipeForm from './PostRecipeForm';
-import { LoginResponse, NewRecipe, PostRecipeDialogProps } from '../Utils/Types';
+import { NewRecipe, PostRecipeDialogProps } from '../Utils/Types';
 import { newReipe } from '../Utils/Constants';
 import { addNewRecipeFromForm } from '../Utils/HelperFunctions';
 
@@ -21,8 +21,6 @@ const Transition = forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-
 
 export default function PostRecipeDialog(props :PostRecipeDialogProps) {
     

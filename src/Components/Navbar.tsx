@@ -7,6 +7,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import TravelExploreOutlinedIcon from "@mui/icons-material/TravelExploreOutlined";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface NavbarProps {
   user: LoginResponse;

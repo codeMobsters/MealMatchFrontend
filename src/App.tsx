@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 import "./App.css";
@@ -8,10 +8,9 @@ import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home";
 import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
-import OwnedFeed from "./Pages/OwnedFeed";
 import Profile from "./Pages/Profile";
 import { LoginResponse } from "./Utils/Types";
-import FavoriteFeed from "./Pages/FavoriteFeed";
+import ProfileSettings from "./Pages/ProfileSettings";
 
 function App() {
   const queryClient = new QueryClient();
@@ -23,6 +22,8 @@ function App() {
     profileSettings: [],
     dietLabels: [],
     healthLabels: [],
+    favoriteRecipes: [],
+    likedRecipes: []
   });
   const navigate = useNavigate();
 
@@ -41,8 +42,9 @@ function App() {
         </>
       )}
       <Routes>
-        <Route path="/" element={<Home user={user} />}></Route>
-        <Route path="/feed" element={<FavoriteFeed user={user} />}></Route>
+        <Route path="/" element={<Home user={user} setUser={setUser} />}></Route>
+        <Route path="/feed" element={<Home user={user} setUser={setUser} />}></Route>
+        <Route path="/settings" element={<ProfileSettings user={user} setUser={setUser} />}></Route>
         <Route
           path=":userId"
           element={<Profile user={user} setUser={setUser} />}

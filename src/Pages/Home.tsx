@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 interface HomeProps {
   user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
 }
 
 const Home = (props: HomeProps) => {
@@ -76,7 +77,7 @@ const Home = (props: HomeProps) => {
                   key={index}
                   recipe={recipe}
                   user={props.user}
-                  isFavorite={false}
+                  setUser={props.setUser}
                 />
               ))
             )}

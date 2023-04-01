@@ -3,13 +3,16 @@ import { LoginResponse, SetValue, FavoriteRecipe } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
 import { fetchUserFavoriteRecipes } from "../Utils/HelperFunctions";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 interface FavoriteFeedProps {
   user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
   userId: number;
 }
 
 const FavoriteFeed = (props: FavoriteFeedProps) => {
+  
   const { isLoading, isError, data } = useQuery({
     queryKey: ["favoriteRecipes"],
     queryFn: async () =>
@@ -47,7 +50,7 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
             key={index}
             recipe={recipe.recipe}
             user={props.user}
-            isFavorite={true}
+            setUser={props.setUser}
           />
         ))}
       </Box>

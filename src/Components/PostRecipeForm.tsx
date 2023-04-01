@@ -183,7 +183,7 @@ const PostRecipeForm = (props :PostRecipeFormProps) => {
                 maxWidth: '80vw', 
                 height: '150px', 
                 maxHeight: '150px', 
-                overflow: 'scroll' 
+                overflow: 'scroll'
             }}
             id="recipe-instructions"
             onChange={(e) => 
@@ -209,6 +209,7 @@ const PostRecipeForm = (props :PostRecipeFormProps) => {
             }}
         />
         <MultipleSelectChip 
+            filledValues={false}
             seedType='Dish type'
             seedData={Preferences.DishTypes}
             onChange={(actualValue) => {
@@ -217,6 +218,7 @@ const PostRecipeForm = (props :PostRecipeFormProps) => {
             }}
         />
         <MultipleSelectChip 
+            filledValues={false}
             seedType='Health labels'
             seedData={Preferences.healthLabels}
             onChange={(actualValue) => {
@@ -225,6 +227,7 @@ const PostRecipeForm = (props :PostRecipeFormProps) => {
             }}
         />
         <MultipleSelectChip 
+            filledValues={false}
             seedType='Meal type'
             seedData={Preferences.mealTypes}
             onChange={(actualValue) => {

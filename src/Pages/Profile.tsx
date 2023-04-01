@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Card,
   CardHeader,
   Avatar,
   IconButton,
@@ -21,7 +20,7 @@ import { LoginResponse, SetValue } from "../Utils/Types";
 import FavoriteFeed from "./FavoriteFeed";
 import OwnedFeed from "./OwnedFeed";
 import "../App.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchUser } from "../Utils/HelperFunctions";
 
@@ -83,7 +82,14 @@ const Profile = (props: ProfileProps) => {
     queryKey: ["profileUser"],
     queryFn: async () => fetchUser(params.userId, props.user.token)
   });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+  // let { state } = useLocation();
+
+  // useEffect(() => {
+  //   queryClient.invalidateQueries({ queryKey: ['profileUser'] });
+  //   queryClient.refetchQueries();
+  // }, [state]);
+
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -102,6 +108,8 @@ const handleLogout = () => {
       profileSettings: [],
       dietLabels: [],
       healthLabels: [],
+      favoriteRecipes: [],
+      likedRecipes: []
     })
     queryClient.invalidateQueries();
     navigate("/");
@@ -115,6 +123,10 @@ const handleLogout = () => {
     setValue(index);
   };
 
+  function handleGoToSettings() {
+    navigate("/settings");
+  }
+ 
   return (
     <Box className='App'>
       <HideOnScroll>
@@ -139,10 +151,10 @@ const handleLogout = () => {
             subheader="The recipe master"
             action={
               <>
-              <IconButton aria-label="Edit Profile">
+              <IconButton aria-label="Edit Profile" onClick={() => handleGoToSettings()}>
                 <EditIcon />
               </IconButton>
-              <IconButton aria-label="Edit Profile" onClick={() => handleLogout()}>
+              <IconButton aria-label="Logout" onClick={() => handleLogout()}>
                 <LogoutIcon sx={{ color: "white", background: "red", borderRadius: "30px", padding: "3px" }} /> 
              </IconButton>
              </>
@@ -161,12 +173,12 @@ const handleLogout = () => {
             <Typography sx={{
               flexGrow: 1
             }}>
-              favorites
+              {} favorites
             </Typography>
             <Typography sx={{
               flexGrow: 1
             }}>
-              {}owned recipes
+              {} owned recipes
             </Typography>
             <Typography sx={{
               flexGrow: 1
@@ -202,10 +214,10 @@ const handleLogout = () => {
         </Box>
       </HideOnScroll>
       <TabPanel value={value} index={0}>
-        <FavoriteFeed user={props.user} userId={data.userId}/>
+        <FavoriteFeed user={props.user} userId={data.userId} setUser={props.setUser} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <OwnedFeed user={props.user} userId={data.userId}/>
+        <OwnedFeed user={props.user} userId={data.userId} setUser={props.setUser}/>
       </TabPanel>
     </Box>
   );
