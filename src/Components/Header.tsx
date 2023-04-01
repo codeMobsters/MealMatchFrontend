@@ -7,8 +7,10 @@ import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import PostRecipeDialog from "./PostRecipeDialog";
+import { HeaderProps } from "../Utils/Types";
 
-function Header() {
+
+function Header(props :HeaderProps) {
   const navigate = useNavigate();
   const [openPostDialog, setOpenPostDialog] = React.useState(false);
   const handlePostAction = () => {
@@ -57,6 +59,7 @@ function Header() {
             onClick={() => handlePostAction()}
           />
           <PostRecipeDialog
+            user={props.user}
             openPostDialog={openPostDialog}
             setOpenPostDialog={setOpenPostDialog}
           />

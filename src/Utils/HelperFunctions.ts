@@ -54,9 +54,9 @@ export const fetchComments = async (token: string): Promise<Comment[]> => {
 };
 
 export const fetchUserOwnedRecipes = async (
-  token: string
+  token: string, id: number
 ): Promise<Recipe[]> => {
-  let res = await fetch(`${baseUrl}/Users/recipes`, {
+  let res = await fetch(`${baseUrl}/Users/${id}/Recipes`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -66,9 +66,9 @@ export const fetchUserOwnedRecipes = async (
 };
 
 export const fetchUserFavoriteRecipes = async (
-  token: string
+  token: string, id: number
 ): Promise<FavoriteRecipe[]> => {
-  let res = await fetch(`${baseUrl}/FavoriteRecipes`, {
+  let res = await fetch(`${baseUrl}/Users/${id}/FavoriteRecipes`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -86,9 +86,7 @@ export const addNewRecipeFromForm = async (
     let formData = new FormData();
 
     formData.append("Title", newRecipe.Title);
-    newRecipe.Instructions.forEach(instruction =>
-      formData.append("Instructions", instruction)
-    );
+    formData.append("Instructions", newRecipe.Instructions);
     newRecipe.Ingredients.forEach(ingredient =>
       formData.append("Ingredients", ingredient)
     );
@@ -109,13 +107,13 @@ export const addNewRecipeFromForm = async (
       formData.append("MealType", mealType)
     );
 
-    if (newRecipe.Yield != undefined) {
+    if (newRecipe.Yield != undefined && newRecipe.Yield != "") {
       formData.append("Yield", newRecipe.Yield);
     }
-    if (newRecipe.Calories != undefined) {
+    if (newRecipe.Calories != undefined && newRecipe.Calories != "") {
       formData.append("Calories", newRecipe.Calories);
     }
-    if (newRecipe.TotalTime != undefined) {
+    if (newRecipe.TotalTime != undefined && newRecipe.TotalTime != "") {
       formData.append("TotalTime", newRecipe.TotalTime);
     }
     if (newRecipe.RecipePicture != undefined) {
@@ -249,4 +247,9 @@ export const deleteOwnedRecipe = async (token: string, recipeId: number) => {
   }
 };
 
+export function isValidFileUploaded(file :File) :boolean {
+  const validExtensions = ['png','jpeg','jpg']
+  const fileExtension = file.type.split('/')[1]
+  return validExtensions.includes(fileExtension)
+}
 

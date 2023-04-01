@@ -9,7 +9,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import PostRecipeForm from './PostRecipeForm';
-import { NewRecipe } from '../Utils/Types';
+import { LoginResponse, NewRecipe, PostRecipeDialogProps } from '../Utils/Types';
+import { newReipe } from '../Utils/Constants';
+import { addNewRecipeFromForm } from '../Utils/HelperFunctions';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -20,33 +22,33 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export type PostRecipeDialogProps = {
-    openPostDialog :boolean,
-    setOpenPostDialog : React.Dispatch<React.SetStateAction<boolean>>
-}
+
 
 export default function PostRecipeDialog(props :PostRecipeDialogProps) {
     
-    const [formState, setFormState] = useState<NewRecipe>({
-        Title: "",
-        Yield: "",
-        Calories: "",
-        TotalTime: "",
-        Instructions: [],
-        Ingredients: [],
-        CuisineType: [],
-        DietLabels: [],
-        DishType: [],
-        HealthLabels: [],
-        MealType: []
-    });
+  const [formState, setFormState] = useState<NewRecipe>(newReipe);
+  const [openFormstateError, setOpenFormstateError] = useState("");
     
-    function handlePostRecipe() {
-        // post the formdata from the states
+  function handlePostRecipe() {
+    if (formState.Title.trim() == "") {
+      setOpenFormstateError("Title cannot be empty!");
+      return;
     }
-    const handleClose = () => {
-      props.setOpenPostDialog(false);
-    };
+    if (formState.Ingredients.length < 1) {
+      setOpenFormstateError("Ingredients cannot be empty!");
+      return;
+    }
+    if (formState.Instructions.trim() == "") {
+      setOpenFormstateError("Instructions cannot be empty!");
+      return;
+    }
+    addNewRecipeFromForm(props.user.token, formState);
+  }
+  
+  const handleClose = () => {
+    setFormState(newReipe);
+    props.setOpenPostDialog(false);
+  };
 
   return (
     <div>
@@ -68,7 +70,12 @@ export default function PostRecipeDialog(props :PostRecipeDialogProps) {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Add your recipe!
             </Typography>
-            <Button autoFocus color="inherit" onClick={() => handlePostRecipe()}>
+            <Button 
+              autoFocus 
+              color="inherit" 
+              sx={{border: 1, borderColor: "text.secondary"}}
+              onClick={() => handlePostRecipe()}
+            >
               Post
             </Button>
           </Toolbar>
@@ -76,6 +83,8 @@ export default function PostRecipeDialog(props :PostRecipeDialogProps) {
         <PostRecipeForm 
           formState={formState}
           setFormState={setFormState}
+          openFormstateError={openFormstateError}
+          setOpenFormstateError={setOpenFormstateError}
         />
       </Dialog>
     </div>

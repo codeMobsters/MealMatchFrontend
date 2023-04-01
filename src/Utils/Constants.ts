@@ -1,3 +1,5 @@
+import { NewRecipe } from "./Types";
+
 export const Preferences = {
   Cousines: [
     "american",
@@ -97,5 +99,20 @@ export const Preferences = {
   ],
 };
 
-// export const baseUrl = "https://localhost:7031";
-export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+export const newReipe : NewRecipe = {
+  Title: "",
+  Yield: "",
+  Calories: "",
+  TotalTime: "",
+  Instructions: "",
+  Ingredients: [],
+  CuisineType: [],
+  DietLabels: [],
+  DishType: [],
+  HealthLabels: [],
+  MealType: [],
+  RecipePicture: undefined
+}
+
+export const baseUrl = "https://localhost:7031";
+// export const baseUrl = 'https://mealmatchapi.azurewebsites.net'

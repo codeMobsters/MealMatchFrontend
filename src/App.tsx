@@ -36,7 +36,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       {user.name && (
         <>
-          <Header />
+          <Header user={user}/>
           <Navbar user={user} setUser={setUser} />
         </>
       )}

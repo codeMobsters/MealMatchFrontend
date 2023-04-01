@@ -202,10 +202,10 @@ const handleLogout = () => {
         </Box>
       </HideOnScroll>
       <TabPanel value={value} index={0}>
-        <FavoriteFeed user={props.user} />
+        <FavoriteFeed user={props.user} userId={data.userId}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <OwnedFeed user={props.user} />
+        <OwnedFeed user={props.user} userId={data.userId}/>
       </TabPanel>
     </Box>
   );

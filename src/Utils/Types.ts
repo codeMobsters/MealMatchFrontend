@@ -76,12 +76,16 @@ export interface User {
   healthLabels: string[];
 }
 
+export interface HeaderProps {
+  user :LoginResponse
+}
+
 export interface NewRecipe {
   Title: string;
   Yield?: string;
   Calories?: string;
   TotalTime?: string;
-  Instructions: string[];
+  Instructions: string;
   Ingredients: string[];
   CuisineType?: string[];
   DietLabels?: string[];
@@ -100,4 +104,14 @@ export interface NewFavoriteRecipe {
   recipeId: number;
 }
 
+export interface MultipleSelectChipProps {
+  seedData : string[];
+  seedType : string;
+  onChange :(actualValue : string[]) => void
+}
 
+export type PostRecipeDialogProps = {
+  openPostDialog :boolean,
+  setOpenPostDialog : React.Dispatch<React.SetStateAction<boolean>>;
+  user :LoginResponse
+}

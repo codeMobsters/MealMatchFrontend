@@ -6,13 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 
 interface FavoriteFeedProps {
   user: LoginResponse;
+  userId: number;
 }
 
 const FavoriteFeed = (props: FavoriteFeedProps) => {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["favoriteRecipes"],
     queryFn: async () =>
-      (await fetchUserFavoriteRecipes(props.user.token)).sort((a, b) => {
+      (await fetchUserFavoriteRecipes(props.user.token, props.userId)).sort((a, b) => {
         if (
           a.favoriteRecipeId !== undefined &&
           b.favoriteRecipeId !== undefined

@@ -7,13 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 
 interface OwnedFeedProps {
   user: LoginResponse;
+  userId: number;
 }
 
 const OwnedFeed = (props: OwnedFeedProps) => {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["ownedRecipes"],
     queryFn: async () =>
-      (await fetchUserOwnedRecipes(props.user.token)).sort((a, b) => {
+      (await fetchUserOwnedRecipes(props.user.token, props.userId)).sort((a, b) => {
         if (a.recipeOwnerId !== undefined && b.recipeOwnerId !== undefined) {
           return b.recipeOwnerId - a.recipeOwnerId;
         }
