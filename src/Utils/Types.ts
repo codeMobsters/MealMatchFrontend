@@ -79,14 +79,14 @@ export interface User {
   healthLabels: string[];
   favoriteRecipes: number;
   ownedRecipes: number;
-  followers: Follower[];
-  followedBy: Follower[];
+  followers: number; // Follower[]
+  following: number; // Follower[]
 }
 
-export interface Follower {
-  followerId: number;
-  followerName: string;
-}
+// export interface Follower {
+//   followerId: number;
+//   followerName: string;
+// }
 
 export interface HeaderProps {
   user :LoginResponse

@@ -9,6 +9,7 @@ interface FavoriteFeedProps {
   user: LoginResponse;
   setUser: SetValue<LoginResponse>;
   userId: number;
+  setFavoriteCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FavoriteFeed = (props: FavoriteFeedProps) => {
@@ -26,6 +27,11 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
         return 1;
       }),
   });
+  useEffect(()=> {
+    if (data) {
+      props.setFavoriteCount(data.length + 1);
+    }
+  }, [data])
 
   if (isLoading) {
     return <span>Loading...</span>;

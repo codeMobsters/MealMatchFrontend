@@ -9,6 +9,7 @@ interface OwnedFeedProps {
   user: LoginResponse;
   userId: number;
   setUser: SetValue<LoginResponse>;
+  setOwnedCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const OwnedFeed = (props: OwnedFeedProps) => {
@@ -22,6 +23,11 @@ const OwnedFeed = (props: OwnedFeedProps) => {
         return 1;
       }),
   });
+  useEffect(()=> {
+    if (data) {
+      props.setOwnedCount(data.length + 1);
+    }
+  }, [data])
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -30,7 +36,7 @@ const OwnedFeed = (props: OwnedFeedProps) => {
   if (isError) {
     return <span>Error: Could not load.</span>;
   }
-
+  
   return (
     <Box className="App">
       <Box

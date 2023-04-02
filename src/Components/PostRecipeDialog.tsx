@@ -41,6 +41,7 @@ export default function PostRecipeDialog(props :PostRecipeDialogProps) {
       return;
     }
     addNewRecipeFromForm(props.user.token, formState);
+    props.setOpenPostDialog(false);
   }
   
   const handleClose = () => {

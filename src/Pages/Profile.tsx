@@ -76,8 +76,11 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const [value, setValue] = useState(0);
+  const [favoriteCount, setFavoriteCount] = useState(0);
+  const [ownedCount, setOwnedCount] = useState(0);
   const params = useParams();
   const navigate = useNavigate();
+
   const { isLoading, isError, data } = useQuery({
     queryKey: ["profileUser"],
     queryFn: async () => fetchUser(params.userId, props.user.token)
@@ -98,7 +101,7 @@ const Profile = (props: ProfileProps) => {
   if (isError) {
     return <span>Error: Could not load.</span>;
   }
-
+  
 const handleLogout = () => {
     props.setUser({
       id: 0,
@@ -119,14 +122,10 @@ const handleLogout = () => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index: number) => {
-    setValue(index);
-  };
-
   function handleGoToSettings() {
     navigate("/settings");
   }
- 
+
   return (
     <Box className='App'>
       <HideOnScroll>
@@ -173,22 +172,22 @@ const handleLogout = () => {
             <Typography sx={{
               flexGrow: 1
             }}>
-              {} favorites
+              {favoriteCount > 0 ? favoriteCount - 1 : data.favoriteRecipes} favorite recipes
             </Typography>
             <Typography sx={{
               flexGrow: 1
             }}>
-              {} owned recipes
+              {ownedCount > 0 ? ownedCount - 1 : data.ownedRecipes} owned recipes
             </Typography>
             <Typography sx={{
               flexGrow: 1
             }}>
-              followers
+              {data.followers} followers
             </Typography>
             <Typography sx={{
               flexGrow: 1
             }}>
-              followed
+              {data.following} followed
             </Typography>
           </CardContent>
           <AppBar position="static">
@@ -214,10 +213,20 @@ const handleLogout = () => {
         </Box>
       </HideOnScroll>
       <TabPanel value={value} index={0}>
-        <FavoriteFeed user={props.user} userId={data.userId} setUser={props.setUser} />
+        <FavoriteFeed 
+          user={props.user} 
+          userId={data.userId} 
+          setUser={props.setUser} 
+          setFavoriteCount={setFavoriteCount}
+         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <OwnedFeed user={props.user} userId={data.userId} setUser={props.setUser}/>
+        <OwnedFeed 
+          user={props.user} 
+          userId={data.userId} 
+          setUser={props.setUser} 
+          setOwnedCount={setOwnedCount}
+        />
       </TabPanel>
     </Box>
   );
