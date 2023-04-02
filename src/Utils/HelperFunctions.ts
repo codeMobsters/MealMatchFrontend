@@ -33,7 +33,10 @@ export const signUpUser = async (signupRequest: RegisterRequest) => {
 };
 
 // GET METHODS
-export const fetchUser = async (id: string | undefined, token: string): Promise<User> => {
+export const fetchUser = async (
+  id: string | undefined,
+  token: string
+): Promise<User> => {
   let res = await fetch(`${baseUrl}/Users/${id}`, {
     method: "GET",
     headers: {
@@ -54,7 +57,8 @@ export const fetchComments = async (token: string): Promise<Comment[]> => {
 };
 
 export const fetchUserOwnedRecipes = async (
-  token: string, id: number
+  token: string,
+  id: number
 ): Promise<Recipe[]> => {
   let res = await fetch(`${baseUrl}/Users/${id}/Recipes`, {
     method: "GET",
@@ -66,7 +70,8 @@ export const fetchUserOwnedRecipes = async (
 };
 
 export const fetchUserFavoriteRecipes = async (
-  token: string, id: number
+  token: string,
+  id: number
 ): Promise<FavoriteRecipe[]> => {
   let res = await fetch(`${baseUrl}/Users/${id}/FavoriteRecipes`, {
     method: "GET",
@@ -86,7 +91,9 @@ export const addNewRecipeFromForm = async (
     let formData = new FormData();
 
     formData.append("Title", newRecipe.Title);
-    formData.append("Instructions", newRecipe.Instructions);
+    newRecipe.Instructions.forEach(instruction =>
+      formData.append("Instructions", instruction)
+    );
     newRecipe.Ingredients.forEach(ingredient =>
       formData.append("Ingredients", ingredient)
     );
@@ -247,28 +254,49 @@ export const deleteOwnedRecipe = async (token: string, recipeId: number) => {
   }
 };
 
-export const updateUser = async (token: string, userId :number, userUpdate: UserUpdateRequest) => {
+// PUT METHODS
+export const updateUser = async (
+  token: string,
+  userId: number,
+  userUpdate: UserUpdateRequest
+) => {
   try {
+    let formData = new FormData();
+
+    if (userUpdate.name != undefined) {
+      formData.append("Name", userUpdate.name);
+    }
+
+    userUpdate.dietLabels?.forEach(dietLabels =>
+      formData.append("DietLabels", dietLabels)
+    );
+    userUpdate.healthLabels?.forEach(healthLabels =>
+      formData.append("HealthLabels", healthLabels)
+    );
+
+    if (userUpdate.profileSettings != undefined) {
+      userUpdate?.profileSettings.forEach(profileSetting =>
+        formData.append("ProfileSettings", profileSetting)
+      );
+    }
+    if (userUpdate.profilePicture != undefined) {
+      formData.append("ProfilePicture", userUpdate.profilePicture);
+    }
+
     const requestOptions = {
       method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Accept': '*/*',
-      },
-      body: JSON.stringify(userUpdate)
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
     };
-    const response = await fetch(
-      `${baseUrl}/Users/${userId}`,
-      requestOptions
-    );
+    const response = await fetch(`${baseUrl}/Users/${userId}`, requestOptions);
     return response.ok;
   } catch (e: any) {
     throw new Error("Problems");
   }
 };
 
-export function isValidFileUploaded(file :File) :boolean {
-  const validExtensions = ['png','jpeg','jpg']
-  const fileExtension = file.type.split('/')[1]
-  return validExtensions.includes(fileExtension)
+export function isValidFileUploaded(file: File): boolean {
+  const validExtensions = ["png", "jpeg", "jpg"];
+  const fileExtension = file.type.split("/")[1];
+  return validExtensions.includes(fileExtension);
 }

@@ -1,41 +1,52 @@
-import { useState, forwardRef, ChangeEvent } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
-import { UserUpdateDialogProps, UserUpdateRequest } from '../Utils/Types';
-import { Preferences } from '../Utils/Constants';
-import MultipleSelectChip from './ChipSelector';
-import { FormControl, Input, Box, Avatar, CardHeader, useTheme, Alert, Snackbar } from '@mui/material';
-import { isValidFileUploaded, updateUser } from '../Utils/HelperFunctions';
-import { useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useState, forwardRef, ChangeEvent } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import CloseIcon from "@mui/icons-material/Close";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
+import { UserUpdateDialogProps, UserUpdateRequest } from "../Utils/Types";
+import { Preferences } from "../Utils/Constants";
+import MultipleSelectChip from "./ChipSelector";
+import {
+  FormControl,
+  Input,
+  Box,
+  Avatar,
+  CardHeader,
+  useTheme,
+  Alert,
+  Snackbar,
+} from "@mui/material";
+import { isValidFileUploaded, updateUser } from "../Utils/HelperFunctions";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-export default function UserUpdateDialog(props :UserUpdateDialogProps) {
+export default function UserUpdateDialog(props: UserUpdateDialogProps) {
   const theme = useTheme();
   const [userName, setUserName] = useState<string>("");
   const [userPass, setUserPass] = useState<string>("");
   const [userPic, setUserPic] = useState<File>();
   const [dietLabels, setDietLabels] = useState<string[]>(props.user.dietLabels);
-  const [healthLabels, setHealthLabels] = useState<string[]>(props.user.healthLabels);
+  const [healthLabels, setHealthLabels] = useState<string[]>(
+    props.user.healthLabels
+  );
   const [openError, setOpenError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const queryClient = useQueryClient();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     props.setUser({
@@ -47,8 +58,8 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
       dietLabels: [],
       healthLabels: [],
       favoriteRecipes: [],
-      likedRecipes: []
-    })
+      likedRecipes: [],
+    });
     queryClient.invalidateQueries();
     navigate("/");
   };
@@ -57,16 +68,16 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
     props.setOpenUserUpdateDialog("");
   };
 
-  // props.openUserUpdateDialog can hold 5 values ("", "name", "pass", "pref", "picture"), 
+  // props.openUserUpdateDialog can hold 5 values ("", "name", "pass", "pref", "picture"),
   // the content and visibility of the UserUpdateDialog is dependent on these strings
   async function handleUpdateUser() {
     if (props.openUserUpdateDialog == "name") {
-      let request :UserUpdateRequest = {
+      let request: UserUpdateRequest = {
         name: userName,
-      }
+      };
       let success = await updateUser(props.user.token, props.user.id, request);
       if (success) {
-        handleLogout();
+        // handleLogout();
       } else {
         setErrorMsg("An error has occured while updating your name!");
         setOpenError(true);
@@ -74,10 +85,10 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
     } else if (props.openUserUpdateDialog == "pass") {
       console.log(userPass);
     } else if (props.openUserUpdateDialog == "pref") {
-      let request :UserUpdateRequest = {
+      let request: UserUpdateRequest = {
         dietLabels: dietLabels,
-        healthLabels: healthLabels
-      }
+        healthLabels: healthLabels,
+      };
       let success = await updateUser(props.user.token, props.user.id, request);
       if (success) {
         handleLogout();
@@ -86,9 +97,9 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
         setOpenError(true);
       }
     } else if (props.openUserUpdateDialog == "picture") {
-      let request :UserUpdateRequest = {
-        profilePicture: userPic
-      }
+      let request: UserUpdateRequest = {
+        profilePicture: userPic,
+      };
       let success = await updateUser(props.user.token, props.user.id, request);
       if (success) {
         handleLogout();
@@ -102,16 +113,16 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
 
   function fileChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target && e.target.files) {
-        if(e.target.files.length < 1){
-          return;
-        }
-        const file = e.target.files[0];
-        if(isValidFileUploaded(file)){
-          setUserPic(file);
-        }else{
-            setErrorMsg("Please provide a valid picture");
-            setOpenError(true);
-        }
+      if (e.target.files.length < 1) {
+        return;
+      }
+      const file = e.target.files[0];
+      if (isValidFileUploaded(file)) {
+        setUserPic(file);
+      } else {
+        setErrorMsg("Please provide a valid picture");
+        setOpenError(true);
+      }
     }
   }
 
@@ -132,7 +143,7 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
       onClose={handleClose}
       TransitionComponent={Transition}
     >
-      <AppBar sx={{ position: 'relative' }}>
+      <AppBar sx={{ position: "relative" }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -142,18 +153,22 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
           >
             <CloseIcon />
           </IconButton>
-          <Button 
-            autoFocus 
-            color="inherit" 
-            sx={{ marginLeft: 'auto',border: 1, borderColor: "text.secondary"}}
+          <Button
+            autoFocus
+            color="inherit"
+            sx={{
+              marginLeft: "auto",
+              border: 1,
+              borderColor: "text.secondary",
+            }}
             onClick={() => handleUpdateUser()}
           >
             Save
           </Button>
         </Toolbar>
       </AppBar>
-    
-      <Box sx={{width: '80vw', margin: 2}}>
+
+      <Box sx={{ width: "80vw", margin: 2 }}>
         <CardHeader
           avatar={
             <Avatar
@@ -164,75 +179,85 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
           }
           title={props.user.name}
         />
-      <Box>
-    {props.openUserUpdateDialog == 'name' ?
-        <>
-          <Typography sx={{margin: 2}}>What would you like your name to be?</Typography>
-          <FormControl >
-            <Input sx={{width: '80vw'}} required
-            onChange={(e) => 
-              setUserName(e.target.value)
-            }/>
-          </FormControl >
-        </>
-    : props.openUserUpdateDialog == 'pass' ?
-        <>
-          <Typography sx={{margin: 2}}>What will be your new password?</Typography>
-          <FormControl >
-            <Input sx={{width: '80vw'}} required
-            onChange={(e) =>
-              setUserPass(e.target.value)
-            }/>
-          </FormControl >
-        </>
-    : props.openUserUpdateDialog == 'picture' ?
-        <>
-          <Typography sx={{margin: 2}}>Whow us your new picure!</Typography>
-          <FormControl >
-            <Input sx={{width: '80vw'}} required
-            type="file"
-            onChange={(e :ChangeEvent<HTMLInputElement>) => fileChange(e)}
-            />
-          </FormControl >
-        </>
-    :
-        <>
-          <Typography>
-            Dietary tags to include in feed
-          </Typography>
-          <MultipleSelectChip 
-              seedValues={dietLabels}
-              filledValues={true}
-              seedData={Preferences.dietLabels}
-              onChange={(actualValue) => {
-                setDietLabels(actualValue)
-            }}
-          />
-          <Typography>
-            Health tags to include in feed
-          </Typography>
-          <MultipleSelectChip
-              seedValues={healthLabels}
-              filledValues={true}
-              seedData={Preferences.healthLabels}
-              onChange={(actualValue) => {
-                setHealthLabels(actualValue)
-            }}
-          />
-        </>
-      }
-      </Box>
-        <Snackbar open={openError} autoHideDuration={2000} onClose={handleErrorClose}>
-        <Alert
-          variant="filled"
+        <Box>
+          {props.openUserUpdateDialog == "name" ? (
+            <>
+              <Typography sx={{ margin: 2 }}>
+                What would you like your name to be?
+              </Typography>
+              <FormControl>
+                <Input
+                  sx={{ width: "80vw" }}
+                  required
+                  onChange={e => setUserName(e.target.value)}
+                />
+              </FormControl>
+            </>
+          ) : props.openUserUpdateDialog == "pass" ? (
+            <>
+              <Typography sx={{ margin: 2 }}>
+                What will be your new password?
+              </Typography>
+              <FormControl>
+                <Input
+                  sx={{ width: "80vw" }}
+                  required
+                  onChange={e => setUserPass(e.target.value)}
+                />
+              </FormControl>
+            </>
+          ) : props.openUserUpdateDialog == "picture" ? (
+            <>
+              <Typography sx={{ margin: 2 }}>
+                Whow us your new picure!
+              </Typography>
+              <FormControl>
+                <Input
+                  sx={{ width: "80vw" }}
+                  required
+                  type="file"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => fileChange(e)}
+                />
+              </FormControl>
+            </>
+          ) : (
+            <>
+              <Typography>Dietary tags to include in feed</Typography>
+              <MultipleSelectChip
+                seedValues={dietLabels}
+                filledValues={true}
+                seedData={Preferences.dietLabels}
+                onChange={actualValue => {
+                  setDietLabels(actualValue);
+                }}
+              />
+              <Typography>Health tags to include in feed</Typography>
+              <MultipleSelectChip
+                seedValues={healthLabels}
+                filledValues={true}
+                seedData={Preferences.healthLabels}
+                onChange={actualValue => {
+                  setHealthLabels(actualValue);
+                }}
+              />
+            </>
+          )}
+        </Box>
+        <Snackbar
+          open={openError}
+          autoHideDuration={2000}
           onClose={handleErrorClose}
-          severity="error"
-          sx={{ width: "100%" }}
         >
-          {errorMsg}
-        </Alert>
-      </Snackbar>
-    </Box>
-  </Dialog>
+          <Alert
+            variant="filled"
+            onClose={handleErrorClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {errorMsg}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </Dialog>
   );
 }

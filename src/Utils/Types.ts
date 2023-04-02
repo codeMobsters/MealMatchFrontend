@@ -57,7 +57,7 @@ export interface Recipe {
   recipeOwnerId: number;
   recipeOwnerName?: string;
   comments?: Comment[];
-  userProfilePictureUrl? :string;
+  userProfilePictureUrl?: string;
   likes?: number[];
 }
 
@@ -97,7 +97,7 @@ export interface UserUpdateRequest {
 }
 
 export interface HeaderProps {
-  user :LoginResponse
+  user: LoginResponse;
 }
 
 export interface NewRecipe {
@@ -105,7 +105,7 @@ export interface NewRecipe {
   Yield?: string;
   Calories?: string;
   TotalTime?: string;
-  Instructions: string;
+  Instructions: string[];
   Ingredients: string[];
   CuisineType?: string[];
   DietLabels?: string[];
@@ -125,22 +125,22 @@ export interface NewFavoriteRecipe {
 }
 
 export interface MultipleSelectChipProps {
-  seedData : string[];
-  seedValues? : string[];
-  seedType? : string;
-  filledValues? : boolean;
-  onChange :(actualValue : string[]) => void
+  seedData: string[];
+  seedValues?: string[];
+  seedType?: string;
+  filledValues?: boolean;
+  onChange: (actualValue: string[]) => void;
 }
 
 export type PostRecipeDialogProps = {
-  openPostDialog :boolean,
-  setOpenPostDialog : React.Dispatch<React.SetStateAction<boolean>>;
-  user :LoginResponse
-}
+  openPostDialog: boolean;
+  setOpenPostDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  user: LoginResponse;
+};
 
 export type UserUpdateDialogProps = {
-  openUserUpdateDialog :string,
-  setOpenUserUpdateDialog : React.Dispatch<React.SetStateAction<string>>;
-  user :LoginResponse;
-  setUser :SetValue<LoginResponse>
-}
+  openUserUpdateDialog: string;
+  setOpenUserUpdateDialog: React.Dispatch<React.SetStateAction<string>>;
+  user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
+};
