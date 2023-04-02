@@ -24,19 +24,24 @@ const Transition = forwardRef(function Transition(
 
 export default function PostRecipeDialog(props: PostRecipeDialogProps) {
   const [formState, setFormState] = useState<NewRecipe>(newReipe);
-  const [openFormstateError, setOpenFormstateError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [openError, setOpenError] = useState(false);
 
   function handlePostRecipe() {
+    console.log(formState);
     if (formState.Title.trim() == "") {
-      setOpenFormstateError("Title cannot be empty!");
+      setErrorMsg("Title cannot be empty!");
+      setOpenError(true);
       return;
     }
     if (formState.Ingredients.length < 1) {
-      setOpenFormstateError("Ingredients cannot be empty!");
+      setErrorMsg("Ingredients cannot be empty!");
+      setOpenError(true);
       return;
     }
     if (formState.Instructions.length < 1) {
-      setOpenFormstateError("Instructions cannot be empty!");
+      setErrorMsg("Instructions cannot be empty!");
+      setOpenError(true);
       return;
     }
     addNewRecipeFromForm(props.user.token, formState);
@@ -82,8 +87,10 @@ export default function PostRecipeDialog(props: PostRecipeDialogProps) {
         <PostRecipeForm
           formState={formState}
           setFormState={setFormState}
-          openFormstateError={openFormstateError}
-          setOpenFormstateError={setOpenFormstateError}
+          errorMsg={errorMsg}
+          setErrorMsg={setErrorMsg}
+          openError={openError}
+          setOpenError={setOpenError}
         />
       </Dialog>
     </div>

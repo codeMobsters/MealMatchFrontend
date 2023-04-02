@@ -22,17 +22,20 @@ import { isValidFileUploaded } from "../Utils/HelperFunctions";
 type PostRecipeFormProps = {
   formState: NewRecipe;
   setFormState: React.Dispatch<React.SetStateAction<NewRecipe>>;
-  openFormstateError: string;
-  setOpenFormstateError: React.Dispatch<React.SetStateAction<string>>;
+  errorMsg: string;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
+  openError: boolean;
+  setOpenError: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const PostRecipeForm = (props: PostRecipeFormProps) => {
   const [quantity, setQuantity] = useState<string>();
   const [unit, setUnit] = useState<string>();
   const [ingredient, setIngredient] = useState<string>();
-  const [openError, setOpenError] = useState(false);
-  const [openFileError, setOpenFileError] = useState(false);
+  const [instruction, setInstruction] = useState<string>();
+  
   const [ingredientList, setIngredientList] = useState<string[]>();
+  const [instructionList, setInstructionList] = useState<string[]>();
 
   function handleAddIngredient() {
     if (props.formState) {
@@ -45,26 +48,27 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           Ingredients: formIngredients,
         });
       } else {
-        setOpenError(true);
+        props.setErrorMsg("An error occured while adding ingredient!");
+        props.setOpenError(true);
       }
     }
   }
 
-  // function handleAddInstruction() {
-  //   if (props.formState) {
-  //     if (instruction) {
-  //       let ingredientLine = `${quantity} ${unit} ${ingredient}`;
-  //       let formIngredients = [...props.formState.Ingredients, ingredientLine];
-  //       setIngredientList(formIngredients);
-  //       props.setFormState({
-  //         ...props.formState,
-  //         Ingredients: formIngredients,
-  //       });
-  //     } else {
-  //       setOpenError(true);
-  //     }
-  //   }
-  // }
+  function handleAddInstruction() {
+    if (props.formState) {
+      if (instruction) {
+        let formInstructions = [...props.formState.Instructions, instruction];
+        setInstructionList(formInstructions);
+        props.setFormState({
+          ...props.formState,
+          Instructions: formInstructions,
+        });
+      } else {
+        props.setErrorMsg("An error occured while adding instruction!");
+        props.setOpenError(true);
+      }
+    }
+  }
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -73,25 +77,8 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpenError(false);
-  };
-  const handleFileClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenFileError(false);
-  };
-  const handleFormstateClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    props.setOpenFormstateError("");
+    props.setErrorMsg("");
+    props.setOpenError(false);
   };
 
   function fileChange(e: ChangeEvent<HTMLInputElement>) {
@@ -103,7 +90,8 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
       if (isValidFileUploaded(file)) {
         props.setFormState({ ...props.formState, RecipePicture: file });
       } else {
-        setOpenFileError(true);
+        props.setErrorMsg("Please provide a valid picture!");
+        props.setOpenError(true);
       }
     }
   }
@@ -196,7 +184,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           </FormHelperText>
         </FormControl>
       </Container>
-      <Typography>Ingredients</Typography>
+      <Typography>Ingredients:</Typography>
       {ingredientList &&
         ingredientList.map((ingredient, index) => (
           <Typography key={index}>{ingredient}</Typography>
@@ -247,26 +235,39 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
       </Button>
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
 
-      <Typography>Instructions</Typography>
-      <FormControl sx={{ display: "block", marginTop: 1 }}>
-        <TextareaAutosize
-          style={{
-            fontSize: "100%",
-            width: "80vw",
-            maxWidth: "80vw",
-            height: "150px",
-            maxHeight: "150px",
-            overflow: "scroll",
-          }}
-          id="recipe-instructions"
-          onChange={e =>
-            props.setFormState({
-              ...props.formState,
-              // Instructions: e.target.value,
-            })
-          }
-        />
-      </FormControl>
+      <Typography>Instructions:</Typography>
+      {instructionList &&
+        instructionList.map((instruction, index) => (
+          <Typography key={index}>{instruction}</Typography>
+        ))}
+      <Container
+        sx={{
+          padding: 0,
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          marginBottom: 2,
+          marginTop: 2,
+        }}
+      >
+        <FormControl>
+          <InputLabel htmlFor="recipe-step">Step</InputLabel>
+          <Input
+            type="text"
+            id="recipe-step"
+            onChange={e => setInstruction(e.target.value)}
+          />
+        </FormControl>
+      </Container>
+
+      <Button
+        onClick={() => handleAddInstruction()}
+        sx={{ marginLeft: "auto", border: 1, borderColor: "text.secondary" }}
+        color="inherit"
+      >
+        Add instruction step
+      </Button>
+      <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+    
 
       <MultipleSelectChip
         seedType="Cuisine"
@@ -335,42 +336,14 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         </FormHelperText>
       </FormControl>
 
-      <Snackbar
-        open={props.openFormstateError != ""}
-        autoHideDuration={2000}
-        onClose={handleFormstateClose}
-      >
-        <Alert
-          variant="filled"
-          onClose={handleFileClose}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          {props.openFormstateError}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openFileError}
-        autoHideDuration={2000}
-        onClose={handleFileClose}
-      >
-        <Alert
-          variant="filled"
-          onClose={handleFileClose}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          You must provide a valid picture!
-        </Alert>
-      </Snackbar>
-      <Snackbar open={openError} autoHideDuration={2000} onClose={handleClose}>
+      <Snackbar open={props.openError} autoHideDuration={2000} onClose={handleClose}>
         <Alert
           variant="filled"
           onClose={handleClose}
           severity="error"
           sx={{ width: "100%" }}
         >
-          To add an ingredient, please fill all the data!
+          {props.errorMsg}
         </Alert>
       </Snackbar>
     </Box>

@@ -23,6 +23,7 @@ export interface LoginResponse {
   healthLabels: string[];
   favoriteRecipes: number[];
   likedRecipes: number[];
+  followedUserIds: number[];
 }
 
 export interface EdamamResponse {
@@ -100,6 +101,11 @@ export interface HeaderProps {
   user: LoginResponse;
 }
 
+export interface UserListProps {
+  user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
+}
+
 export interface NewRecipe {
   Title: string;
   Yield?: string;
@@ -122,6 +128,10 @@ export interface NewComment {
 
 export interface NewFavoriteRecipe {
   recipeId: number;
+}
+
+export interface NewFollower {
+  followedUserId: number;
 }
 
 export interface MultipleSelectChipProps {

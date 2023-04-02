@@ -59,6 +59,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
       healthLabels: [],
       favoriteRecipes: [],
       likedRecipes: [],
+      followedUserIds: []
     });
     queryClient.invalidateQueries();
     navigate("/");
@@ -68,30 +69,30 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
     props.setOpenUserUpdateDialog("");
   };
 
-  // props.openUserUpdateDialog can hold 5 values ("", "name", "pass", "pref", "picture"),
-  // the content and visibility of the UserUpdateDialog is dependent on these strings
   async function handleUpdateUser() {
     if (props.openUserUpdateDialog == "name") {
       let request: UserUpdateRequest = {
         name: userName,
+        dietLabels: props.user.dietLabels,
+        healthLabels: props.user.healthLabels,
       };
       let success = await updateUser(props.user.token, props.user.id, request);
-      if (success) {
-        // handleLogout();
+      if (success.ok) {
+        props.setUser({...props.user, name:userName})
+        handleClose()
       } else {
         setErrorMsg("An error has occured while updating your name!");
         setOpenError(true);
       }
-    } else if (props.openUserUpdateDialog == "pass") {
-      console.log(userPass);
     } else if (props.openUserUpdateDialog == "pref") {
       let request: UserUpdateRequest = {
         dietLabels: dietLabels,
         healthLabels: healthLabels,
       };
       let success = await updateUser(props.user.token, props.user.id, request);
-      if (success) {
-        handleLogout();
+      if (success.ok) {
+        props.setUser({...props.user, dietLabels: dietLabels, healthLabels: healthLabels})
+        handleClose()
       } else {
         setErrorMsg("An error has occured while updating your preferences!");
         setOpenError(true);
@@ -99,10 +100,13 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
     } else if (props.openUserUpdateDialog == "picture") {
       let request: UserUpdateRequest = {
         profilePicture: userPic,
+        dietLabels: props.user.dietLabels,
+        healthLabels: props.user.healthLabels,
       };
       let success = await updateUser(props.user.token, props.user.id, request);
-      if (success) {
-        handleLogout();
+      if (success.ok) {
+        props.setUser({...props.user, profilePictureUrl: await success.text()})
+        handleClose()
       } else {
         setErrorMsg("An error has occured while updating your picture!");
         setOpenError(true);
@@ -190,19 +194,6 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
                   sx={{ width: "80vw" }}
                   required
                   onChange={e => setUserName(e.target.value)}
-                />
-              </FormControl>
-            </>
-          ) : props.openUserUpdateDialog == "pass" ? (
-            <>
-              <Typography sx={{ margin: 2 }}>
-                What will be your new password?
-              </Typography>
-              <FormControl>
-                <Input
-                  sx={{ width: "80vw" }}
-                  required
-                  onChange={e => setUserPass(e.target.value)}
                 />
               </FormControl>
             </>

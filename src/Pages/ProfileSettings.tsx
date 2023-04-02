@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Container,
-  useTheme,
 } from "@mui/material";
 import { LoginResponse, SetValue } from "../Utils/Types";
 import "../App.css";
@@ -18,10 +17,6 @@ interface ProfileProps {
 
 const ProfileSettings = (props: ProfileProps) => {
   const[openUserUpdateDialog, setOpenUserUpdateDialog] = useState("");
-
-  function handleDeleteAccount() {
-    
-  }
 
   return (
         <Box
@@ -54,9 +49,9 @@ const ProfileSettings = (props: ProfileProps) => {
           <Button
             color="inherit" 
             sx={{border: 1, borderColor: "text.secondary", margin: 1}}
-            onClick={() => setOpenUserUpdateDialog("pass")}
+            onClick={() => setOpenUserUpdateDialog("picture")}
           >
-            Change password
+            Change profile picture
           </Button>
           <Button
             color="inherit" 
@@ -64,13 +59,6 @@ const ProfileSettings = (props: ProfileProps) => {
             onClick={() => setOpenUserUpdateDialog("pref")}
           >
             Change preferences
-          </Button>
-          <Button
-            color="inherit" 
-            sx={{border: 1, borderColor: "text.secondary", margin: 1, color: 'error.main'}}
-            onClick={() => handleDeleteAccount()}
-          >
-            Delete account
           </Button>
           </Container>
           <UserUpdateDialog 

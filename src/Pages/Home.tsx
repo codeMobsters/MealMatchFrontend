@@ -1,5 +1,5 @@
 import InfiniteScroll from "react-infinite-scroller";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Box } from "@mui/material";
 import { LoginResponse, SetValue, EdamamResponse } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
@@ -9,6 +9,7 @@ import Header from "../Components/Header";
 import { baseUrl } from "../Utils/Constants";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchFollowingFavoriteRecipes } from "../Utils/HelperFunctions";
 
 interface HomeProps {
   user: LoginResponse;
@@ -16,74 +17,48 @@ interface HomeProps {
 }
 
 const Home = (props: HomeProps) => {
-  let { state } = useLocation();
-
-  const fetchRecipes = async ({ pageParam = 0 }): Promise<EdamamResponse> => {
-    let res;
-    pageParam !== 0 && hasNextPage
-      ? (res = await fetch(
-          `${baseUrl}/Recipes/Edamam/Next?nextUrl=${encodeURIComponent(
-            data!.pages.reverse()[0].url
-          )}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${props.user.token}`,
-            },
-          }
-        ))
-      : (res = await fetch(`${baseUrl}/Recipes/Edamam`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${props.user.token}`,
-          },
-        }));
-    return res.json();
-  };
-
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["recipes"],
-    refetchOnWindowFocus: false,
-    queryFn: fetchRecipes,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.url;
-    },
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ["favoriteRecipes"],
+    queryFn: async () =>
+      (await fetchFollowingFavoriteRecipes(props.user.token, props.user.id)).sort((a, b) => {
+        if (
+          a.favoriteRecipeId !== undefined &&
+          b.favoriteRecipeId !== undefined
+        ) {
+          return b.favoriteRecipeId - a.favoriteRecipeId;
+        }
+        return 1;
+      }),
   });
+  
 
-  useEffect(() => {
-    fetchNextPage();
-  }, [state]);
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: Could not load.</span>;
+  }
 
   return (
     <Box className="App">
-      <main style={{ width: "100%", marginTop: "56px", marginBottom: "56px" }}>
-        {data && (
-          <InfiniteScroll
-            threshold={1000}
-            hasMore={hasNextPage}
-            loadMore={() => fetchNextPage()}
-          >
-            {data.pages.map(page =>
-              page.recipes.map((recipe, index) => (
-                <RecipeCard
-                  key={index}
-                  recipe={recipe}
-                  user={props.user}
-                  setUser={props.setUser}
-                />
-              ))
-            )}
-          </InfiniteScroll>
-        )}
-      </main>
+      <Box
+        sx={{
+          height: "100%",
+          overflow: "scroll",
+          marginTop: "56px",
+          marginBottom: '56px'
+        }}
+      >
+        {data.map((recipe, index) => (
+          <RecipeCard
+            key={index}
+            recipe={recipe.recipe}
+            user={props.user}
+            setUser={props.setUser}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

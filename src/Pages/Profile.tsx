@@ -112,7 +112,8 @@ const handleLogout = () => {
       dietLabels: [],
       healthLabels: [],
       favoriteRecipes: [],
-      likedRecipes: []
+      likedRecipes: [],
+      followedUserIds: []
     })
     queryClient.invalidateQueries();
     navigate("/");

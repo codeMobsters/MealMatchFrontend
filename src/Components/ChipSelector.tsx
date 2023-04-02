@@ -32,9 +32,7 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 export default function MultipleSelectChip(props: MultipleSelectChipProps) {
   const theme = useTheme();
   const [selectedValue, setSelectedValue] = React.useState<string[]>(
-    props.filledValues == true 
-    ? props.seedValues ? props.seedValues
-    : props.seedData && props.seedData : []
+    props.filledValues == true && props.seedValues ? props.seedValues : []
   );
 
   const handleChange = (event: SelectChangeEvent<typeof selectedValue>) => {

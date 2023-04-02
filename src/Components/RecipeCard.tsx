@@ -124,12 +124,14 @@ export default function RecipeCard(props: RecipeCardProps) {
         >
           <FavoriteIcon sx={{ color: `${isFavorite ? "#D2042D" : "inherit"}` }} />
         </IconButton>
+        {props.recipe.userProfilePictureUrl && (
         <IconButton
           aria-label="go to comments"
           onClick={() => setOpenCommentsDialog(true)}
         >
           <MessageOutlinedIcon />
-        </IconButton>
+        </IconButton> 
+        )}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

@@ -104,7 +104,7 @@ export const newReipe : NewRecipe = {
   Yield: "",
   Calories: "",
   TotalTime: "",
-  Instructions: "",
+  Instructions: [],
   Ingredients: [],
   CuisineType: [],
   DietLabels: [],
@@ -114,5 +114,5 @@ export const newReipe : NewRecipe = {
   RecipePicture: undefined
 }
 
-export const baseUrl = "https://localhost:7031";
-// export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+// export const baseUrl = "https://localhost:7031";
+export const baseUrl = 'https://mealmatchapi.azurewebsites.net'

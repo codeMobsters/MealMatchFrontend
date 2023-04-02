@@ -19,8 +19,7 @@ export default function Navbar(props: NavbarProps) {
 
   function handleGoHome() {
     // do it without navigate, or make it not fetch when there ias already data there
-    navigate("/feed");
-    console.log("feed!");
+    navigate("/");
     window.scrollTo({
       top: 0,
       left: 0,
@@ -29,7 +28,7 @@ export default function Navbar(props: NavbarProps) {
   }
 
   function handleExplore() {
-    navigate("/", { state: { dummyVariable: 0 } });
+    navigate("/explore", { state: { dummyVariable: 0 } });
     window.scrollTo({
       top: 0,
       left: 0,
@@ -38,7 +37,6 @@ export default function Navbar(props: NavbarProps) {
   }
 
   function handleSearch() {
-    // navigate("/");
     console.log("search!");
     window.scrollTo({
       top: 0,
@@ -57,8 +55,7 @@ export default function Navbar(props: NavbarProps) {
   }
 
   function handleSearchUsers() {
-    // navigate("/users");
-    console.log("search users!");
+    navigate("/users");
     window.scrollTo({
       top: 0,
       left: 0,
@@ -85,7 +82,7 @@ export default function Navbar(props: NavbarProps) {
           fontSize="large"
           color="secondary"
         />
-
+        
         <Box sx={{ flexGrow: 1 }} />
         <ExploreOutlinedIcon
           onClick={() => handleExplore()}
@@ -96,16 +93,6 @@ export default function Navbar(props: NavbarProps) {
           color="secondary"
         />
 
-        <Box sx={{ flexGrow: 1 }} />
-        <TravelExploreOutlinedIcon
-          onClick={() => handleSearch()}
-          sx={{
-            display: { tablet: "block", desktop: "block" },
-          }}
-          fontSize="large"
-          color="secondary"
-        />
-        
         <Box sx={{ flexGrow: 1 }} />
         <GroupsOutlinedIcon
           onClick={() => handleSearchUsers()}
