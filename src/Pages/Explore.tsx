@@ -62,6 +62,14 @@ const Explore = (props: ExploreProps) => {
     fetchNextPage();
   }, [state]);
 
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
+
+  if (error) {
+    return <span>Error: Could not load.</span>;
+  }
+
   return (
     <Box className="App">
       <main style={{ width: "100%", marginTop: "56px", marginBottom: "56px" }}>
