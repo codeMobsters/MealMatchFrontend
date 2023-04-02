@@ -10,9 +10,6 @@ import {
 import { LoginResponse, SetValue } from "../Utils/Types";
 import "../App.css";
 import UserUpdateDialog from "../Components/UserUpdateDialog";
-import React from "react";
-
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 interface ProfileProps {
   user: LoginResponse;
@@ -25,8 +22,7 @@ const ProfileSettings = (props: ProfileProps) => {
   function handleDeleteAccount() {
     
   }
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
+
   return (
         <Box
           sx={{

@@ -7,7 +7,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import TravelExploreOutlinedIcon from "@mui/icons-material/TravelExploreOutlined";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
-import { useQueryClient } from "@tanstack/react-query";
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 
 interface NavbarProps {
   user: LoginResponse;
@@ -56,6 +56,16 @@ export default function Navbar(props: NavbarProps) {
     });
   }
 
+  function handleSearchUsers() {
+    // navigate("/users");
+    console.log("search users!");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <AppBar
       sx={{
@@ -89,6 +99,16 @@ export default function Navbar(props: NavbarProps) {
         <Box sx={{ flexGrow: 1 }} />
         <TravelExploreOutlinedIcon
           onClick={() => handleSearch()}
+          sx={{
+            display: { tablet: "block", desktop: "block" },
+          }}
+          fontSize="large"
+          color="secondary"
+        />
+        
+        <Box sx={{ flexGrow: 1 }} />
+        <GroupsOutlinedIcon
+          onClick={() => handleSearchUsers()}
           sx={{
             display: { tablet: "block", desktop: "block" },
           }}

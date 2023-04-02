@@ -33,8 +33,8 @@ export default function MultipleSelectChip(props: MultipleSelectChipProps) {
   const theme = useTheme();
   const [selectedValue, setSelectedValue] = React.useState<string[]>(
     props.filledValues == true 
-    ? props.seedData 
-    : props.seedValues ? props.seedValues : []
+    ? props.seedValues ? props.seedValues
+    : props.seedData && props.seedData : []
   );
 
   const handleChange = (event: SelectChangeEvent<typeof selectedValue>) => {

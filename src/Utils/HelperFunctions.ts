@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import { baseUrl } from "./Constants";
 import {
   User,
@@ -6,10 +5,10 @@ import {
   Recipe,
   FavoriteRecipe,
   RegisterRequest,
-  LoginRequest,
   NewRecipe,
   NewComment,
   NewFavoriteRecipe,
+  UserUpdateRequest,
 } from "./Types";
 
 // SIGNUP AND LOGOUT
@@ -240,6 +239,26 @@ export const deleteOwnedRecipe = async (token: string, recipeId: number) => {
     };
     const response = await fetch(
       `${baseUrl}/Recipes/Owned//${recipeId}`,
+      requestOptions
+    );
+    return response.ok;
+  } catch (e: any) {
+    throw new Error("Problems");
+  }
+};
+
+export const updateUser = async (token: string, userId :number, userUpdate: UserUpdateRequest) => {
+  try {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Accept': '*/*',
+      },
+      body: JSON.stringify(userUpdate)
+    };
+    const response = await fetch(
+      `${baseUrl}/Users/${userId}`,
       requestOptions
     );
     return response.ok;

@@ -172,12 +172,12 @@ const handleLogout = () => {
             <Typography sx={{
               flexGrow: 1
             }}>
-              {favoriteCount > 0 ? favoriteCount - 1 : data.favoriteRecipes} favorite recipes
+              {favoriteCount > 0 ? favoriteCount - 1 : data.favoriteRecipes} favorites
             </Typography>
             <Typography sx={{
               flexGrow: 1
             }}>
-              {ownedCount > 0 ? ownedCount - 1 : data.ownedRecipes} owned recipes
+              {ownedCount > 0 ? ownedCount - 1 : data.ownedRecipes} owned
             </Typography>
             <Typography sx={{
               flexGrow: 1

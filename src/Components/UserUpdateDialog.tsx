@@ -1,4 +1,4 @@
-import { useState, forwardRef } from 'react';
+import { useState, forwardRef, ChangeEvent } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
@@ -8,15 +8,13 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import PostRecipeForm from './PostRecipeForm';
-import { NewRecipe, PostRecipeDialogProps, UserUpdateDialogProps } from '../Utils/Types';
-import { newReipe, Preferences } from '../Utils/Constants';
-import { addNewRecipeFromForm } from '../Utils/HelperFunctions';
+import { UserUpdateDialogProps, UserUpdateRequest } from '../Utils/Types';
+import { Preferences } from '../Utils/Constants';
 import MultipleSelectChip from './ChipSelector';
-import { FormControl, InputLabel, Input, FormHelperText, Box, Avatar, CardHeader, useTheme } from '@mui/material';
-import { theme } from '../Utils/Theme';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { FormControl, Input, Box, Avatar, CardHeader, useTheme, Alert, Snackbar } from '@mui/material';
+import { isValidFileUploaded, updateUser } from '../Utils/HelperFunctions';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -31,25 +29,101 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
   const theme = useTheme();
   const [userName, setUserName] = useState<string>("");
   const [userPass, setUserPass] = useState<string>("");
+  const [userPic, setUserPic] = useState<File>();
   const [dietLabels, setDietLabels] = useState<string[]>(props.user.dietLabels);
   const [healthLabels, setHealthLabels] = useState<string[]>(props.user.healthLabels);
-  const nextMode = theme.palette.mode == 'light' ? 'dark' : 'light';
+  const [openError, setOpenError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const queryClient = useQueryClient();
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    props.setUser({
+      id: 0,
+      name: "",
+      token: "",
+      profilePictureUrl: "",
+      profileSettings: [],
+      dietLabels: [],
+      healthLabels: [],
+      favoriteRecipes: [],
+      likedRecipes: []
+    })
+    queryClient.invalidateQueries();
+    navigate("/");
+  };
+
   const handleClose = () => {
     props.setOpenUserUpdateDialog("");
   };
 
-  // props.openUserUpdateDialog can hold 4 values ("", "name", "pass", "pref"), 
+  // props.openUserUpdateDialog can hold 5 values ("", "name", "pass", "pref", "picture"), 
   // the content and visibility of the UserUpdateDialog is dependent on these strings
-  function handleUpdateUser() {
+  async function handleUpdateUser() {
     if (props.openUserUpdateDialog == "name") {
-      console.log(userName);
+      let request :UserUpdateRequest = {
+        name: userName,
+      }
+      let success = await updateUser(props.user.token, props.user.id, request);
+      if (success) {
+        handleLogout();
+      } else {
+        setErrorMsg("An error has occured while updating your name!");
+        setOpenError(true);
+      }
     } else if (props.openUserUpdateDialog == "pass") {
       console.log(userPass);
     } else if (props.openUserUpdateDialog == "pref") {
-      console.log(dietLabels, healthLabels);
+      let request :UserUpdateRequest = {
+        dietLabels: dietLabels,
+        healthLabels: healthLabels
+      }
+      let success = await updateUser(props.user.token, props.user.id, request);
+      if (success) {
+        handleLogout();
+      } else {
+        setErrorMsg("An error has occured while updating your preferences!");
+        setOpenError(true);
+      }
+    } else if (props.openUserUpdateDialog == "picture") {
+      let request :UserUpdateRequest = {
+        profilePicture: userPic
+      }
+      let success = await updateUser(props.user.token, props.user.id, request);
+      if (success) {
+        handleLogout();
+      } else {
+        setErrorMsg("An error has occured while updating your picture!");
+        setOpenError(true);
+      }
     }
     return;
   }
+
+  function fileChange(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target && e.target.files) {
+        if(e.target.files.length < 1){
+          return;
+        }
+        const file = e.target.files[0];
+        if(isValidFileUploaded(file)){
+          setUserPic(file);
+        }else{
+            setErrorMsg("Please provide a valid picture");
+            setOpenError(true);
+        }
+    }
+  }
+
+  const handleErrorClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenError(false);
+  };
 
   return (
     <Dialog
@@ -89,7 +163,7 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
             ></Avatar>
           }
           title={props.user.name}
-      />
+        />
       <Box>
     {props.openUserUpdateDialog == 'name' ?
         <>
@@ -111,6 +185,16 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
             }/>
           </FormControl >
         </>
+    : props.openUserUpdateDialog == 'picture' ?
+        <>
+          <Typography sx={{margin: 2}}>Whow us your new picure!</Typography>
+          <FormControl >
+            <Input sx={{width: '80vw'}} required
+            type="file"
+            onChange={(e :ChangeEvent<HTMLInputElement>) => fileChange(e)}
+            />
+          </FormControl >
+        </>
     :
         <>
           <Typography>
@@ -121,7 +205,7 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
               filledValues={true}
               seedData={Preferences.dietLabels}
               onChange={(actualValue) => {
-                console.log(actualValue)
+                setDietLabels(actualValue)
             }}
           />
           <Typography>
@@ -132,12 +216,22 @@ export default function UserUpdateDialog(props :UserUpdateDialogProps) {
               filledValues={true}
               seedData={Preferences.healthLabels}
               onChange={(actualValue) => {
-                console.log(actualValue)
+                setHealthLabels(actualValue)
             }}
           />
         </>
       }
       </Box>
+        <Snackbar open={openError} autoHideDuration={2000} onClose={handleErrorClose}>
+        <Alert
+          variant="filled"
+          onClose={handleErrorClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {errorMsg}
+        </Alert>
+      </Snackbar>
     </Box>
   </Dialog>
   );

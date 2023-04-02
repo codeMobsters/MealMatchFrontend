@@ -88,6 +88,14 @@ export interface User {
 //   followerName: string;
 // }
 
+export interface UserUpdateRequest {
+  name?: string;
+  profilePicture?: File;
+  profileSettings?: string[];
+  dietLabels?: string[];
+  healthLabels?: string[];
+}
+
 export interface HeaderProps {
   user :LoginResponse
 }
