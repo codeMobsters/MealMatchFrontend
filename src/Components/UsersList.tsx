@@ -1,12 +1,12 @@
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Avatar, CardHeader, IconButton, Button } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { addNewFollower, deleteFollower, fetchAllUsers } from '../Utils/HelperFunctions';
+import { Box, List, ListItem, ListItemButton,  Avatar, CardHeader, Button } from '@mui/material'
+import { addNewFollower, deleteFollower } from '../Utils/HelperFunctions';
 import { useQuery } from '@tanstack/react-query';
-import { LoginResponse, User, UserListProps } from '../Utils/Types';
+import { User, UserListProps } from '../Utils/Types';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import "../App.css";
 import { useNavigate } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 const UsersList = (props : UserListProps) => {
     const { isLoading, isError, data } = useQuery({
@@ -27,9 +27,18 @@ const UsersList = (props : UserListProps) => {
         }
     }
 
+    function handleUserSearch(term: string, searchType: string){
+        console.log("search for: ", term, " in ", searchType);
+    }
+
     return (
     <Box className="App">
         <main style={{ width: "100%", marginTop: "56px", marginBottom: "56px" }}>
+        <SearchBar 
+          searchbarPlaceholderText='Search users'
+          searchType={'user'}
+          handleSearch={handleUserSearch}
+          />
             <List>
                 {data && data.map((user, index) => 
                     <ListItem disablePadding  sx={{display: 'flex'}} key={index}>

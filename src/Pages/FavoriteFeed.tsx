@@ -4,6 +4,7 @@ import RecipeCard from "../Components/RecipeCard";
 import { fetchUserFavoriteRecipes } from "../Utils/HelperFunctions";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import SearchBar from "../Components/SearchBar";
 
 interface FavoriteFeedProps {
   user: LoginResponse;
@@ -41,6 +42,10 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
     return <span>Error: Could not load.</span>;
   }
 
+  function handleFavoriteSearch(term: string, searchType: string): void {
+    console.log("search for: ", term, " in ", searchType);
+  }
+
   return (
     <Box className="App">
       <Box
@@ -51,6 +56,11 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
           marginBottom: '56px'
         }}
       >
+        <SearchBar 
+          searchbarPlaceholderText='Search recipes'
+          searchType={'favorite'}
+          handleSearch={handleFavoriteSearch}
+          />
         {data.map((recipe, index) => (
           <RecipeCard
             key={index}

@@ -10,6 +10,7 @@ import { baseUrl } from "../Utils/Constants";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchFollowingFavoriteRecipes } from "../Utils/HelperFunctions";
+import SearchBar from "../Components/SearchBar";
 
 interface HomeProps {
   user: LoginResponse;
@@ -39,6 +40,9 @@ const Home = (props: HomeProps) => {
   if (isError) {
     return <span>Error: Could not load.</span>;
   }
+  function handleHomeSearch(term: string, searchType: string){
+    console.log("search for: ", term, " in ", searchType);
+  }
 
   return (
     <Box className="App">
@@ -46,10 +50,16 @@ const Home = (props: HomeProps) => {
         sx={{
           height: "100%",
           overflow: "scroll",
-          marginTop: "56px",
-          marginBottom: '56px'
+          marginTop: "100px",
+          marginBottom: '56px',
+          width: "100%"
         }}
       >
+        <SearchBar 
+          searchbarPlaceholderText='Search recipes'
+          searchType={'home'}
+          handleSearch={handleHomeSearch}
+          />
         {data.map((recipe, index) => (
           <RecipeCard
             key={index}

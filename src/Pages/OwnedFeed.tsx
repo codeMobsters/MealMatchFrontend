@@ -4,6 +4,7 @@ import RecipeCard from "../Components/RecipeCard";
 import { useEffect, useState } from "react";
 import { fetchUserFavoriteRecipes, fetchUserOwnedRecipes } from "../Utils/HelperFunctions";
 import { useQuery } from "@tanstack/react-query";
+import SearchBar from "../Components/SearchBar";
 
 interface OwnedFeedProps {
   user: LoginResponse;
@@ -37,6 +38,10 @@ const OwnedFeed = (props: OwnedFeedProps) => {
     return <span>Error: Could not load.</span>;
   }
   
+  function handleOwnedSearch(term: string, searchType: string): void {
+    console.log("search for: ", term, " in ", searchType);
+  }
+
   return (
     <Box className="App">
       <Box
@@ -44,9 +49,15 @@ const OwnedFeed = (props: OwnedFeedProps) => {
           height: "100%",
           overflow: "scroll",
           marginTop: "56px",
-          marginBottom: '56px'
+          marginBottom: '56px',
+          width: "100%"
         }}
       >
+        <SearchBar 
+          searchbarPlaceholderText='Search recipes'
+          searchType={'owned'}
+          handleSearch={handleOwnedSearch}
+        />
         {data.map((recipe, index) => (
           <RecipeCard
             key={index}

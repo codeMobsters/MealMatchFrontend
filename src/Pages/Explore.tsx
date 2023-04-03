@@ -9,6 +9,7 @@ import Header from "../Components/Header";
 import { baseUrl } from "../Utils/Constants";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import SearchBar from "../Components/SearchBar";
 
 interface ExploreProps {
   user: LoginResponse;
@@ -70,10 +71,20 @@ const Explore = (props: ExploreProps) => {
     return <span>Error: Could not load.</span>;
   }
 
+  function handleExploreSearch(term: string, searchType: string){
+    console.log("search for: ", term, " in ", searchType);
+  }
+
   return (
     <Box className="App">
-      <main style={{ width: "100%", marginTop: "56px", marginBottom: "56px" }}>
+      <main style={{ width: "100%", marginTop: "100px", marginBottom: "56px" }}>
         {data && (
+          <>
+          <SearchBar 
+          searchbarPlaceholderText='Search recipes'
+          searchType={'explore'}
+          handleSearch={handleExploreSearch}
+          />
           <InfiniteScroll
             threshold={1000}
             hasMore={hasNextPage}
@@ -90,6 +101,7 @@ const Explore = (props: ExploreProps) => {
               ))
             )}
           </InfiniteScroll>
+          </>
         )}
       </main>
     </Box>
