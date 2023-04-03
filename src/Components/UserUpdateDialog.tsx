@@ -59,7 +59,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
       healthLabels: [],
       favoriteRecipes: [],
       likedRecipes: [],
-      followedUserIds: []
+      followedUserIds: [],
     });
     queryClient.invalidateQueries();
     navigate("/");
@@ -78,8 +78,8 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
       };
       let success = await updateUser(props.user.token, props.user.id, request);
       if (success.ok) {
-        props.setUser({...props.user, name:userName})
-        handleClose()
+        props.setUser({ ...props.user, name: userName });
+        handleClose();
       } else {
         setErrorMsg("An error has occured while updating your name!");
         setOpenError(true);
@@ -91,8 +91,12 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
       };
       let success = await updateUser(props.user.token, props.user.id, request);
       if (success.ok) {
-        props.setUser({...props.user, dietLabels: dietLabels, healthLabels: healthLabels})
-        handleClose()
+        props.setUser({
+          ...props.user,
+          dietLabels: dietLabels,
+          healthLabels: healthLabels,
+        });
+        handleClose();
       } else {
         setErrorMsg("An error has occured while updating your preferences!");
         setOpenError(true);
@@ -105,8 +109,11 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
       };
       let success = await updateUser(props.user.token, props.user.id, request);
       if (success.ok) {
-        props.setUser({...props.user, profilePictureUrl: await success.text()})
-        handleClose()
+        props.setUser({
+          ...props.user,
+          profilePictureUrl: await success.text(),
+        });
+        handleClose();
       } else {
         setErrorMsg("An error has occured while updating your picture!");
         setOpenError(true);
@@ -182,7 +189,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
             ></Avatar>
           }
           title={props.user.name}
-          sx={{marginTop: 2, marginBottom: 2}}
+          sx={{ marginTop: 2, marginBottom: 2 }}
         />
         <Box>
           {props.openUserUpdateDialog == "name" ? (
@@ -218,7 +225,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
               <MultipleSelectChip
                 seedValues={dietLabels}
                 filledValues={true}
-                seedData={Preferences.dietLabels}
+                seedData={Preferences.DietLabels}
                 onChange={actualValue => {
                   setDietLabels(actualValue);
                 }}
@@ -227,7 +234,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
               <MultipleSelectChip
                 seedValues={healthLabels}
                 filledValues={true}
-                seedData={Preferences.healthLabels}
+                seedData={Preferences.HealthLabels}
                 onChange={actualValue => {
                   setHealthLabels(actualValue);
                 }}

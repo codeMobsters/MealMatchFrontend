@@ -11,6 +11,7 @@ import {
   UserUpdateRequest,
   LoginResponse,
   NewFollower,
+  Filter,
 } from "./Types";
 
 // SIGNUP AND LOGOUT
@@ -50,21 +51,24 @@ export const fetchUser = async (
 
 export const fetchAllUsers = async (
   token: string,
-  userId? :number | undefined,
+  userId?: number | undefined,
   searchTerm?: string | undefined
 ): Promise<User[]> => {
-  let res = await fetch(`${baseUrl}/Users${searchTerm == undefined ? "" : `?q=${searchTerm}`}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  let res = await fetch(
+    `${baseUrl}/Users${searchTerm == undefined ? "" : `?q=${searchTerm}`}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return res.json();
 };
 
 export const fetchFollowingUsers = async (
   token: string,
-  userId? :number | undefined,
+  userId?: number | undefined,
   searchTerm?: string | undefined
 ): Promise<User[]> => {
   let res = await fetch(`${baseUrl}/Users/${userId}/Followers`, {
@@ -78,7 +82,7 @@ export const fetchFollowingUsers = async (
 
 export const fetchFollowedUsers = async (
   token: string,
-  userId? :number | undefined,
+  userId?: number | undefined,
   searchTerm?: string | undefined
 ): Promise<User[]> => {
   let res = await fetch(`${baseUrl}/Users/${userId}/Following`, {
@@ -380,13 +384,17 @@ export const updateUser = async (
       formData.append("Name", userUpdate.name);
     }
 
-    userUpdate.dietLabels?.length ? userUpdate.dietLabels?.forEach(dietLabels =>
-      formData.append("DietLabels", dietLabels)) : formData.append("DietLabels", "");
+    userUpdate.dietLabels?.length
+      ? userUpdate.dietLabels?.forEach(dietLabels =>
+          formData.append("DietLabels", dietLabels)
+        )
+      : formData.append("DietLabels", "");
 
-    userUpdate.healthLabels?.length ? userUpdate.healthLabels?.forEach(healthLabels =>
-      formData.append("HealthLabels", healthLabels)
-    ) : formData.append("HealthLabels", "");
-
+    userUpdate.healthLabels?.length
+      ? userUpdate.healthLabels?.forEach(healthLabels =>
+          formData.append("HealthLabels", healthLabels)
+        )
+      : formData.append("HealthLabels", "");
 
     if (userUpdate.profileSettings != undefined) {
       userUpdate?.profileSettings.forEach(profileSetting =>
@@ -402,15 +410,44 @@ export const updateUser = async (
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     };
-    const response = await fetch(`${baseUrl}/Users/${userId}/Update`, requestOptions);
+    const response = await fetch(
+      `${baseUrl}/Users/${userId}/Update`,
+      requestOptions
+    );
     return response;
   } catch (e: any) {
     throw new Error("Problems");
   }
 };
 
+// Extra helpers
+
 export function isValidFileUploaded(file: File): boolean {
   const validExtensions = ["png", "jpeg", "jpg"];
   const fileExtension = file.type.split("/")[1];
   return validExtensions.includes(fileExtension);
+}
+
+export function convertFilterToString(filter: Filter): string {
+  let query = "";
+  if (filter.query) {
+    query += `&SearchTerm=${filter.query.toLowerCase()}`;
+  }
+
+  filter.cuisineType?.forEach(
+    cuisineType => (query += `&cuisineType=${cuisineType.toLowerCase()}`)
+  );
+  filter.dietLabels?.forEach(
+    dietLabel => (query += `&dietLabel=${dietLabel.toLowerCase()}`)
+  );
+  filter.healthLabels?.forEach(
+    healthLabel => (query += `&healthLabel=${healthLabel.toLowerCase()}`)
+  );
+  filter.mealType?.forEach(
+    mealType => (query += `&mealType=${mealType.toLowerCase()}`)
+  );
+  filter.dishType?.forEach(
+    dishType => (query += `&dishType=${dishType.toLowerCase()}`)
+  );
+  return query;
 }

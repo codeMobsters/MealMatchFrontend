@@ -43,14 +43,16 @@ const ExploreFilterForm = (props: ExploreFilterForm) => {
   return (
     <Box sx={{ width: "80vw", margin: "0 auto", paddingTop: 2 }}>
       <FormControl sx={{ marginBottom: 2 }}>
-        <InputLabel htmlFor="recipe-name" sx={{ lineHeight: 2}}>Recipe name</InputLabel>
+        <InputLabel htmlFor="search" sx={{ lineHeight: 2 }}>
+          Search
+        </InputLabel>
         <Input
           required
-          id="recipe-name"
-          aria-describedby="recipe-name-helper-text"
+          id="search"
+          aria-describedby="search-text"
           sx={{ width: "80vw" }}
           onChange={e =>
-            props.setFormState({ ...props.formState, Title: e.target.value })
+            props.setFormState({ ...props.formState, query: e.target.value })
           }
         />
         <FormHelperText id="recipe-name-helper-text">
@@ -60,24 +62,24 @@ const ExploreFilterForm = (props: ExploreFilterForm) => {
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
       <MultipleSelectChip
         seedType="Cuisine"
-        seedData={Preferences.Cousines}
+        seedData={Preferences.Cuisines}
         onChange={actualValue => {
           let formIngredients =
-            props.formState.CuisineType?.concat(actualValue);
+            props.formState.cuisineType?.concat(actualValue);
           props.setFormState({
             ...props.formState,
-            CuisineType: formIngredients,
+            cuisineType: formIngredients,
           });
         }}
       />
       <MultipleSelectChip
         seedType="Diet labels"
-        seedData={Preferences.dietLabels}
+        seedData={Preferences.DietLabels}
         onChange={actualValue => {
-          let formIngredients = props.formState.DietLabels?.concat(actualValue);
+          let formIngredients = props.formState.dietLabels?.concat(actualValue);
           props.setFormState({
             ...props.formState,
-            DietLabels: formIngredients,
+            dietLabels: formIngredients,
           });
         }}
       />
@@ -86,33 +88,37 @@ const ExploreFilterForm = (props: ExploreFilterForm) => {
         seedType="Dish type"
         seedData={Preferences.DishTypes}
         onChange={actualValue => {
-          let formIngredients = props.formState.DishType?.concat(actualValue);
-          props.setFormState({ ...props.formState, DishType: formIngredients });
+          let formIngredients = props.formState.dishType?.concat(actualValue);
+          props.setFormState({ ...props.formState, dishType: formIngredients });
         }}
       />
       <MultipleSelectChip
         filledValues={false}
         seedType="Health labels"
-        seedData={Preferences.healthLabels}
+        seedData={Preferences.HealthLabels}
         onChange={actualValue => {
           let formIngredients =
-            props.formState.HealthLabels?.concat(actualValue);
+            props.formState.healthLabels?.concat(actualValue);
           props.setFormState({
             ...props.formState,
-            HealthLabels: formIngredients,
+            healthLabels: formIngredients,
           });
         }}
       />
       <MultipleSelectChip
         filledValues={false}
         seedType="Meal type"
-        seedData={Preferences.mealTypes}
+        seedData={Preferences.MealTypes}
         onChange={actualValue => {
-          let formIngredients = props.formState.MealType?.concat(actualValue);
-          props.setFormState({ ...props.formState, MealType: formIngredients });
+          let formIngredients = props.formState.mealType?.concat(actualValue);
+          props.setFormState({ ...props.formState, mealType: formIngredients });
         }}
       />
-      <Snackbar open={props.openError} autoHideDuration={2000} onClose={handleClose}>
+      <Snackbar
+        open={props.openError}
+        autoHideDuration={2000}
+        onClose={handleClose}
+      >
         <Alert
           variant="filled"
           onClose={handleClose}

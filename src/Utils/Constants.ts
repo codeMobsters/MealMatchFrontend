@@ -1,7 +1,7 @@
 import { Filter, NewRecipe } from "./Types";
 
 export const Preferences = {
-  Cousines: [
+  Cuisines: [
     "american",
     "asian",
     "british",
@@ -51,8 +51,8 @@ export const Preferences = {
     "starter",
     "sweets",
   ],
-  mealTypes: ["breakfast", "brunch", "lunch/dinner", "snack", "teatime"],
-  dietLabels: [
+  MealTypes: ["breakfast", "brunch", "lunch/dinner", "snack", "teatime"],
+  DietLabels: [
     "balanced",
     "high-fiber",
     "high-protein",
@@ -60,7 +60,7 @@ export const Preferences = {
     "low-fat",
     "low-sodium",
   ],
-  healthLabels: [
+  HealthLabels: [
     "alcohol-cocktail",
     "alcohol-free",
     "celery-free",

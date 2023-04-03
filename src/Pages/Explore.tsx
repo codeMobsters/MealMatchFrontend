@@ -40,12 +40,17 @@ const Explore = (props: ExploreProps) => {
             },
           }
         ))
-      : (res = await fetch(`${baseUrl}/Recipes/Edamam${searchTerm == undefined ? "" : `?${searchTerm}`}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${props.user.token}`,
-          },
-        }));
+      : (res = await fetch(
+          `${baseUrl}/Recipes/Edamam${
+            searchTerm == undefined ? "" : `?${searchTerm}`
+          }`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${props.user.token}`,
+            },
+          }
+        ));
     return res.json();
   };
 
@@ -57,7 +62,7 @@ const Explore = (props: ExploreProps) => {
     isFetching,
     isFetchingNextPage,
     status,
-    refetch
+    refetch,
   } = useInfiniteQuery({
     queryKey: ["recipes"],
     refetchOnWindowFocus: false,
@@ -71,15 +76,13 @@ const Explore = (props: ExploreProps) => {
     fetchNextPage();
   }, [state]);
 
-  function handleExploreSearch(term: string){
-    term == "" 
-    ? setSearchTerm(undefined) 
-    : setSearchTerm(term);
+  function handleExploreSearch(term: string) {
+    term == "" ? setSearchTerm(undefined) : setSearchTerm(term);
   }
 
   useEffect(() => {
-      refetch();
-  }, [searchTerm])
+    refetch();
+  }, [searchTerm]);
 
   if (isFetching) {
     return <span>Loading...</span>;
@@ -94,29 +97,39 @@ const Explore = (props: ExploreProps) => {
       <main style={{ width: "100%", marginTop: "100px", marginBottom: "56px" }}>
         {data && (
           <>
-          <Button onClick={() => handlePostAction()}
-            sx={{ border: 1, borderColor: "#ffffff", borderRadius: 2, padding: 0.5 }}>Filter</Button>
-          <ExploreFilterDialog
-            user={props.user}
-            openPostDialog={openPostDialog}
-            setOpenPostDialog={setOpenPostDialog}
-          />
-          <InfiniteScroll
-            threshold={1000}
-            hasMore={hasNextPage}
-            loadMore={() => fetchNextPage()}
-          >
-            {data.pages.map(page =>
-              page.recipes.map((recipe, index) => (
-                <RecipeCard
-                  key={index}
-                  recipe={recipe}
-                  user={props.user}
-                  setUser={props.setUser}
-                />
-              ))
-            )}
-          </InfiniteScroll>
+            <Button
+              onClick={() => handlePostAction()}
+              sx={{
+                border: 1,
+                borderColor: "#ffffff",
+                borderRadius: 2,
+                padding: 0.5,
+              }}
+            >
+              Filter
+            </Button>
+            <ExploreFilterDialog
+              user={props.user}
+              openPostDialog={openPostDialog}
+              setOpenPostDialog={setOpenPostDialog}
+              handleExploreSearch={handleExploreSearch}
+            />
+            <InfiniteScroll
+              threshold={1000}
+              hasMore={hasNextPage}
+              loadMore={() => fetchNextPage()}
+            >
+              {data.pages.map(page =>
+                page.recipes.map((recipe, index) => (
+                  <RecipeCard
+                    key={index}
+                    recipe={recipe}
+                    user={props.user}
+                    setUser={props.setUser}
+                  />
+                ))
+              )}
+            </InfiniteScroll>
           </>
         )}
       </main>

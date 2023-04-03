@@ -28,7 +28,6 @@ export default function PostRecipeDialog(props: PostRecipeDialogProps) {
   const [openError, setOpenError] = useState(false);
 
   function handlePostRecipe() {
-    console.log(formState);
     if (formState.Title.trim() == "") {
       setErrorMsg("Title cannot be empty!");
       setOpenError(true);

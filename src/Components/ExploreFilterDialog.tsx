@@ -11,6 +11,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import ExploreFilterForm from "./ExploreFilterForm";
 import { LoginResponse, Filter } from "../Utils/Types";
 import { filter } from "../Utils/Constants";
+import { convertFilterToString } from "../Utils/HelperFunctions";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -26,16 +27,15 @@ type ExploreFilterDialog = {
   setOpenPostDialog: React.Dispatch<React.SetStateAction<boolean>>;
   user: LoginResponse;
   handleExploreSearch: (term: string) => void;
-}
+};
 
 export default function ExploreFilterDialog(props: ExploreFilterDialog) {
   const [formState, setFormState] = useState<Filter>(filter);
   const [errorMsg, setErrorMsg] = useState("");
   const [openError, setOpenError] = useState(false);
-  
 
   function handlePostRecipe() {
-    
+    props.handleExploreSearch(convertFilterToString(formState));
     props.setOpenPostDialog(false);
   }
 
