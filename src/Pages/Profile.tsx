@@ -20,6 +20,7 @@ import "../App.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchUser } from "../Utils/HelperFunctions";
+import FollowListDialog from "../Components/FollowListDialog";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -70,10 +71,13 @@ const Profile = (props: ProfileProps) => {
   const [value, setValue] = useState(0);
   const [favoriteCount, setFavoriteCount] = useState(0);
   const [ownedCount, setOwnedCount] = useState(0);
+
+  const [openFollowDialog, setOpenFollowDialog] = useState(0);
+  
   const params = useParams();
   const navigate = useNavigate();
 
-  const { isLoading, isError, data } = useQuery({
+  const { isLoading, isError, data, refetch } = useQuery({
     queryKey: ["profileUser"],
     queryFn: async () => fetchUser(params.userId, props.user.token),
   });
@@ -126,7 +130,8 @@ const Profile = (props: ProfileProps) => {
             top: { xs: 0, tablet: 0 },
             zIndex: "1",
             position: "fixed",
-            backgroundColor: "primary.main",
+            backgroundColor: "#3c3c3d",
+            color:"#ffffff",
             marginTop: "56px",
           }}
         >
@@ -138,10 +143,10 @@ const Profile = (props: ProfileProps) => {
               />
             }
             title={data.name}
-            subheader="The recipe master"
             action={
               <>
                 <IconButton
+                  color="secondary"
                   aria-label="Edit Profile"
                   onClick={() => handleGoToSettings()}
                 >
@@ -191,6 +196,7 @@ const Profile = (props: ProfileProps) => {
               sx={{
                 flexGrow: 1,
               }}
+              onClick={() => setOpenFollowDialog(1)}
             >
               {data.followers} followers
             </Typography>
@@ -198,6 +204,7 @@ const Profile = (props: ProfileProps) => {
               sx={{
                 flexGrow: 1,
               }}
+              onClick={() => setOpenFollowDialog(2)}
             >
               {data.following} followed
             </Typography>
@@ -240,6 +247,14 @@ const Profile = (props: ProfileProps) => {
           setOwnedCount={setOwnedCount}
         />
       </TabPanel>
+      <FollowListDialog
+            user={props.user}
+            refetch={refetch}
+            setUser={props.setUser}
+            userId={data.userId}
+            openFollowDialog={openFollowDialog}
+            setOpenFollowDialog={setOpenFollowDialog}
+      />
     </Box>
   );
 };

@@ -16,6 +16,7 @@ import UsersList from "./Components/UsersList";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, CssBaseline } from "@mui/material";
 import React from "react";
+import { fetchAllUsers } from "./Utils/HelperFunctions";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -62,7 +63,7 @@ function App() {
         ></Route>
         <Route
           path="/users"
-          element={<UsersList user={user} setUser={setUser} />}
+          element={<UsersList user={user} setUser={setUser} fetchFunction={fetchAllUsers} />}
         ></Route>
         <Route
           path="/settings"
@@ -96,10 +97,14 @@ export default function ToggleColorMode() {
         palette: {
           mode,
           primary: {
-            main: "#000000",
+            light: "#5d5d61",
+            main: "#3c3c3d",
+            dark: "#3c3c3d"
           },
           secondary: {
-            main: "#FFFFFF",
+            light: "#e9e9f0",
+            main: "#eeeef3",
+            dark: "#5d5d61"
           },
           error: {
             main: "#FF0000",

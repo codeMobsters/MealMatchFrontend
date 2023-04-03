@@ -182,6 +182,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
             ></Avatar>
           }
           title={props.user.name}
+          sx={{marginTop: 2, marginBottom: 2}}
         />
         <Box>
           {props.openUserUpdateDialog == "name" ? (
@@ -200,7 +201,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
           ) : props.openUserUpdateDialog == "picture" ? (
             <>
               <Typography sx={{ margin: 2 }}>
-                Whow us your new picure!
+                Show us your new picure!
               </Typography>
               <FormControl>
                 <Input

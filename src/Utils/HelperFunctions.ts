@@ -49,9 +49,36 @@ export const fetchUser = async (
 };
 
 export const fetchAllUsers = async (
-  token: string
+  token: string,
+  userId? :number | undefined
 ): Promise<User[]> => {
   let res = await fetch(`${baseUrl}/Users`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
+};
+
+export const fetchFollowingUsers = async (
+  token: string,
+  userId? :number | undefined
+): Promise<User[]> => {
+  let res = await fetch(`${baseUrl}/Users/${userId}/Followers`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
+};
+
+export const fetchFollowedUsers = async (
+  token: string,
+  userId? :number | undefined
+): Promise<User[]> => {
+  let res = await fetch(`${baseUrl}/Users/${userId}/Following`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

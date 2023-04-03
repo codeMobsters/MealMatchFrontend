@@ -24,7 +24,6 @@ const ProfileSettings = (props: ProfileProps) => {
             width: "100%",
             padding: 2,
             height: '100%',
-            backgroundColor: "primary.main",
             marginTop: "60px"
           }}
         >
@@ -36,7 +35,7 @@ const ProfileSettings = (props: ProfileProps) => {
               />
             }
             title={props.user.name}
-            subheader="The recipe master"
+            sx={{marginTop: 2, marginBottom: 2}}
           />
           <Container sx={{borderRadius: 2, border: 1, borderColor: 'text.secondary', padding: 0, display: 'grid', gridTemplateColumns: '1fr', marginBottom : 2}}>
           <Button

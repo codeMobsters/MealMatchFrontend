@@ -1,17 +1,20 @@
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Avatar, CardHeader, IconButton } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Avatar, CardHeader, IconButton, Button } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { addNewFollower, deleteFollower, fetchAllUsers } from '../Utils/HelperFunctions';
 import { useQuery } from '@tanstack/react-query';
 import { LoginResponse, User, UserListProps } from '../Utils/Types';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import "../App.css";
+import { useNavigate } from 'react-router-dom';
 
 const UsersList = (props : UserListProps) => {
     const { isLoading, isError, data } = useQuery({
-        queryKey: ["listUsers"],
-        queryFn: async () => fetchAllUsers(props.user.token)
+        queryKey: ["listUsers" + (props.queryType && "")],
+        queryFn: async () => props.fetchFunction(props.user.token, props.userId)
     });
-    
+
+    const navigate = useNavigate();
     function handleFollow(user: User) {
         if (props.user.followedUserIds){
             if (props.user.followedUserIds.find(id => id == user.userId)) { // unfollow path
@@ -30,7 +33,7 @@ const UsersList = (props : UserListProps) => {
             <List>
                 {data && data.map((user, index) => 
                     <ListItem disablePadding  sx={{display: 'flex'}} key={index}>
-                        <ListItemButton sx={{display: 'flex'}}>
+                        <ListItemButton sx={{display: 'grid', gridTemplateColumns: "2fr 1fr"}}>
                             <CardHeader
                                 avatar={
                                     <Avatar
@@ -40,19 +43,21 @@ const UsersList = (props : UserListProps) => {
                                 }
                                 title={user.name}
                                 subheader="The recipe master"
-                                action={
-                                    <IconButton aria-label="Follow" onClick={() => handleFollow(user)}>
-                                        {props.user.followedUserIds.includes(user.userId)
-                                        ? <CancelOutlinedIcon />
-                                        : <CheckCircleOutlineOutlinedIcon />
-                                    }
-                                    </IconButton>
-                                }
+                                onClick={() => navigate(`/${user.userId}`)}
                                 sx={{
                                 flex: 1,
                                 margin: 2
                                 }}
                             />
+                            <Button 
+                                aria-label="Follow" 
+                                onClick={() => handleFollow(user)}
+                            >
+                                {props.user.followedUserIds.includes(user.userId)
+                                ? <><CancelOutlinedIcon sx={{marginRight: 1}} /> Unfollow</>
+                                : <><CheckCircleOutlineOutlinedIcon sx={{marginRight: 1}} /> Follow</>
+                            }
+                            </Button>
                         </ListItemButton>
                     </ListItem>
                 )}

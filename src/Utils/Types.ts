@@ -1,3 +1,4 @@
+import { RefetchOptions, RefetchQueryFilters, QueryObserverResult } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
 
 export type SetValue<T> = Dispatch<SetStateAction<T>>;
@@ -103,7 +104,10 @@ export interface HeaderProps {
 
 export interface UserListProps {
   user: LoginResponse;
+  queryType? :string;
   setUser: SetValue<LoginResponse>;
+  userId?: number;
+  fetchFunction: (token: string, userId: number | undefined) => Promise<User[]>
 }
 
 export interface NewRecipe {
@@ -147,6 +151,24 @@ export type PostRecipeDialogProps = {
   setOpenPostDialog: React.Dispatch<React.SetStateAction<boolean>>;
   user: LoginResponse;
 };
+
+export type FollowListDialogProps = {
+  openFollowDialog: number;
+  setOpenFollowDialog: React.Dispatch<React.SetStateAction<number>>;
+  user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
+  userId :number;
+  refetch :<TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<User, unknown>>
+};
+
+export interface FavoriteFeedProps {
+  user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
+  userId: number;
+  refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) =>
+   Promise<QueryObserverResult<User, unknown>>
+  setFavoriteCount: React.Dispatch<React.SetStateAction<number>>;
+}
 
 export type UserUpdateDialogProps = {
   openUserUpdateDialog: string;
