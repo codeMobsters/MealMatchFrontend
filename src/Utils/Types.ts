@@ -42,7 +42,6 @@ export interface FavoriteRecipe {
 export interface Recipe {
   recipeId?: number;
   label: string;
-  like?: number;
   yield?: number;
   calories?: number;
   totalTime?: number;
@@ -81,14 +80,9 @@ export interface User {
   healthLabels: string[];
   favoriteRecipes: number;
   ownedRecipes: number;
-  followers: number; // Follower[]
-  following: number; // Follower[]
+  followers: number;
+  following: number;
 }
-
-// export interface Follower {
-//   followerId: number;
-//   followerName: string;
-// }
 
 export interface UserUpdateRequest {
   name?: string;
@@ -96,18 +90,6 @@ export interface UserUpdateRequest {
   profileSettings?: string[];
   dietLabels?: string[];
   healthLabels?: string[];
-}
-
-export interface HeaderProps {
-  user: LoginResponse;
-}
-
-export interface UserListProps {
-  user: LoginResponse;
-  queryType? :string;
-  setUser: SetValue<LoginResponse>;
-  userId?: number;
-  fetchFunction: (token: string, userId: number | undefined) => Promise<User[]>
 }
 
 export interface NewRecipe {
@@ -130,13 +112,27 @@ export interface NewComment {
   recipeId: number;
 }
 
-export interface NewFavoriteRecipe {
+export interface NewLikedRecipe {
   recipeId: number;
 }
 
 export interface NewFollower {
   followedUserId: number;
 }
+
+export interface Filter {
+  query: string;
+  cuisineType?: string[];
+  dietLabels?: string[];
+  healthLabels?: string[];
+  mealType?: string[];
+  dishType?: string[];
+}
+
+
+
+
+// Props
 
 export interface MultipleSelectChipProps {
   seedData: string[];
@@ -176,3 +172,15 @@ export type UserUpdateDialogProps = {
   user: LoginResponse;
   setUser: SetValue<LoginResponse>;
 };
+
+export interface HeaderProps {
+  user: LoginResponse;
+}
+
+export interface UserListProps {
+  user: LoginResponse;
+  queryType? :string;
+  setUser: SetValue<LoginResponse>;
+  userId?: number;
+  fetchFunction: (token: string, userId?: number | undefined, searchTerm?: string | undefined) => Promise<User[]>
+}

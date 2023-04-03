@@ -7,11 +7,13 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import "../App.css";
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import { useEffect, useState } from 'react';
 
 const UsersList = (props : UserListProps) => {
-    const { isLoading, isError, data } = useQuery({
+    const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+    const {isLoading, isError, data, refetch } = useQuery({
         queryKey: ["listUsers" + (props.queryType && "")],
-        queryFn: async () => props.fetchFunction(props.user.token, props.userId)
+        queryFn: async () => props.fetchFunction(props.user.token, props.userId, searchTerm)
     });
 
     const navigate = useNavigate();
@@ -27,21 +29,36 @@ const UsersList = (props : UserListProps) => {
         }
     }
 
-    function handleUserSearch(term: string, searchType: string){
-        console.log("search for: ", term, " in ", searchType);
+    function handleUserSearch(term: string){
+        term == "" 
+        ? setSearchTerm(undefined) 
+        : setSearchTerm(term);
     }
+    
+    useEffect(() => {
+        refetch();
+    }, [searchTerm])
+    
 
     return (
-    <Box className="App">
-        <main style={{ width: "100%", marginTop: "56px", marginBottom: "56px" }}>
-        <SearchBar 
-          searchbarPlaceholderText='Search users'
-          searchType={'user'}
-          handleSearch={handleUserSearch}
-          />
+    <Box className="App" sx={{
+        minHeight: "100%"
+    }}>
+        <Box  sx={{
+            overflow: "scroll",
+            marginTop: "100px",
+            marginBottom: '56px',
+            width: "100%"
+        }}
+        >
+            <SearchBar 
+            searchbarPlaceholderText='Search users'
+            searchType={'user'}
+            handleSearch={handleUserSearch}
+            />
             <List>
                 {data && data.map((user, index) => 
-                    <ListItem disablePadding  sx={{display: 'flex'}} key={index}>
+                    <ListItem disablePadding key={index}>
                         <ListItemButton sx={{display: 'grid', gridTemplateColumns: "2fr 1fr"}}>
                             <CardHeader
                                 avatar={
@@ -59,6 +76,7 @@ const UsersList = (props : UserListProps) => {
                                 }}
                             />
                             <Button 
+                                color='inherit'
                                 aria-label="Follow" 
                                 onClick={() => handleFollow(user)}
                             >
@@ -71,7 +89,7 @@ const UsersList = (props : UserListProps) => {
                     </ListItem>
                 )}
             </List>
-        </main>
+        </Box>
     </Box>
     )
 }

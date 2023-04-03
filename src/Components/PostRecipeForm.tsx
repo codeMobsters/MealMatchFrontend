@@ -99,7 +99,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
   return (
     <Box sx={{ width: "80vw", margin: "0 auto", paddingTop: 2 }}>
       <FormControl sx={{ marginBottom: 2 }}>
-        <InputLabel htmlFor="recipe-name">Recipe name</InputLabel>
+        <InputLabel htmlFor="recipe-name" sx={{ lineHeight: 2}}>Recipe name</InputLabel>
         <Input
           required
           id="recipe-name"
@@ -123,7 +123,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         }}
       >
         <FormControl>
-          <InputLabel htmlFor="recipe-yield">Yield</InputLabel>
+          <InputLabel htmlFor="recipe-yield" sx={{ lineHeight: 2}}>Yield</InputLabel>
           <Input
             type="number"
             id="recipe-yield"
@@ -138,15 +138,15 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           </FormHelperText>
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="recipe-calories">Cals</InputLabel>
+          <InputLabel htmlFor="recipe-calories" sx={{ lineHeight: 2}} >Cals</InputLabel>
           <Input
             type="number"
             id="recipe-calories"
             aria-describedby="recipe-calories-helper-text"
-            sx={{ width: "25vw" }}
+            sx={{ width: "25vw"}}
             endAdornment={
-              <InputAdornment sx={{ marginRight: 1 }} position="end">
-                kCal
+              <InputAdornment sx={{ marginRight: 1}} position="end">
+                kcal
               </InputAdornment>
             }
             onChange={e =>
@@ -161,7 +161,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           </FormHelperText>
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="recipe-time">Time</InputLabel>
+          <InputLabel htmlFor="recipe-time" sx={{ lineHeight: 2}}>Time</InputLabel>
           <Input
             type="number"
             id="recipe-time"
@@ -199,7 +199,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         }}
       >
         <FormControl>
-          <InputLabel htmlFor="recipe-quantity">#</InputLabel>
+          <InputLabel htmlFor="recipe-quantity" sx={{ lineHeight: 2}}>#</InputLabel>
           <Input
             type="number"
             id="recipe-quantity"
@@ -207,7 +207,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           />
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="recipe-unit">Unit</InputLabel>
+          <InputLabel htmlFor="recipe-unit" sx={{ lineHeight: 2}}>Unit</InputLabel>
           <Input
             type="text"
             id="recipe-unit"
@@ -216,7 +216,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           />
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="recipe-ingredient">Ingredient</InputLabel>
+          <InputLabel htmlFor="recipe-ingredient" sx={{ lineHeight: 2}}>Ingredient</InputLabel>
           <Input
             type="text"
             id="recipe-ingredient"
@@ -250,7 +250,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         }}
       >
         <FormControl>
-          <InputLabel htmlFor="recipe-step">Step</InputLabel>
+          <InputLabel htmlFor="recipe-step" sx={{ lineHeight: 2}}>Step</InputLabel>
           <Input
             type="text"
             id="recipe-step"
@@ -324,7 +324,7 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         }}
       />
 
-      <FormControl sx={{ marginTop: 2, marginBottom: 3 }}>
+      <FormControl sx={{ marginTop: 2, marginBottom: 3, display: 'block' }}>
         <Input
           aria-describedby="recipe-time-helper-text"
           type="file"

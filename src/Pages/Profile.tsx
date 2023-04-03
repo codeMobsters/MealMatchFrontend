@@ -82,11 +82,11 @@ const Profile = (props: ProfileProps) => {
     queryFn: async () => fetchUser(params.userId, props.user.token),
   });
   const queryClient = useQueryClient();
-  // let { state } = useLocation();
+  let { state } = useLocation();
 
-  // useEffect(() => {
-  //   queryClient.invalidateQueries({ queryKey: ["profileUser"] });
-  // }, [params]);
+  useEffect(() => {
+    refetch();
+  }, [params]);
 
   if (isLoading) {
     return <span>Loading...</span>;

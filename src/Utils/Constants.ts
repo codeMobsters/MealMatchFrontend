@@ -1,4 +1,4 @@
-import { NewRecipe } from "./Types";
+import { Filter, NewRecipe } from "./Types";
 
 export const Preferences = {
   Cousines: [
@@ -112,6 +112,15 @@ export const newReipe: NewRecipe = {
   HealthLabels: [],
   MealType: [],
   RecipePicture: undefined,
+};
+
+export const filter: Filter = {
+  query: "",
+  cuisineType: [],
+  dietLabels: [],
+  dishType: [],
+  healthLabels: [],
+  mealType: [],
 };
 
 export const baseUrl = "https://localhost:7031";

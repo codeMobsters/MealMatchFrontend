@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PostRecipeDialog from "./PostRecipeDialog";
 import { HeaderProps } from "../Utils/Types";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,7 @@ import { ColorModeContext } from "../App";
 
 function Header(props: HeaderProps) {
   const navigate = useNavigate();
-  const [openPostDialog, setOpenPostDialog] = React.useState(false);
+  const [openPostDialog, setOpenPostDialog] = useState(false);
   const handlePostAction = () => {
     setOpenPostDialog(true);
   };
@@ -32,13 +32,15 @@ function Header(props: HeaderProps) {
       behavior: "smooth",
     });
   }
+
   return (
     <AppBar
       sx={{
-        bottom: { xs: "auto", tablet: "auto" },
-        display: { xs: "block", tablet: "block", desktop: "none" },
+        bottom: "auto",
+        display: "block",
+        height: { xs: "56px", tablet: "56px", desktop: "100px" },
         position: "fixed",
-        top: { xs: 0, tablet: 0 },
+        top: 0,
       }}
     >
       <Container>
@@ -52,7 +54,6 @@ function Header(props: HeaderProps) {
               display: "flex",
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "secondary.main",
               textDecoration: "none",
             }}
@@ -60,11 +61,11 @@ function Header(props: HeaderProps) {
             MealMatch
           </Typography>
           <Box sx={{ flexGrow: 1 }}></Box>
-          {theme.palette.mode} mode
+          {/* {theme.palette.mode} mode */}
           <IconButton
-            sx={{ ml: 1 }}
             onClick={colorMode.toggleColorMode}
             color="inherit"
+            sx={{ marginRight: 2 }}
           >
             {theme.palette.mode === "dark" ? (
               <Brightness7Icon />
@@ -72,11 +73,11 @@ function Header(props: HeaderProps) {
               <Brightness4Icon />
             )}
           </IconButton>
-          <Avatar
-            alt="userPicture"
-            src="insert user avatar"
+          <Typography
             onClick={() => handlePostAction()}
-          />
+            sx={{ border: 1, borderColor: "#ffffff", borderRadius: 2, padding: 0.5 }}
+          > Add recipe
+          </Typography>
           <PostRecipeDialog
             user={props.user}
             openPostDialog={openPostDialog}

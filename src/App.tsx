@@ -114,12 +114,20 @@ export default function ToggleColorMode() {
           values: {
             xs: 0,
             tablet: 420,
-            desktop: 820,
+            desktop: 1200
           },
-        },
+        }
       }),
     [mode]
   );
+
+  theme.typography.h6 = {
+    fontSize: '200%',
+    '@media (min-width:1200px)': {
+      fontSize: '400%',
+    }
+  };
+  
 
   return (
     <ColorModeContext.Provider value={colorMode}>

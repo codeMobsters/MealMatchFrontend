@@ -13,8 +13,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LoginResponse, Recipe, SetValue } from "../Utils/Types";
 import { useState } from "react";
 import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentsDialog from "./CommentDialog";
-import { addNewRecipeEdamam, deleteFavorite } from "../Utils/HelperFunctions";
+import { addLikeToRecipe, addNewRecipeEdamam, deleteFavorite, deleteLike } from "../Utils/HelperFunctions";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -49,9 +51,18 @@ export default function RecipeCard(props: RecipeCardProps) {
       ? props.user.favoriteRecipes.includes(props.recipe.recipeId)
       : false
   );
+  const [isLiked, setIsLiked] = useState(
+    props.recipe.recipeId != undefined &&
+      props.user.likedRecipes != undefined
+      ? props.user.likedRecipes.includes(props.recipe.recipeId)
+      : false
+  );
   const [commentList, setCommentList] = useState(
     props.recipe.comments?.sort((a, b) => b.commentId - a.commentId)
   );
+  const [likeCount, setLikeCount] = useState(props.recipe.likes != undefined
+    ? props.recipe.likes.length
+    : 0);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -67,7 +78,6 @@ export default function RecipeCard(props: RecipeCardProps) {
         if (newRecipe.recipeId != undefined) {
           setRecipeId(newRecipe.recipeId);
           setIsFavorite(!isFavorite);
-          let favRecipes = [...props.user.favoriteRecipes, newRecipe.recipeId];
           props.setUser({
             ...props.user,
             favoriteRecipes: [
@@ -86,6 +96,36 @@ export default function RecipeCard(props: RecipeCardProps) {
             id => id !== recipeId
           ),
         });
+      }
+    }
+  };
+
+  const handleLike = async () => {
+    if (props.user?.token) {
+      if (!isLiked) {
+        await addLikeToRecipe(
+          props.user!.token,
+          { recipeId: recipeId }
+        );
+        setIsLiked(!isLiked);
+        props.setUser({
+          ...props.user,
+          likedRecipes: [
+            ...props.user.likedRecipes,
+            recipeId
+          ],
+        });
+        setLikeCount(likeCount + 1);
+      } else {
+        await deleteLike(props.user!.token, recipeId);
+        setIsLiked(!isLiked);
+        props.setUser({
+          ...props.user,
+          likedRecipes: props.user.likedRecipes.filter(
+            id => id !== recipeId
+          ),
+        });
+        setLikeCount(likeCount === 0 ? 0 : likeCount - 1);
       }
     }
   };
@@ -138,13 +178,30 @@ export default function RecipeCard(props: RecipeCardProps) {
             sx={{ color: `${isFavorite ? "#D2042D" : "inherit"}` }}
           />
         </IconButton>
-        {props.recipe.userProfilePictureUrl && (
+        {props.recipe.recipeOwnerName && (
+          <>
+          <p>{likeCount}</p>
+          <IconButton
+          sx={{ marginRight: 1 }}
+          aria-label="add to likes"
+          onClick={() => handleLike()}
+        >
+          {isLiked ? 
+          <ThumbUpIcon
+          sx={{ color: "gold" }}
+         /> : 
+          <ThumbUpOutlinedIcon
+          sx={{ color: "inherit" }}
+          /> 
+          }
+        </IconButton>
           <IconButton
             aria-label="go to comments"
             onClick={() => setOpenCommentsDialog(true)}
           >
             <MessageOutlinedIcon />
           </IconButton>
+          </>
         )}
         <ExpandMore
           expand={expanded}

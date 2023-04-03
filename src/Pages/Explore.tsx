@@ -1,6 +1,6 @@
 import InfiniteScroll from "react-infinite-scroller";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { LoginResponse, SetValue, EdamamResponse } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
 import Navbar from "../Components/Navbar";
@@ -10,6 +10,7 @@ import { baseUrl } from "../Utils/Constants";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SearchBar from "../Components/SearchBar";
+import ExploreFilterDialog from "../Components/ExploreFilterDialog";
 
 interface ExploreProps {
   user: LoginResponse;
@@ -18,6 +19,12 @@ interface ExploreProps {
 
 const Explore = (props: ExploreProps) => {
   let { state } = useLocation();
+  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+  const [openPostDialog, setOpenPostDialog] = useState(false);
+
+  const handlePostAction = () => {
+    setOpenPostDialog(true);
+  };
 
   const fetchRecipes = async ({ pageParam = 0 }): Promise<EdamamResponse> => {
     let res;
@@ -33,7 +40,7 @@ const Explore = (props: ExploreProps) => {
             },
           }
         ))
-      : (res = await fetch(`${baseUrl}/Recipes/Edamam`, {
+      : (res = await fetch(`${baseUrl}/Recipes/Edamam${searchTerm == undefined ? "" : `?${searchTerm}`}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${props.user.token}`,
@@ -50,6 +57,7 @@ const Explore = (props: ExploreProps) => {
     isFetching,
     isFetchingNextPage,
     status,
+    refetch
   } = useInfiniteQuery({
     queryKey: ["recipes"],
     refetchOnWindowFocus: false,
@@ -63,6 +71,16 @@ const Explore = (props: ExploreProps) => {
     fetchNextPage();
   }, [state]);
 
+  function handleExploreSearch(term: string){
+    term == "" 
+    ? setSearchTerm(undefined) 
+    : setSearchTerm(term);
+  }
+
+  useEffect(() => {
+      refetch();
+  }, [searchTerm])
+
   if (isFetching) {
     return <span>Loading...</span>;
   }
@@ -71,19 +89,17 @@ const Explore = (props: ExploreProps) => {
     return <span>Error: Could not load.</span>;
   }
 
-  function handleExploreSearch(term: string, searchType: string){
-    console.log("search for: ", term, " in ", searchType);
-  }
-
   return (
     <Box className="App">
       <main style={{ width: "100%", marginTop: "100px", marginBottom: "56px" }}>
         {data && (
           <>
-          <SearchBar 
-          searchbarPlaceholderText='Search recipes'
-          searchType={'explore'}
-          handleSearch={handleExploreSearch}
+          <Button onClick={() => handlePostAction()}
+            sx={{ border: 1, borderColor: "#ffffff", borderRadius: 2, padding: 0.5 }}>Filter</Button>
+          <ExploreFilterDialog
+            user={props.user}
+            openPostDialog={openPostDialog}
+            setOpenPostDialog={setOpenPostDialog}
           />
           <InfiniteScroll
             threshold={1000}

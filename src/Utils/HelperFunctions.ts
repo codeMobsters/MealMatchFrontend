@@ -7,7 +7,7 @@ import {
   RegisterRequest,
   NewRecipe,
   NewComment,
-  NewFavoriteRecipe,
+  NewLikedRecipe,
   UserUpdateRequest,
   LoginResponse,
   NewFollower,
@@ -50,9 +50,10 @@ export const fetchUser = async (
 
 export const fetchAllUsers = async (
   token: string,
-  userId? :number | undefined
+  userId? :number | undefined,
+  searchTerm?: string | undefined
 ): Promise<User[]> => {
-  let res = await fetch(`${baseUrl}/Users`, {
+  let res = await fetch(`${baseUrl}/Users${searchTerm == undefined ? "" : `?q=${searchTerm}`}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -63,7 +64,8 @@ export const fetchAllUsers = async (
 
 export const fetchFollowingUsers = async (
   token: string,
-  userId? :number | undefined
+  userId? :number | undefined,
+  searchTerm?: string | undefined
 ): Promise<User[]> => {
   let res = await fetch(`${baseUrl}/Users/${userId}/Followers`, {
     method: "GET",
@@ -76,7 +78,8 @@ export const fetchFollowingUsers = async (
 
 export const fetchFollowedUsers = async (
   token: string,
-  userId? :number | undefined
+  userId? :number | undefined,
+  searchTerm?: string | undefined
 ): Promise<User[]> => {
   let res = await fetch(`${baseUrl}/Users/${userId}/Following`, {
     method: "GET",
@@ -233,9 +236,9 @@ export const addNewComment = async (
   }
 };
 
-export const addNewFavoriteRecipe = async (
+export const addLikeToRecipe = async (
   token: string,
-  newFavoriteRecipe: NewFavoriteRecipe
+  newLikedRecipe: NewLikedRecipe
 ) => {
   try {
     const requestOptions = {
@@ -244,9 +247,9 @@ export const addNewFavoriteRecipe = async (
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newFavoriteRecipe),
+      body: JSON.stringify(newLikedRecipe),
     };
-    const response = await fetch(`${baseUrl}/FavoriteRecipes`, requestOptions);
+    const response = await fetch(`${baseUrl}/Likes`, requestOptions);
     return response.ok;
   } catch (e: any) {
     throw new Error("Problems");
@@ -338,6 +341,24 @@ export const deleteFollower = async (token: string, followedUserId: number) => {
     };
     const response = await fetch(
       `${baseUrl}/Followers/${followedUserId}`,
+      requestOptions
+    );
+    return response.ok;
+  } catch (e: any) {
+    throw new Error("Problems");
+  }
+};
+
+export const deleteLike = async (token: string, recipeId: number) => {
+  try {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(
+      `${baseUrl}/Likes/${recipeId}`,
       requestOptions
     );
     return response.ok;

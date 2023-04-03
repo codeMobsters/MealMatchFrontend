@@ -37,10 +37,6 @@ const OwnedFeed = (props: OwnedFeedProps) => {
   if (isError) {
     return <span>Error: Could not load.</span>;
   }
-  
-  function handleOwnedSearch(term: string, searchType: string): void {
-    console.log("search for: ", term, " in ", searchType);
-  }
 
   return (
     <Box className="App">
@@ -48,16 +44,11 @@ const OwnedFeed = (props: OwnedFeedProps) => {
         sx={{
           height: "100%",
           overflow: "scroll",
-          marginTop: "56px",
+          marginTop: "100px",
           marginBottom: '56px',
           width: "100%"
         }}
       >
-        <SearchBar 
-          searchbarPlaceholderText='Search recipes'
-          searchType={'owned'}
-          handleSearch={handleOwnedSearch}
-        />
         {data.map((recipe, index) => (
           <RecipeCard
             key={index}

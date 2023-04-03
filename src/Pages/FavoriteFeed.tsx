@@ -42,25 +42,16 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
     return <span>Error: Could not load.</span>;
   }
 
-  function handleFavoriteSearch(term: string, searchType: string): void {
-    console.log("search for: ", term, " in ", searchType);
-  }
-
   return (
     <Box className="App">
       <Box
         sx={{
           height: "100%",
           overflow: "scroll",
-          marginTop: "56px",
+          marginTop: "100px",
           marginBottom: '56px'
         }}
       >
-        <SearchBar 
-          searchbarPlaceholderText='Search recipes'
-          searchType={'favorite'}
-          handleSearch={handleFavoriteSearch}
-          />
         {data.map((recipe, index) => (
           <RecipeCard
             key={index}

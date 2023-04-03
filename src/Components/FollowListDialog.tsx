@@ -43,7 +43,6 @@ function TabPanel(props: TabPanelProps) {
 
 export default function FollowListDialog(props: FollowListDialogProps) {
   const [tabIndex, setTabIndex] = useState(0);
-  const navigate = useNavigate();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
@@ -79,8 +78,6 @@ export default function FollowListDialog(props: FollowListDialogProps) {
           <Tabs
             value={tabIndex}
             onChange={handleChange}
-            indicatorColor="secondary"
-            textColor="inherit"
             variant="fullWidth"
           >
             <Tab

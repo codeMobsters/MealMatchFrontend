@@ -40,8 +40,8 @@ const Home = (props: HomeProps) => {
   if (isError) {
     return <span>Error: Could not load.</span>;
   }
-  function handleHomeSearch(term: string, searchType: string){
-    console.log("search for: ", term, " in ", searchType);
+  function handleHomeSearch(term: string){
+    console.log("search for: ", term);
   }
 
   return (
@@ -55,11 +55,6 @@ const Home = (props: HomeProps) => {
           width: "100%"
         }}
       >
-        <SearchBar 
-          searchbarPlaceholderText='Search recipes'
-          searchType={'home'}
-          handleSearch={handleHomeSearch}
-          />
         {data.map((recipe, index) => (
           <RecipeCard
             key={index}
