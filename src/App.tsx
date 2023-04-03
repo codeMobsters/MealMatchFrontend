@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useContext, useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 import "./App.css";
 import Header from "./Components/Header";
@@ -13,6 +13,13 @@ import ProfileSettings from "./Pages/ProfileSettings";
 import Explore from "./Pages/Explore";
 import Home from "./Pages/Home";
 import UsersList from "./Components/UsersList";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme, CssBaseline } from "@mui/material";
+import React from "react";
+
+export const ColorModeContext = React.createContext({
+  toggleColorMode: () => {},
+});
 
 function App() {
   const queryClient = new QueryClient();
@@ -26,7 +33,7 @@ function App() {
     healthLabels: [],
     favoriteRecipes: [],
     likedRecipes: [],
-    followedUserIds: []
+    followedUserIds: [],
   });
   const navigate = useNavigate();
 
@@ -40,15 +47,27 @@ function App() {
     <QueryClientProvider client={queryClient}>
       {user.name && (
         <>
-          <Header user={user}/>
+          <Header user={user} />
           <Navbar user={user} setUser={setUser} />
         </>
       )}
       <Routes>
-        <Route path="/" element={<Home user={user} setUser={setUser} />}></Route>
-        <Route path="/explore" element={<Explore user={user} setUser={setUser} />}></Route>
-        <Route path="/users" element={<UsersList user={user} setUser={setUser} />}></Route>
-        <Route path="/settings" element={<ProfileSettings user={user} setUser={setUser} />}></Route>
+        <Route
+          path="/"
+          element={<Home user={user} setUser={setUser} />}
+        ></Route>
+        <Route
+          path="/explore"
+          element={<Explore user={user} setUser={setUser} />}
+        ></Route>
+        <Route
+          path="/users"
+          element={<UsersList user={user} setUser={setUser} />}
+        ></Route>
+        <Route
+          path="/settings"
+          element={<ProfileSettings user={user} setUser={setUser} />}
+        ></Route>
         <Route
           path=":userId"
           element={<Profile user={user} setUser={setUser} />}
@@ -60,4 +79,63 @@ function App() {
   );
 }
 
-export default App;
+export default function ToggleColorMode() {
+  const [mode, setMode] = useState<"light" | "dark">("light");
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode(prevMode => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+          primary: {
+            main: "#000000",
+          },
+          secondary: {
+            main: "#FFFFFF",
+          },
+          error: {
+            main: "#FF0000",
+          },
+        },
+        breakpoints: {
+          values: {
+            xs: 0,
+            tablet: 420,
+            desktop: 820,
+          },
+        },
+      }),
+    [mode]
+  );
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+}
+
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    sm: false;
+    md: false;
+    lg: false;
+    xl: false;
+    xs: true;
+    tablet: true;
+    desktop: true;
+  }
+}

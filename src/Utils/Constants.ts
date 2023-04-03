@@ -99,7 +99,7 @@ export const Preferences = {
   ],
 };
 
-export const newReipe : NewRecipe = {
+export const newReipe: NewRecipe = {
   Title: "",
   Yield: "",
   Calories: "",
@@ -111,8 +111,8 @@ export const newReipe : NewRecipe = {
   DishType: [],
   HealthLabels: [],
   MealType: [],
-  RecipePicture: undefined
-}
+  RecipePicture: undefined,
+};
 
-// export const baseUrl = "https://localhost:7031";
-export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+export const baseUrl = "https://localhost:7031";
+// export const baseUrl = 'https://mealmatchapi.azurewebsites.net'

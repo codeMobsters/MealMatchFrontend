@@ -44,9 +44,10 @@ export default function RecipeCard(props: RecipeCardProps) {
     props.recipe.recipeId == undefined ? 0 : props.recipe.recipeId
   );
   const [isFavorite, setIsFavorite] = useState(
-    props.recipe.recipeId != undefined && props.user.favoriteRecipes != undefined
-    ? props.user.favoriteRecipes.includes(props.recipe.recipeId) 
-    : false
+    props.recipe.recipeId != undefined &&
+      props.user.favoriteRecipes != undefined
+      ? props.user.favoriteRecipes.includes(props.recipe.recipeId)
+      : false
   );
   const [commentList, setCommentList] = useState(
     props.recipe.comments?.sort((a, b) => b.commentId - a.commentId)
@@ -67,13 +68,24 @@ export default function RecipeCard(props: RecipeCardProps) {
           setRecipeId(newRecipe.recipeId);
           setIsFavorite(!isFavorite);
           let favRecipes = [...props.user.favoriteRecipes, newRecipe.recipeId];
-          props.setUser({...props.user, favoriteRecipes: [...props.user.favoriteRecipes, newRecipe.recipeId]});
+          props.setUser({
+            ...props.user,
+            favoriteRecipes: [
+              ...props.user.favoriteRecipes,
+              newRecipe.recipeId,
+            ],
+          });
         }
       } else if (props.user.id !== props.recipe.recipeOwnerId) {
         await deleteFavorite(props.user!.token, recipeId);
         setRecipeId(0);
         setIsFavorite(!isFavorite);
-        props.setUser({...props.user, favoriteRecipes: props.user.favoriteRecipes.filter(id => id !== recipeId)});
+        props.setUser({
+          ...props.user,
+          favoriteRecipes: props.user.favoriteRecipes.filter(
+            id => id !== recipeId
+          ),
+        });
       }
     }
   };
@@ -122,15 +134,17 @@ export default function RecipeCard(props: RecipeCardProps) {
           aria-label="add to favorites"
           onClick={() => handleFavorite()}
         >
-          <FavoriteIcon sx={{ color: `${isFavorite ? "#D2042D" : "inherit"}` }} />
+          <FavoriteIcon
+            sx={{ color: `${isFavorite ? "#D2042D" : "inherit"}` }}
+          />
         </IconButton>
         {props.recipe.userProfilePictureUrl && (
-        <IconButton
-          aria-label="go to comments"
-          onClick={() => setOpenCommentsDialog(true)}
-        >
-          <MessageOutlinedIcon />
-        </IconButton> 
+          <IconButton
+            aria-label="go to comments"
+            onClick={() => setOpenCommentsDialog(true)}
+          >
+            <MessageOutlinedIcon />
+          </IconButton>
         )}
         <ExpandMore
           expand={expanded}

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,14 +9,20 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import PostRecipeDialog from "./PostRecipeDialog";
 import { HeaderProps } from "../Utils/Types";
+import IconButton from "@mui/material/IconButton";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useTheme } from "@emotion/react";
+import { ColorModeContext } from "../App";
 
-
-function Header(props :HeaderProps) {
+function Header(props: HeaderProps) {
   const navigate = useNavigate();
   const [openPostDialog, setOpenPostDialog] = React.useState(false);
   const handlePostAction = () => {
     setOpenPostDialog(true);
   };
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
 
   function handleGoHome() {
     navigate("/", { state: { dummyVariable: 0 } });
@@ -53,6 +60,18 @@ function Header(props :HeaderProps) {
             MealMatch
           </Typography>
           <Box sx={{ flexGrow: 1 }}></Box>
+          {theme.palette.mode} mode
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
           <Avatar
             alt="userPicture"
             src="insert user avatar"

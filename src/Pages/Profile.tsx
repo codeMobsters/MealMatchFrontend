@@ -12,10 +12,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import {
-  Edit as EditIcon,
-  Logout as LogoutIcon
-} from "@mui/icons-material";
+import { Edit as EditIcon, Logout as LogoutIcon } from "@mui/icons-material";
 import { LoginResponse, SetValue } from "../Utils/Types";
 import FavoriteFeed from "./FavoriteFeed";
 import OwnedFeed from "./OwnedFeed";
@@ -23,7 +20,6 @@ import "../App.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchUser } from "../Utils/HelperFunctions";
-
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -40,13 +36,9 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tab-${index}`}
       aria-labelledby={`tab-${index}`}
-      style={{ marginTop: '155px'}}
+      style={{ marginTop: "155px" }}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -83,16 +75,14 @@ const Profile = (props: ProfileProps) => {
 
   const { isLoading, isError, data } = useQuery({
     queryKey: ["profileUser"],
-    queryFn: async () => fetchUser(params.userId, props.user.token)
+    queryFn: async () => fetchUser(params.userId, props.user.token),
   });
   const queryClient = useQueryClient();
   // let { state } = useLocation();
 
   // useEffect(() => {
-  //   queryClient.invalidateQueries({ queryKey: ['profileUser'] });
-  //   queryClient.refetchQueries();
-  // }, [state]);
-
+  //   queryClient.invalidateQueries({ queryKey: ["profileUser"] });
+  // }, [params]);
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -101,8 +91,8 @@ const Profile = (props: ProfileProps) => {
   if (isError) {
     return <span>Error: Could not load.</span>;
   }
-  
-const handleLogout = () => {
+
+  const handleLogout = () => {
     props.setUser({
       id: 0,
       name: "",
@@ -113,8 +103,8 @@ const handleLogout = () => {
       healthLabels: [],
       favoriteRecipes: [],
       likedRecipes: [],
-      followedUserIds: []
-    })
+      followedUserIds: [],
+    });
     queryClient.invalidateQueries();
     navigate("/");
   };
@@ -128,7 +118,7 @@ const handleLogout = () => {
   }
 
   return (
-    <Box className='App'>
+    <Box className="App">
       <HideOnScroll>
         <Box
           sx={{
@@ -151,43 +141,64 @@ const handleLogout = () => {
             subheader="The recipe master"
             action={
               <>
-              <IconButton aria-label="Edit Profile" onClick={() => handleGoToSettings()}>
-                <EditIcon />
-              </IconButton>
-              <IconButton aria-label="Logout" onClick={() => handleLogout()}>
-                <LogoutIcon sx={{ color: "white", background: "red", borderRadius: "30px", padding: "3px" }} /> 
-             </IconButton>
-             </>
+                <IconButton
+                  aria-label="Edit Profile"
+                  onClick={() => handleGoToSettings()}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton aria-label="Logout" onClick={() => handleLogout()}>
+                  <LogoutIcon
+                    sx={{
+                      color: "white",
+                      background: "red",
+                      borderRadius: "30px",
+                      padding: "3px",
+                    }}
+                  />
+                </IconButton>
+              </>
             }
             sx={{
               margin: 2,
             }}
           />
-          <CardContent sx={{
-              padding: '5px',
-              textAlign: 'center',
-              fontSize: '0.5rem',
-              display: 'flex',
-              flexDirection: 'row'
-            }}>
-            <Typography sx={{
-              flexGrow: 1
-            }}>
-              {favoriteCount > 0 ? favoriteCount - 1 : data.favoriteRecipes} favorites
+          <CardContent
+            sx={{
+              padding: "5px",
+              textAlign: "center",
+              fontSize: "0.5rem",
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Typography
+              sx={{
+                flexGrow: 1,
+              }}
+            >
+              {favoriteCount > 0 ? favoriteCount - 1 : data.favoriteRecipes}{" "}
+              favorites
             </Typography>
-            <Typography sx={{
-              flexGrow: 1
-            }}>
+            <Typography
+              sx={{
+                flexGrow: 1,
+              }}
+            >
               {ownedCount > 0 ? ownedCount - 1 : data.ownedRecipes} owned
             </Typography>
-            <Typography sx={{
-              flexGrow: 1
-            }}>
+            <Typography
+              sx={{
+                flexGrow: 1,
+              }}
+            >
               {data.followers} followers
             </Typography>
-            <Typography sx={{
-              flexGrow: 1
-            }}>
+            <Typography
+              sx={{
+                flexGrow: 1,
+              }}
+            >
               {data.following} followed
             </Typography>
           </CardContent>
@@ -214,18 +225,18 @@ const handleLogout = () => {
         </Box>
       </HideOnScroll>
       <TabPanel value={value} index={0}>
-        <FavoriteFeed 
-          user={props.user} 
-          userId={data.userId} 
-          setUser={props.setUser} 
+        <FavoriteFeed
+          user={props.user}
+          userId={data.userId}
+          setUser={props.setUser}
           setFavoriteCount={setFavoriteCount}
-         />
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <OwnedFeed 
-          user={props.user} 
-          userId={data.userId} 
-          setUser={props.setUser} 
+        <OwnedFeed
+          user={props.user}
+          userId={data.userId}
+          setUser={props.setUser}
           setOwnedCount={setOwnedCount}
         />
       </TabPanel>
