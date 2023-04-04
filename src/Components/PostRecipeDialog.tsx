@@ -27,7 +27,7 @@ export default function PostRecipeDialog(props: PostRecipeDialogProps) {
   const [errorMsg, setErrorMsg] = useState("");
   const [openError, setOpenError] = useState(false);
 
-  function handlePostRecipe() {
+  async function handlePostRecipe() {
     if (formState.Title.trim() == "") {
       setErrorMsg("Title cannot be empty!");
       setOpenError(true);
@@ -43,9 +43,17 @@ export default function PostRecipeDialog(props: PostRecipeDialogProps) {
       setOpenError(true);
       return;
     }
-    addNewRecipeFromForm(props.user.token, formState);
     props.setOpenPostDialog(false);
-  }
+    const newRecipe = await addNewRecipeFromForm(props.user.token, formState);
+    if (newRecipe.recipeId != undefined) {
+      props.setUser({
+        ...props.user,
+        favoriteRecipes: [
+          ...props.user.favoriteRecipes,
+          newRecipe.recipeId,
+        ],
+      });
+  }}
 
   const handleClose = () => {
     setFormState(newReipe);

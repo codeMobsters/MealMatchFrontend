@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemButton,  Avatar, CardHeader, Button } from '@mui/material'
+import { Box, List, ListItem, ListItemButton,  Avatar, CardHeader, Button, Card } from '@mui/material'
 import { addNewFollower, deleteFollower } from '../Utils/HelperFunctions';
 import { useQuery } from '@tanstack/react-query';
 import { User, UserListProps } from '../Utils/Types';
@@ -46,20 +46,26 @@ const UsersList = (props : UserListProps) => {
     }}>
         <Box  sx={{
             overflow: "scroll",
-            marginTop: "100px",
+            marginTop:  "100px",
             marginBottom: '56px',
             width: "100%"
         }}
         >
             <SearchBar 
             searchbarPlaceholderText='Search users'
-            searchType={'user'}
+            searchType={props.queryType ? props.queryType : "user"}
             handleSearch={handleUserSearch}
             />
             <List>
                 {data && data.map((user, index) => 
                     <ListItem disablePadding key={index}>
-                        <ListItemButton sx={{display: 'grid', gridTemplateColumns: "2fr 1fr"}}>
+                        <ListItemButton>
+                            <Card
+                            sx={{
+                                width: "100%",
+                                margin: "auto",
+                                display: 'grid', gridTemplateColumns: "2fr 1fr",
+                              }}>
                             <CardHeader
                                 avatar={
                                     <Avatar
@@ -72,7 +78,7 @@ const UsersList = (props : UserListProps) => {
                                 onClick={() => navigate(`/${user.userId}`)}
                                 sx={{
                                 flex: 1,
-                                margin: 2
+                                margin: 0
                                 }}
                             />
                             <Button 
@@ -85,6 +91,7 @@ const UsersList = (props : UserListProps) => {
                                 : <><CheckCircleOutlineOutlinedIcon sx={{marginRight: 1}} /> Follow</>
                             }
                             </Button>
+                            </Card>
                         </ListItemButton>
                     </ListItem>
                 )}

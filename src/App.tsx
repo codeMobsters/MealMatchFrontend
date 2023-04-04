@@ -48,7 +48,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       {user.name && (
         <>
-          <Header user={user} />
+          <Header user={user} setUser={setUser}/>
           <Navbar user={user} setUser={setUser} />
         </>
       )}
@@ -73,15 +73,18 @@ function App() {
           path=":userId"
           element={<Profile user={user} setUser={setUser} />}
         ></Route>
+        {!user.name && (
+        <>
         <Route path="/login" element={<SignIn setUser={setUser} />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
+        </>)}
       </Routes>
     </QueryClientProvider>
   );
 }
 
 export default function ToggleColorMode() {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+  const [mode, setMode] = useState<"light" | "dark">("dark");
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -99,7 +102,7 @@ export default function ToggleColorMode() {
           primary: {
             light: "#5d5d61",
             main: "#3c3c3d",
-            dark: "#3c3c3d"
+            dark: "#3c3c3d",
           },
           secondary: {
             light: "#e9e9f0",

@@ -12,6 +12,7 @@ import {
   LoginResponse,
   NewFollower,
   Filter,
+  NewFavoriteRecipe,
 } from "./Types";
 
 // SIGNUP AND LOGOUT
@@ -71,7 +72,7 @@ export const fetchFollowingUsers = async (
   userId?: number | undefined,
   searchTerm?: string | undefined
 ): Promise<User[]> => {
-  let res = await fetch(`${baseUrl}/Users/${userId}/Followers`, {
+  let res = await fetch(`${baseUrl}/Users/${userId}/Followers${searchTerm == undefined ? "" : `?q=${searchTerm}`}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -85,7 +86,7 @@ export const fetchFollowedUsers = async (
   userId?: number | undefined,
   searchTerm?: string | undefined
 ): Promise<User[]> => {
-  let res = await fetch(`${baseUrl}/Users/${userId}/Following`, {
+  let res = await fetch(`${baseUrl}/Users/${userId}/Following${searchTerm == undefined ? "" : `?q=${searchTerm}`}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -147,7 +148,7 @@ export const fetchFollowingFavoriteRecipes = async (
 export const addNewRecipeFromForm = async (
   token: string,
   newRecipe: NewRecipe
-) => {
+) : Promise<Recipe> => {
   try {
     let formData = new FormData();
 
@@ -194,7 +195,7 @@ export const addNewRecipeFromForm = async (
       body: formData,
     };
     const response = await fetch(`${baseUrl}/Recipes/New`, requestOptions);
-    return response.ok;
+    return response.json();
   } catch (e: any) {
     throw new Error("Problems");
   }
@@ -203,7 +204,7 @@ export const addNewRecipeFromForm = async (
 export const addNewRecipeEdamam = async (
   token: string,
   newRecipe: Recipe
-): Promise<Recipe> => {
+) : Promise<Recipe> => {
   try {
     const requestOptions = {
       method: "POST",
@@ -235,6 +236,26 @@ export const addNewComment = async (
     };
     const response = await fetch(`${baseUrl}/Comments`, requestOptions);
     return response.json();
+  } catch (e: any) {
+    throw new Error("Problems");
+  }
+};
+
+export const addFavoriteToRecipe = async (
+  token: string,
+  newFavoriteRecipe: NewFavoriteRecipe
+) => {
+  try {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFavoriteRecipe),
+    };
+    const response = await fetch(`${baseUrl}/FavoriteRecipes`, requestOptions);
+    return response.ok;
   } catch (e: any) {
     throw new Error("Problems");
   }

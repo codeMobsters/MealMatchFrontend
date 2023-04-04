@@ -15,7 +15,7 @@ interface FavoriteFeedProps {
 
 const FavoriteFeed = (props: FavoriteFeedProps) => {
   
-  const { isLoading, isError, data } = useQuery({
+  const { isLoading, isError, data, refetch } = useQuery({
     queryKey: ["favoriteRecipes"],
     queryFn: async () =>
       (await fetchUserFavoriteRecipes(props.user.token, props.userId)).sort((a, b) => {
@@ -34,6 +34,12 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
     }
   }, [data])
 
+  useEffect(()=> {
+    if (props.userId) {
+      refetch();
+    }
+  }, [props.userId])
+
   if (isLoading) {
     return <span>Loading...</span>;
   }
@@ -44,6 +50,7 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
 
   return (
     <Box className="App">
+      {data.length != 0 && 
       <Box
         sx={{
           height: "100%",
@@ -61,6 +68,7 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
           />
         ))}
       </Box>
+      }
     </Box>
   );
 };

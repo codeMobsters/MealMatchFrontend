@@ -16,7 +16,8 @@ import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentsDialog from "./CommentDialog";
-import { addLikeToRecipe, addNewRecipeEdamam, deleteFavorite, deleteLike } from "../Utils/HelperFunctions";
+import { addLikeToRecipe, addNewRecipeEdamam, deleteFavorite, deleteLike, addFavoriteToRecipe } from "../Utils/HelperFunctions";
+import { Box, List, ListItem } from "@mui/material";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -71,6 +72,7 @@ export default function RecipeCard(props: RecipeCardProps) {
   const handleFavorite = async () => {
     if (props.user?.token) {
       if (!isFavorite) {
+        if (props.recipe.recipeId == undefined) {
         const newRecipe = await addNewRecipeEdamam(
           props.user!.token,
           props.recipe
@@ -86,6 +88,19 @@ export default function RecipeCard(props: RecipeCardProps) {
             ],
           });
         }
+      } else {
+        await addFavoriteToRecipe(props.user!.token,
+          { recipeId: props.recipe.recipeId })
+          setRecipeId(props.recipe.recipeId);
+          setIsFavorite(!isFavorite);
+          props.setUser({
+            ...props.user,
+            favoriteRecipes: [
+              ...props.user.favoriteRecipes,
+              props.recipe.recipeId,
+            ],
+          });
+      }
       } else if (props.user.id !== props.recipe.recipeOwnerId) {
         await deleteFavorite(props.user!.token, recipeId);
         setRecipeId(0);
@@ -152,7 +167,6 @@ export default function RecipeCard(props: RecipeCardProps) {
       ) : (
         <CardHeader
           title={props.recipe.label}
-          subheader={props.recipe.createdAt}
         />
       )}
       <CardMedia
@@ -215,6 +229,38 @@ export default function RecipeCard(props: RecipeCardProps) {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
+        <Typography paragraph>
+          </Typography>
+          <Box sx={{marginBottom: 2}}>
+          {props.recipe.healthLabels &&
+            props.recipe.healthLabels.map((healthlabel, index) => (
+              <Box 
+                component="div" 
+                sx={{ 
+                  display: 'inline',
+                  color: (props.user.healthLabels?.indexOf(healthlabel.toLowerCase()) > -1 ? "green" : "inherit")
+                }}
+                key={index}
+              >
+                {healthlabel + ", "}
+              </Box>
+            ))}
+          </Box>
+          <Box sx={{marginBottom: 2}}>
+          {props.recipe.dietLabels &&
+            props.recipe.dietLabels.map((dietlabel, index) => (
+              <Box 
+                component="div" 
+                sx={{ 
+                  display: 'inline',
+                  color: (props.user.dietLabels?.indexOf(dietlabel.toLowerCase()) > -1 ? "green" : "inherit")
+                }}
+                key={index}
+              >
+                {dietlabel + ", "}
+              </Box>
+            ))}
+          </Box>
           <Typography paragraph>
             <b>Ingredients</b>
           </Typography>
@@ -226,8 +272,8 @@ export default function RecipeCard(props: RecipeCardProps) {
             <b>Method</b>
           </Typography>
           {props.recipe.instructions &&
-            props.recipe.instructions.map(instruction => (
-              <Typography key={instruction}>{instruction}</Typography>
+            props.recipe.instructions.map((instruction, index) => (
+              <Typography key={instruction}>Step {index + 1}: {instruction}</Typography>
             ))}
           {props.recipe.url && (
             <Typography>

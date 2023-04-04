@@ -12,11 +12,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LoginRequest, LoginResponse, SetValue } from "../Utils/Types";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
-import { baseUrl } from "../Utils/Constants";
+import { baseUrl, QRcodeUrl } from "../Utils/Constants";
 
 const theme = createTheme();
 
@@ -32,6 +32,14 @@ export default function SignIn(props: signInProps) {
   const navigate = useNavigate();
   const [openError, setOpenError] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(()=>{
+    const updateWindowDimensions = () => {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", updateWindowDimensions);
+  },[]);
 
   const handleClickError = () => {
     setOpenError(true);
@@ -91,9 +99,9 @@ export default function SignIn(props: signInProps) {
     }
   };
 
+  if (windowWidth < 600) {
   return (
     <div
-      // style={{ height: "100vh" }}
       className="max-w-screen-xl mx-auto items-start shadow-2xl h-screen min-h-full mt-0"
     >
       <Container component="main" maxWidth="xs">
@@ -114,13 +122,14 @@ export default function SignIn(props: signInProps) {
               fontWeight: 700,
               fontSize: "2rem",
               letterSpacing: ".4rem",
-              color: "secondary.main",
+              color: "text.primary",
               textDecoration: "none",
+              mt: 4
             }}
           >
             MealMatch
           </Typography>
-          <Avatar sx={{ m: 1, mt: 6, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, mt: 3, bgcolor: "text.secondary" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -134,17 +143,6 @@ export default function SignIn(props: signInProps) {
           >
             <TextField
               margin="normal"
-              color="primary"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "text.secondary",
-                  },
-                },
-                "& label.Mui-focused": {
-                  color: "text.secondary",
-                },
-              }}
               required
               fullWidth
               id="username"
@@ -162,17 +160,6 @@ export default function SignIn(props: signInProps) {
             />
             <TextField
               margin="normal"
-              color="primary"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "&.Mui-focused fieldset": {
-                    borderColor: "text.secondary",
-                  },
-                },
-                "& label.Mui-focused": {
-                  color: "text.secondary",
-                },
-              }}
               required
               fullWidth
               name="password"
@@ -189,14 +176,14 @@ export default function SignIn(props: signInProps) {
               }
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="secondary" />}
+              control={<Checkbox value="remember" />}
               label="Remember me"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, height: "56px" }}
+              sx={{ mt: 1, mb: 2, height: "46px" }}
             >
               Sign In
             </Button>
@@ -205,7 +192,7 @@ export default function SignIn(props: signInProps) {
                 <Link
                   component={RouterLink}
                   to="/login"
-                  color="secondary"
+                  sx={{ color: "text.primary" }}
                   variant="body2"
                   onClick={handleClickForgotPassword}
                 >
@@ -217,7 +204,7 @@ export default function SignIn(props: signInProps) {
                   component={RouterLink}
                   to="/signup"
                   variant="body2"
-                  color="secondary"
+                  sx={{ color: "text.primary" }}
                 >
                   {"Don't have an account? Sign Up"}
                 </Link>
@@ -254,4 +241,36 @@ export default function SignIn(props: signInProps) {
       </Snackbar>
     </div>
   );
+  }else{
+    return(
+      <Box className="App">
+        <Box
+          sx={{
+            height: "100%",
+            overflow: "scroll",
+            marginTop: "100px",
+            marginBottom: '56px',
+            width: "100%",
+            textAlign: 'center'
+          }}
+        >
+        <Typography
+          variant="h5"
+          sx={{
+            width: "100%",
+            margin: "auto",
+            display: "flex",
+            fontFamily: "monospace",
+            fontWeight: 700,
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          Hi there! <br/>Unfortunately our app is optimized for mobile only. See you there:<br/>
+        </Typography>
+          <img src={QRcodeUrl} alt="qr code"/>
+        </Box>
+      </Box>
+    )
+  }
 }

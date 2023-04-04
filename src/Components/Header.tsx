@@ -82,6 +82,7 @@ function Header(props: HeaderProps) {
             user={props.user}
             openPostDialog={openPostDialog}
             setOpenPostDialog={setOpenPostDialog}
+            setUser={props.setUser}
           />
         </Toolbar>
       </Container>

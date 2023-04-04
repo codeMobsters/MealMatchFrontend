@@ -116,6 +116,10 @@ export interface NewLikedRecipe {
   recipeId: number;
 }
 
+export interface NewFavoriteRecipe {
+  recipeId: number;
+}
+
 export interface NewFollower {
   followedUserId: number;
 }
@@ -146,6 +150,7 @@ export type PostRecipeDialogProps = {
   openPostDialog: boolean;
   setOpenPostDialog: React.Dispatch<React.SetStateAction<boolean>>;
   user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
 };
 
 export type FollowListDialogProps = {
@@ -175,6 +180,7 @@ export type UserUpdateDialogProps = {
 
 export interface HeaderProps {
   user: LoginResponse;
+  setUser: SetValue<LoginResponse>;
 }
 
 export interface UserListProps {

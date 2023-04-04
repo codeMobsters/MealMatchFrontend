@@ -14,7 +14,7 @@ interface OwnedFeedProps {
 }
 
 const OwnedFeed = (props: OwnedFeedProps) => {
-  const { isLoading, isError, data } = useQuery({
+  const { isLoading, isError, data, refetch } = useQuery({
     queryKey: ["ownedRecipes"],
     queryFn: async () =>
       (await fetchUserOwnedRecipes(props.user.token, props.userId)).sort((a, b) => {
@@ -30,6 +30,12 @@ const OwnedFeed = (props: OwnedFeedProps) => {
     }
   }, [data])
 
+  useEffect(()=> {
+    if (props.userId) {
+      refetch();
+    }
+  }, [props.userId])
+
   if (isLoading) {
     return <span>Loading...</span>;
   }
@@ -40,6 +46,7 @@ const OwnedFeed = (props: OwnedFeedProps) => {
 
   return (
     <Box className="App">
+      {data.length != 0 && 
       <Box
         sx={{
           height: "100%",
@@ -58,6 +65,7 @@ const OwnedFeed = (props: OwnedFeedProps) => {
           />
         ))}
       </Box>
+}
     </Box>
   );
 };

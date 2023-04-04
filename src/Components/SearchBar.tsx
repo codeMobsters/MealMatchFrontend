@@ -32,10 +32,13 @@ const SearchBar = (props :SearchBarProps) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(()=>{
+      const updateWindowDimensions = () => {
         setWindowWidth(window.innerWidth);
-    },[window.innerWidth])
+      }
+      window.addEventListener("resize", updateWindowDimensions);
+    },[]);
   
-    if (windowWidth < 1200) {
+    if (windowWidth < 600) {
         return (
             <Box className="App">
               <HideOnScroll>

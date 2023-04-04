@@ -12,9 +12,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { RegisterRequest } from "../Utils/Types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { signUpUser } from "../Utils/HelperFunctions";
+import { QRcodeUrl } from "../Utils/Constants";
 
 const theme = createTheme();
 
@@ -27,6 +28,14 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(()=>{
+    const updateWindowDimensions = () => {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", updateWindowDimensions);
+  },[]);
 
   const handleClickError = () => {
     setOpenError(true);
@@ -72,6 +81,7 @@ export default function SignUp() {
       handleClickError();
     }
   };
+  if (windowWidth < 600) {
   return (
     <div
       // style={{ height: "100%" }}
@@ -86,7 +96,23 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, mt: 6, bgcolor: "secondary.main" }}>
+            <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              display: "flex",
+              fontFamily: "monospace",
+              fontWeight: 700,
+              fontSize: "2rem",
+              letterSpacing: ".4rem",
+              color: "text.primary",
+              textDecoration: "none",
+              mt: 4
+            }}
+          >
+            MealMatch
+          </Typography>
+            <Avatar sx={{ m: 1, mt: 3, bgcolor: "text.secondary" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -96,7 +122,7 @@ export default function SignUp() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
+              sx={{ mt: 2 }}
             >
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -156,13 +182,13 @@ export default function SignUp() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, height: "46px" }}
               >
                 Sign Up
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link component={RouterLink} to="/login" variant="body2">
+                  <Link component={RouterLink} sx={{ color: "text.primary" }} to="/login" variant="body2">
                     Already have an account? Sign in
                   </Link>
                 </Grid>
@@ -196,4 +222,36 @@ export default function SignUp() {
       </Snackbar>
     </div>
   );
+  }else{
+    return(
+      <Box className="App">
+        <Box
+          sx={{
+            height: "100%",
+            overflow: "scroll",
+            marginTop: "100px",
+            marginBottom: '56px',
+            width: "100%",
+            textAlign: 'center'
+          }}
+        >
+        <Typography
+          variant="h5"
+          sx={{
+            width: "100%",
+            margin: "auto",
+            display: "flex",
+            fontFamily: "monospace",
+            fontWeight: 700,
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          Hi there! <br/>Unfortunately our app is optimized for mobile only. See you there:<br/>
+        </Typography>
+        <img src={QRcodeUrl} alt="qr code"/>
+        </Box>
+      </Box>
+    )
+  }
 }

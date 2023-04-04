@@ -123,5 +123,7 @@ export const filter: Filter = {
   mealType: [],
 };
 
-export const baseUrl = "https://localhost:7031";
-// export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+// export const baseUrl = "https://localhost:7031";
+export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+
+export const QRcodeUrl = "https://mobster1theblob.blob.core.windows.net/images/MealMatchQR.png";

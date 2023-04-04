@@ -1,4 +1,16 @@
 .App {
   display: 'flex';
   width: 100%;
+  max-width: 100vw;
+  margin: auto;
+}
+@media only screen and (min-width: 420px) {
+  .App {
+    max-width: 450px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .App {
+    max-width: 550px;
+  }
 }

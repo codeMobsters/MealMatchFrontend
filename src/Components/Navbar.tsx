@@ -30,7 +30,7 @@ export default function Navbar(props: NavbarProps) {
   }
 
   function handleExplore() {
-    navigate("/explore", { state: { dummyVariable: 0 } });
+    navigate("/explore", { state: { dummyVariable: Math. random() } });
     window.scrollTo({
       top: 0,
       left: 0,

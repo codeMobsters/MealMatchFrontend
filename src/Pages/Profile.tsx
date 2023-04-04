@@ -37,9 +37,9 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`tab-${index}`}
       aria-labelledby={`tab-${index}`}
-      style={{ marginTop: "155px" }}
+      style={{ marginTop: "170px" }}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ }}>{children}</Box>}
     </div>
   );
 }
@@ -76,6 +76,7 @@ const Profile = (props: ProfileProps) => {
   
   const params = useParams();
   const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const { isLoading, isError, data, refetch } = useQuery({
     queryKey: ["profileUser"],
@@ -87,6 +88,13 @@ const Profile = (props: ProfileProps) => {
   useEffect(() => {
     refetch();
   }, [params]);
+
+  useEffect(()=>{
+    const updateWindowDimensions = () => {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", updateWindowDimensions);
+  },[]);
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -121,8 +129,9 @@ const Profile = (props: ProfileProps) => {
     navigate("/settings");
   }
 
-  return (
-    <Box className="App">
+  if (windowWidth < 600) {
+    return (
+    <>
       <HideOnScroll>
         <Box
           sx={{
@@ -140,17 +149,19 @@ const Profile = (props: ProfileProps) => {
               <Avatar
                 aria-label="Profile Picture"
                 src={data.profilePictureUrl}
+                sx={{ width: 76, height: 76  }}
               />
             }
             title={data.name}
             action={
-              <>
+              <Box sx={{ height: 76 }}>
                 <IconButton
                   color="secondary"
                   aria-label="Edit Profile"
                   onClick={() => handleGoToSettings()}
+                  sx={{ height: 76 }}
                 >
-                  <EditIcon />
+                  <EditIcon sx={{ width: 30, height: 30  }} />
                 </IconButton>
                 <IconButton aria-label="Logout" onClick={() => handleLogout()}>
                   <LogoutIcon
@@ -159,10 +170,11 @@ const Profile = (props: ProfileProps) => {
                       background: "red",
                       borderRadius: "30px",
                       padding: "3px",
+                      width: 30, height: 30
                     }}
                   />
                 </IconButton>
-              </>
+              </Box>
             }
             sx={{
               margin: 2,
@@ -183,14 +195,14 @@ const Profile = (props: ProfileProps) => {
               }}
             >
               {favoriteCount > 0 ? favoriteCount - 1 : data.favoriteRecipes}{" "}
-              favorites
+              Favorites
             </Typography>
             <Typography
               sx={{
                 flexGrow: 1,
               }}
             >
-              {ownedCount > 0 ? ownedCount - 1 : data.ownedRecipes} owned
+              {ownedCount > 0 ? ownedCount - 1 : data.ownedRecipes} Owned
             </Typography>
             <Typography
               sx={{
@@ -198,7 +210,7 @@ const Profile = (props: ProfileProps) => {
               }}
               onClick={() => setOpenFollowDialog(1)}
             >
-              {data.followers} followers
+              {data.followers} Followers
             </Typography>
             <Typography
               sx={{
@@ -206,7 +218,7 @@ const Profile = (props: ProfileProps) => {
               }}
               onClick={() => setOpenFollowDialog(2)}
             >
-              {data.following} followed
+              {data.following} Following
             </Typography>
           </CardContent>
           <AppBar position="static">
@@ -231,6 +243,14 @@ const Profile = (props: ProfileProps) => {
           </AppBar>
         </Box>
       </HideOnScroll>
+      <FollowListDialog
+            user={props.user}
+            refetch={refetch}
+            setUser={props.setUser}
+            userId={data.userId}
+            openFollowDialog={openFollowDialog}
+            setOpenFollowDialog={setOpenFollowDialog}
+      />
       <TabPanel value={value} index={0}>
         <FavoriteFeed
           user={props.user}
@@ -247,16 +267,11 @@ const Profile = (props: ProfileProps) => {
           setOwnedCount={setOwnedCount}
         />
       </TabPanel>
-      <FollowListDialog
-            user={props.user}
-            refetch={refetch}
-            setUser={props.setUser}
-            userId={data.userId}
-            openFollowDialog={openFollowDialog}
-            setOpenFollowDialog={setOpenFollowDialog}
-      />
-    </Box>
-  );
+      </>
+  )
+  }else{
+    return(<Box sx={{height: '0px'}}></Box>);
+  }
 };
 
 export default Profile;

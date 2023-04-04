@@ -53,6 +53,22 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
       }
     }
   }
+  function handleRemoveIngredient() {
+    if (props.formState) {
+      if (ingredientList && ingredientList.length > 0) {
+        props.formState.Ingredients.pop();
+
+        setIngredientList(props.formState.Ingredients);
+        props.setFormState({
+          ...props.formState,
+          Ingredients: props.formState.Ingredients,
+        });
+      } else {
+        props.setErrorMsg("You have no ingredient to remove!");
+        props.setOpenError(true);
+      }
+    }
+  }
 
   function handleAddInstruction() {
     if (props.formState) {
@@ -65,6 +81,22 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         });
       } else {
         props.setErrorMsg("An error occured while adding instruction!");
+        props.setOpenError(true);
+      }
+    }
+  }
+  function handleRemoveInstruction() {
+    if (props.formState) {
+      if (instructionList && instructionList.length > 0) {
+        props.formState.Instructions.pop();
+
+        setInstructionList(props.formState.Instructions);
+        props.setFormState({
+          ...props.formState,
+          Instructions: props.formState.Instructions,
+        });
+      } else {
+        props.setErrorMsg("You have no instructions to remove!");
         props.setOpenError(true);
       }
     }
@@ -239,14 +271,34 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           />
         </FormControl>
       </Container>
-
+      <Container
+        sx={{
+          padding: 0,
+          marginBottom: 2,
+          marginTop: 2,
+        }}
+      >
       <Button
         onClick={() => handleAddIngredient()}
-        sx={{ marginLeft: "auto", border: 1, borderColor: "text.secondary" }}
+        sx={{ marginLeft: "auto", border: 1, borderColor: "text.secondary",
+        marginRight: 1, }}
         color="inherit"
       >
         Add ingredient
       </Button>
+      <Button
+        onClick={() => handleRemoveIngredient()}
+        sx={{ 
+          marginLeft: "auto", 
+          border: 1, 
+          borderColor: "text.secondary"
+        }}
+        color="inherit"
+      >
+        Remove ingredient
+      </Button>
+      </Container>
+      
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
 
       <Typography>Instructions:</Typography>
@@ -274,14 +326,37 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           />
         </FormControl>
       </Container>
-
+      <Container
+        sx={{
+          padding: 0,
+          marginBottom: 2,
+          marginTop: 2,
+        }}
+      >
       <Button
         onClick={() => handleAddInstruction()}
-        sx={{ marginLeft: "auto", border: 1, borderColor: "text.secondary" }}
+        sx={{ 
+          marginLeft: "auto",
+          marginRight: 1,
+          border: 1, 
+          borderColor: "text.secondary"
+        }}
         color="inherit"
       >
         Add instruction step
       </Button>
+      <Button
+        onClick={() => handleRemoveInstruction()}
+        sx={{ 
+          marginLeft: "auto", 
+          border: 1, 
+          borderColor: "text.secondary"
+        }}
+        color="inherit"
+      >
+        Remove instruction step
+      </Button>
+      </Container>
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
 
       <MultipleSelectChip
@@ -339,10 +414,11 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         }}
       />
 
-      <FormControl sx={{ marginTop: 2, marginBottom: 3, display: "block" }}>
+      <FormControl sx={{ marginTop: 2, marginBottom: 3, display: "block"}}>
         <Input
           aria-describedby="recipe-time-helper-text"
           type="file"
+          sx={{ m: 1, width: '95%' }}
           id="recipe-image"
           onChange={(e: ChangeEvent<HTMLInputElement>) => fileChange(e)}
         />

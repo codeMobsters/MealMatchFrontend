@@ -47,7 +47,7 @@ export default function MultipleSelectChip(props: MultipleSelectChipProps) {
 
 
   return (
-    <FormControl sx={{ m: 1, width: 300 }}>
+    <FormControl sx={{ m: 1, width: '95%' }}>
       <InputLabel id="multiple-chip-label">{props.seedType}</InputLabel>
       <Select
         labelId="multiple-chip-label"

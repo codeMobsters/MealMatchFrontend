@@ -9,6 +9,7 @@ import {
 import { LoginResponse, SetValue } from "../Utils/Types";
 import "../App.css";
 import UserUpdateDialog from "../Components/UserUpdateDialog";
+import { useNavigate } from "react-router-dom";
 
 interface ProfileProps {
   user: LoginResponse;
@@ -17,6 +18,7 @@ interface ProfileProps {
 
 const ProfileSettings = (props: ProfileProps) => {
   const[openUserUpdateDialog, setOpenUserUpdateDialog] = useState("");
+  const navigate = useNavigate();
 
   return (
         <Box
@@ -58,6 +60,13 @@ const ProfileSettings = (props: ProfileProps) => {
             onClick={() => setOpenUserUpdateDialog("pref")}
           >
             Change preferences
+          </Button>
+          <Button
+            color="inherit" 
+            sx={{border: 1, borderColor: "text.secondary", margin: 1}}
+            onClick={() => navigate(-1)}
+          >
+            Cancel / Go back
           </Button>
           </Container>
           <UserUpdateDialog 

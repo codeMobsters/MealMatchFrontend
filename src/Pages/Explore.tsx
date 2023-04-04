@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SearchBar from "../Components/SearchBar";
 import ExploreFilterDialog from "../Components/ExploreFilterDialog";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 interface ExploreProps {
   user: LoginResponse;
@@ -73,15 +74,15 @@ const Explore = (props: ExploreProps) => {
   });
 
   useEffect(() => {
-    fetchNextPage();
+    setSearchTerm(undefined);
   }, [state]);
 
   function handleExploreSearch(term: string) {
-    term == "" ? setSearchTerm(undefined) : setSearchTerm(term);
+    term == "" ? setSearchTerm('') : setSearchTerm(term);
   }
 
   useEffect(() => {
-    refetch();
+      refetch();
   }, [searchTerm]);
 
   if (isFetching) {
@@ -100,13 +101,17 @@ const Explore = (props: ExploreProps) => {
             <Button
               onClick={() => handlePostAction()}
               sx={{
+                position: "absolute",
+                top : 63,
+                left: 10,
                 border: 1,
-                borderColor: "#ffffff",
+                color: "inherit",
                 borderRadius: 2,
                 padding: 0.5,
+                pr: 2
               }}
             >
-              Filter
+              <><SearchOutlinedIcon sx={{marginRight: 1}} /> Filter</>
             </Button>
             <ExploreFilterDialog
               user={props.user}
