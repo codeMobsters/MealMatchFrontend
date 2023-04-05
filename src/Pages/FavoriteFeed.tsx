@@ -1,10 +1,9 @@
 import { Box } from "@mui/material";
-import { LoginResponse, SetValue, FavoriteRecipe } from "../Utils/Types";
+import { LoginResponse, SetValue } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
 import { fetchUserFavoriteRecipes } from "../Utils/HelperFunctions";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import SearchBar from "../Components/SearchBar";
 
 interface FavoriteFeedProps {
   user: LoginResponse;
@@ -56,7 +55,8 @@ const FavoriteFeed = (props: FavoriteFeedProps) => {
           height: "100%",
           overflow: "scroll",
           marginTop: "100px",
-          marginBottom: '56px'
+          marginBottom: '56px',
+          width: '100vw'
         }}
       >
         {data.map((recipe, index) => (

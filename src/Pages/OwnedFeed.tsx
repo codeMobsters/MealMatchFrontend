@@ -53,7 +53,7 @@ const OwnedFeed = (props: OwnedFeedProps) => {
           overflow: "scroll",
           marginTop: "100px",
           marginBottom: '56px',
-          width: "100%"
+          width: "100vw"
         }}
       >
         {data.map((recipe, index) => (

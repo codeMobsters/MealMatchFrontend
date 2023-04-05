@@ -33,6 +33,7 @@ function App() {
     dietLabels: [],
     healthLabels: [],
     favoriteRecipes: [],
+    favoriteRecipesSources: [],
     likedRecipes: [],
     followedUserIds: [],
   });
@@ -117,7 +118,7 @@ export default function ToggleColorMode() {
           values: {
             xs: 0,
             tablet: 420,
-            desktop: 1200
+            desktop: 600
           },
         }
       }),
@@ -125,9 +126,9 @@ export default function ToggleColorMode() {
   );
 
   theme.typography.h6 = {
-    fontSize: '200%',
-    '@media (min-width:1200px)': {
-      fontSize: '400%',
+    fontSize: '150%',
+    '@media (min-width:600px)': {
+      fontSize: '300%',
     }
   };
   

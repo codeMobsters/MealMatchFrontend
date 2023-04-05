@@ -69,7 +69,7 @@ const Explore = (props: ExploreProps) => {
     refetchOnWindowFocus: false,
     queryFn: fetchRecipes,
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.url;
+      return pages.length;
     },
   });
 
@@ -78,7 +78,7 @@ const Explore = (props: ExploreProps) => {
   }, [state]);
 
   function handleExploreSearch(term: string) {
-    term == "" ? setSearchTerm('') : setSearchTerm(term);
+    term == "" ? setSearchTerm(undefined) : setSearchTerm(term);
   }
 
   useEffect(() => {

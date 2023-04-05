@@ -276,26 +276,29 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           padding: 0,
           marginBottom: 2,
           marginTop: 2,
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr'
         }}
       >
       <Button
         onClick={() => handleAddIngredient()}
         sx={{ marginLeft: "auto", border: 1, borderColor: "text.secondary",
-        marginRight: 1, }}
+        marginRight: 1, width: '95%'}}
         color="inherit"
       >
-        Add ingredient
+        Add
       </Button>
       <Button
         onClick={() => handleRemoveIngredient()}
         sx={{ 
-          marginLeft: "auto", 
+          marginLeft: 1, 
           border: 1, 
-          borderColor: "text.secondary"
+          borderColor: "text.secondary",
+          width: '95%'
         }}
         color="inherit"
       >
-        Remove ingredient
+        Remove
       </Button>
       </Container>
       
@@ -331,6 +334,8 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
           padding: 0,
           marginBottom: 2,
           marginTop: 2,
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr'
         }}
       >
       <Button
@@ -338,23 +343,25 @@ const PostRecipeForm = (props: PostRecipeFormProps) => {
         sx={{ 
           marginLeft: "auto",
           marginRight: 1,
+          width: '95%',
           border: 1, 
           borderColor: "text.secondary"
         }}
         color="inherit"
       >
-        Add instruction step
+        Add
       </Button>
       <Button
         onClick={() => handleRemoveInstruction()}
         sx={{ 
-          marginLeft: "auto", 
+          marginLeft: 1, 
           border: 1, 
+          width: '95%',
           borderColor: "text.secondary"
         }}
         color="inherit"
       >
-        Remove instruction step
+        Remove
       </Button>
       </Container>
       <Divider sx={{ marginTop: 1, marginBottom: 1 }} />

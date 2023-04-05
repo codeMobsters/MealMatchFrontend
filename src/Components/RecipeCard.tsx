@@ -50,7 +50,9 @@ export default function RecipeCard(props: RecipeCardProps) {
     props.recipe.recipeId != undefined &&
       props.user.favoriteRecipes != undefined
       ? props.user.favoriteRecipes.includes(props.recipe.recipeId)
-      : false
+      : props.recipe.url != undefined && props.user.favoriteRecipesSources != undefined
+        ? props.user.favoriteRecipesSources.includes(props.recipe.url)
+        : false
   );
   const [isLiked, setIsLiked] = useState(
     props.recipe.recipeId != undefined &&
@@ -93,12 +95,13 @@ export default function RecipeCard(props: RecipeCardProps) {
           { recipeId: props.recipe.recipeId })
           setRecipeId(props.recipe.recipeId);
           setIsFavorite(!isFavorite);
+          let source = props.recipe.url != undefined ? [...props.user.favoriteRecipesSources, props.recipe.url] : [...props.user.favoriteRecipesSources]
           props.setUser({
             ...props.user,
             favoriteRecipes: [
               ...props.user.favoriteRecipes,
               props.recipe.recipeId,
-            ],
+            ], favoriteRecipesSources: [...source]
           });
       }
       } else if (props.user.id !== props.recipe.recipeOwnerId) {
@@ -109,6 +112,9 @@ export default function RecipeCard(props: RecipeCardProps) {
           ...props.user,
           favoriteRecipes: props.user.favoriteRecipes.filter(
             id => id !== recipeId
+          ),
+          favoriteRecipesSources: props.user.favoriteRecipesSources.filter(
+            url => url !== props.recipe.url
           ),
         });
       }
@@ -148,8 +154,10 @@ export default function RecipeCard(props: RecipeCardProps) {
   return (
     <Card
       sx={{
-        maxWidth: { xs: "100vw", tablet: "450px", desktop: "550px" },
+        maxWidth: "100vw",
         margin: "auto",
+        borderBottom: 1,
+        borderColor: "divider"
       }}
     >
       {props.recipe.userProfilePictureUrl ? (
@@ -162,7 +170,9 @@ export default function RecipeCard(props: RecipeCardProps) {
             ></Avatar>
           }
           title={props.recipe.label}
-          subheader={`By ${props.recipe.recipeOwnerName}`}
+          subheader={`By ${
+            props.recipe.recipeOwnerName == "Mr String" ? "Edamam" : props.recipe.recipeOwnerName
+          }`}
         />
       ) : (
         <CardHeader
@@ -175,13 +185,6 @@ export default function RecipeCard(props: RecipeCardProps) {
         image={props.recipe.image}
         alt={props.recipe.label}
       />
-      {props.recipe.instructions && (
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {props.recipe.instructions}
-          </Typography>
-        </CardContent>
-      )}
       <CardActions disableSpacing>
         <IconButton
           sx={{ marginRight: 1 }}

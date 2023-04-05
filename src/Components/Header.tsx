@@ -75,7 +75,13 @@ function Header(props: HeaderProps) {
           </IconButton>
           <Typography
             onClick={() => handlePostAction()}
-            sx={{ border: 1, borderColor: "#ffffff", borderRadius: 2, padding: 0.5 }}
+            sx={{ 
+              border: 1, 
+              borderColor: "#ffffff", 
+              borderRadius: 2, 
+              padding: 0.5, 
+              display: { xs: "block", tablet: "block", desktop: "none" }
+            }}
           > Add recipe
           </Typography>
           <PostRecipeDialog

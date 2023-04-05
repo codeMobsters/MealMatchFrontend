@@ -247,9 +247,6 @@ export default function SignIn(props: signInProps) {
         <Box
           sx={{
             height: "100%",
-            overflow: "scroll",
-            marginTop: "100px",
-            marginBottom: '56px',
             width: "100%",
             textAlign: 'center'
           }}
@@ -266,7 +263,7 @@ export default function SignIn(props: signInProps) {
             textDecoration: "none",
           }}
         >
-          Hi there! <br/>Unfortunately our app is optimized for mobile only. See you there:<br/>
+          Hi there! <br/>Unfortunately as of yet our app is optimized for mobile only. See you there:<br/>
         </Typography>
           <img src={QRcodeUrl} alt="qr code"/>
         </Box>

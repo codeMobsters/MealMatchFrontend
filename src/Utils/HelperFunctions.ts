@@ -133,15 +133,17 @@ export const fetchUserFavoriteRecipes = async (
 
 export const fetchFollowingFavoriteRecipes = async (
   token: string,
-  id: number
-): Promise<FavoriteRecipe[]> => {
-  let res = await fetch(`${baseUrl}/FavoriteRecipes/Followers`, {
+  id: number,
+  pageParam: number
+) => {
+  let res = await fetch(`${baseUrl}/FavoriteRecipes/Followers?page=${pageParam}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return res.json();
+  const results = await res.json() as FavoriteRecipe[] 
+  return { results, nextPage: pageParam + 1 }
 };
 
 // POST METHODS

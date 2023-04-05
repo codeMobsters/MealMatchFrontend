@@ -23,6 +23,7 @@ export interface LoginResponse {
   dietLabels: string[];
   healthLabels: string[];
   favoriteRecipes: number[];
+  favoriteRecipesSources: string[];
   likedRecipes: number[];
   followedUserIds: number[];
 }

@@ -12,7 +12,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { Edit as EditIcon, Logout as LogoutIcon } from "@mui/icons-material";
+import { Logout as LogoutIcon, PortableWifiOffSharp } from "@mui/icons-material";
 import { LoginResponse, SetValue } from "../Utils/Types";
 import FavoriteFeed from "./FavoriteFeed";
 import OwnedFeed from "./OwnedFeed";
@@ -21,6 +21,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchUser } from "../Utils/HelperFunctions";
 import FollowListDialog from "../Components/FollowListDialog";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -114,6 +115,7 @@ const Profile = (props: ProfileProps) => {
       dietLabels: [],
       healthLabels: [],
       favoriteRecipes: [],
+      favoriteRecipesSources: [],
       likedRecipes: [],
       followedUserIds: [],
     });
@@ -149,21 +151,25 @@ const Profile = (props: ProfileProps) => {
               <Avatar
                 aria-label="Profile Picture"
                 src={data.profilePictureUrl}
-                sx={{ width: 76, height: 76  }}
+                sx={{ width: 76, height: 76 }}
               />
             }
             title={data.name}
+            titleTypographyProps={{variant:'h6' }}
             action={
-              <Box sx={{ height: 76 }}>
+              <Box sx={{
+                  display: (params.userId && parseInt(params?.userId) == props.user.id ? 'grid' : 'none'), 
+                  flexDirection: '1fr'
+                }}>
                 <IconButton
                   color="secondary"
                   aria-label="Edit Profile"
                   onClick={() => handleGoToSettings()}
-                  sx={{ height: 76 }}
+                  sx={{ width: 30, height: 30, marginBottom: 2}}
                 >
-                  <EditIcon sx={{ width: 30, height: 30  }} />
+                  <SettingsOutlinedIcon sx={{ width: 30, height: 30  }} />
                 </IconButton>
-                <IconButton aria-label="Logout" onClick={() => handleLogout()}>
+                <IconButton sx={{ width: 30, height: 30 }} aria-label="Logout" onClick={() => handleLogout()}>
                   <LogoutIcon
                     sx={{
                       color: "white",
@@ -178,6 +184,7 @@ const Profile = (props: ProfileProps) => {
             }
             sx={{
               margin: 2,
+              ml:0
             }}
           />
           <CardContent

@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { UserUpdateDialogProps, UserUpdateRequest } from "../Utils/Types";
-import { Preferences } from "../Utils/Constants";
+import { Preferences, githubIconBlobUrl, linkedInIconBlobUrl, profilePicMobster1, profilePicMobster2, userIdMobster1, userIdMobster1Github, userIdMobster1LinkedIn, userIdMobster2, userIdMobster2Github, userIdMobster2LinkedIn } from "../Utils/Constants";
 import MultipleSelectChip from "./ChipSelector";
 import {
   FormControl,
@@ -20,10 +20,13 @@ import {
   useTheme,
   Alert,
   Snackbar,
+  Card,
+  CardContent,
+  Container,
 } from "@mui/material";
 import { isValidFileUploaded, updateUser } from "../Utils/HelperFunctions";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -37,7 +40,6 @@ const Transition = forwardRef(function Transition(
 export default function UserUpdateDialog(props: UserUpdateDialogProps) {
   const theme = useTheme();
   const [userName, setUserName] = useState<string>("");
-  const [userPass, setUserPass] = useState<string>("");
   const [userPic, setUserPic] = useState<File>();
   const [dietLabels, setDietLabels] = useState<string[]>(props.user.dietLabels);
   const [healthLabels, setHealthLabels] = useState<string[]>(
@@ -47,23 +49,6 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
   const [errorMsg, setErrorMsg] = useState("");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    props.setUser({
-      id: 0,
-      name: "",
-      token: "",
-      profilePictureUrl: "",
-      profileSettings: [],
-      dietLabels: [],
-      healthLabels: [],
-      favoriteRecipes: [],
-      likedRecipes: [],
-      followedUserIds: [],
-    });
-    queryClient.invalidateQueries();
-    navigate("/");
-  };
 
   const handleClose = () => {
     props.setOpenUserUpdateDialog("");
@@ -171,6 +156,7 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
               marginLeft: "auto",
               border: 1,
               borderColor: "text.secondary",
+              display: (props.openUserUpdateDialog == "about" ? "none" : "block")
             }}
             onClick={() => handleUpdateUser()}
           >
@@ -179,7 +165,8 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "80vw", margin: 2 }}>
+      <Box sx={{ width: "90vw", margin: 2 }}>
+        <Container sx={{ display: 'grid', gridTemplateColumns: '1fr 4fr'}}>
         <CardHeader
           avatar={
             <Avatar
@@ -188,9 +175,20 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
               src={props.user.profilePictureUrl}
             ></Avatar>
           }
-          title={props.user.name}
-          sx={{ marginTop: 2, marginBottom: 2 }}
+          sx={{
+            display: (props.openUserUpdateDialog == "about" ? "none" : "inline-block"),
+            paddingRight: 0
+          }}
         />
+        <CardHeader
+          title={props.user.name}
+          sx={{
+            display: (props.openUserUpdateDialog == "about" ? "none" : "inline-block"),
+            paddingLeft: 1,
+            marginTop: 0.5
+          }}
+        />
+        </Container>
         <Box>
           {props.openUserUpdateDialog == "name" ? (
             <>
@@ -219,7 +217,138 @@ export default function UserUpdateDialog(props: UserUpdateDialogProps) {
                 />
               </FormControl>
             </>
-          ) : (
+          ) : props.openUserUpdateDialog == "about" ? (
+            <>
+              <Card
+                sx={{
+                    width: "100%",
+                    margin: "auto",
+                    display: 'grid', 
+                    gridTemplateColumns: "2fr 1fr"
+                  }}>
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            aria-label="Rodrigo Picture"
+                            src={profilePicMobster1}
+                        />
+                    }
+                    title="Rodrigo Moncorvo"
+                    subheader="Mobster 1"
+                    onClick={() => navigate(`/${userIdMobster1}`)}
+                    sx={{
+                    flex: 1,
+                    margin: 0
+                    }}
+                />
+                <Container>
+                <Button 
+                  color='inherit'
+                >
+                  <a target="_blank" href={userIdMobster1LinkedIn}>
+                    <img src={linkedInIconBlobUrl} alt="linkedIn" style={{maxHeight: '20px'}} />
+                  </a>
+                </Button>
+                <Button 
+                  color='inherit'
+                >
+                  <a target="_blank" href={userIdMobster1Github}>
+                  <img src={githubIconBlobUrl} alt="github" style={{maxHeight: '20px'}}/>
+                  </a>
+                </Button>
+                </Container>
+                <CardContent sx={{ gridColumnStart: 1, gridColumnEnd: 4}}>
+                  <Typography>
+                    Experienced FullStack Developer, proficient in C# and Javascript with Python and AI knowledge. 
+                    From Brazil, currently living in Utrecht. 
+                    Skilled problem solver with a fast learning ability.
+                  </Typography>
+                </CardContent>
+              </Card>
+              <Card
+                sx={{
+                    width: "100%",
+                    margin: "auto",
+                    display: 'grid', 
+                    marginTop: 2,
+                    gridTemplateColumns: "2fr 1fr"
+                  }}>
+                <CardHeader
+                    avatar={
+                        <Avatar
+                            aria-label="Lajos Picture"
+                            src={profilePicMobster2}
+                        />
+                    }
+                    title="Lajos Horváth"
+                    subheader="Mobster 2"
+                    onClick={() => navigate(`/${userIdMobster2}`)}
+                    sx={{
+                    flex: 1,
+                    margin: 0
+                    }}
+                />
+                <Container>
+                <Button 
+                  color='inherit'
+                >
+                  <a target="_blank" href={userIdMobster2LinkedIn}>
+                    <img src={linkedInIconBlobUrl} alt="linkedIn" style={{maxHeight: '20px'}} />
+                  </a>
+                </Button>
+                <Button 
+                  color='inherit'
+                >
+                  <a target="_blank" href={userIdMobster2Github}>
+                  <img src={githubIconBlobUrl} alt="github" style={{maxHeight: '20px'}} />
+                  </a>
+                </Button>
+                </Container>
+                <CardContent sx={{ gridColumnStart: 1, gridColumnEnd: 4}}>
+                  <Typography>
+                  I am a fullstack Developer proficient in C#, JavaScript, and TypeScript.
+                  Currently residing in Wormer, NL. 
+                  I am passionate about programming and always eager to explore 
+                  new technologies and approaches to improve my skills.
+                  Committed to exceeding expectations. I am a firm believer in the importance of 
+                  continuous learning and growth. Lucky me, I became a programmer!
+                  </Typography>
+                </CardContent>
+              </Card>
+              <Card
+                sx={{
+                    width: "100%",
+                    margin: "auto",
+                    display: 'flex', 
+                    marginTop: 2
+                  }}>
+                <CardContent sx={{ gridColumnStart: 1, gridColumnEnd: 4}}>
+                  <Typography
+                  dangerouslySetInnerHTML={{ __html: 
+                  `<p>
+                  About this application: <br>
+
+                  This is our final project that we made in 2 short weeks to graduate from 
+                  <a target="_blank" href="https://www.salt.dev/" >SALT</a>.
+                  The idea is to have an Instagram-style app for recipes,
+                  without duckfaces and cat pictures
+                  (those we can still get enough of on Instagram).<br>
+                  Please feel free to use our app and 
+                  contact us with any questions or feedback!<br><br>
+                  The code base can be found on Github, in public repositories:<br>
+                  <a target="_blank" href="https://github.com/codeMobsters/MealMatchAPI">.Net API backend</a><br>
+                  <a target="_blank" href="https://github.com/codeMobsters/MealMatchFrontend">React frontend</a><br><br>
+                  For the recipe feed we have used
+                  <a target="_blank" href="https://www.edamam.com/">Edamam API</a><br><br>
+                  This app is a show of skill. We do not monetize it in any way,
+                  no data is collected.
+                  </p>` 
+                  }}>
+                  </Typography>
+                </CardContent>
+              </Card>
+            </>
+          ): (
             <>
               <Typography>Dietary tags to include in feed</Typography>
               <MultipleSelectChip
