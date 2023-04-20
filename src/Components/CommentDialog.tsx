@@ -108,7 +108,7 @@ export default function CommentsDialog(props: CommentsDialogProps) {
           }}
         >
           {props.comments &&
-            props.comments.map(comment => (
+            props.comments.map((comment) => (
               <Card key={comment.commentId}>
                 <CardHeader
                   avatar={
@@ -119,7 +119,7 @@ export default function CommentsDialog(props: CommentsDialogProps) {
                     ></Avatar>
                   }
                   title={comment.userName}
-                  subheader={comment.commentAt}
+                  subheader={new Date(comment.commentAt).toDateString()}
                 ></CardHeader>
                 <CardContent>
                   <Typography variant="body2">{comment.commentText}</Typography>
@@ -147,8 +147,8 @@ export default function CommentsDialog(props: CommentsDialogProps) {
               placeholder="Add your comment"
               sx={{ width: "80vw" }}
               value={commentText}
-              onChange={e => setCommentText(e.target.value)}
-              onKeyDown={event => {
+              onChange={(e) => setCommentText(e.target.value)}
+              onKeyDown={(event) => {
                 if (event.key === "Enter") handlePostComment();
               }}
             />
