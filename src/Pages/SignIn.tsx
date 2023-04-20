@@ -34,12 +34,12 @@ export default function SignIn(props: signInProps) {
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  useEffect(()=>{
+  useEffect(() => {
     const updateWindowDimensions = () => {
       setWindowWidth(window.innerWidth);
-    }
+    };
     window.addEventListener("resize", updateWindowDimensions);
-  },[]);
+  }, []);
 
   const handleClickError = () => {
     setOpenError(true);
@@ -100,174 +100,179 @@ export default function SignIn(props: signInProps) {
   };
 
   if (windowWidth < 600) {
-  return (
-    <div
-      className="max-w-screen-xl mx-auto items-start shadow-2xl h-screen min-h-full mt-0"
-    >
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant="h6"
-            noWrap
+    return (
+      <div className="max-w-screen-xl mx-auto items-start shadow-2xl h-screen min-h-full mt-0">
+        <Container component="main" maxWidth="xs">
+          <Box
             sx={{
+              marginTop: 0,
               display: "flex",
-              fontFamily: "monospace",
-              fontWeight: 700,
-              fontSize: "2rem",
-              letterSpacing: ".4rem",
-              color: "text.primary",
-              textDecoration: "none",
-              mt: 4
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            MealMatch
-          </Typography>
-          <Avatar sx={{ m: 1, mt: 3, bgcolor: "text.secondary" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={loginRequest.username}
-              onChange={e =>
-                setLoginRequest({
-                  ...loginRequest,
-                  username: e.target.value,
-                })
-              }
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={loginRequest.password}
-              onChange={e =>
-                setLoginRequest({
-                  ...loginRequest,
-                  password: e.target.value,
-                })
-              }
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 1, mb: 2, height: "46px" }}
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                display: "flex",
+                fontFamily: "monospace",
+                fontWeight: 700,
+                fontSize: "2rem",
+                letterSpacing: ".4rem",
+                color: "text.primary",
+                textDecoration: "none",
+                mt: 4,
+              }}
             >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link
-                  component={RouterLink}
-                  to="/login"
-                  sx={{ color: "text.primary" }}
-                  variant="body2"
-                  onClick={handleClickForgotPassword}
-                >
-                  Forgot password?
-                </Link>
+              MealMatch
+            </Typography>
+            <Avatar sx={{ m: 1, mt: 3, bgcolor: "text.secondary" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+                value={loginRequest.username}
+                onChange={(e) =>
+                  setLoginRequest({
+                    ...loginRequest,
+                    username: e.target.value,
+                  })
+                }
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={loginRequest.password}
+                onChange={(e) =>
+                  setLoginRequest({
+                    ...loginRequest,
+                    password: e.target.value,
+                  })
+                }
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 2, height: "46px" }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link
+                    component={RouterLink}
+                    to="/login"
+                    sx={{ color: "text.primary" }}
+                    variant="body2"
+                    onClick={handleClickForgotPassword}
+                  >
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link
+                    component={RouterLink}
+                    to="/signup"
+                    variant="body2"
+                    sx={{ color: "text.primary" }}
+                  >
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link
-                  component={RouterLink}
-                  to="/signup"
-                  variant="body2"
-                  sx={{ color: "text.primary" }}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-      <Snackbar
-        open={openForgotPassword}
-        autoHideDuration={2000}
-        onClose={handleClose}
-      >
-        <Alert
-          variant="filled"
+        </Container>
+        <Snackbar
+          open={openForgotPassword}
+          autoHideDuration={2000}
           onClose={handleClose}
-          severity="warning"
-          sx={{
-            width: "100%",
-          }}
         >
-          Ha-Ha! Tough luck!
-        </Alert>
-      </Snackbar>
-      <Snackbar open={openError} autoHideDuration={2000} onClose={handleClose}>
-        <Alert
-          variant="filled"
+          <Alert
+            variant="filled"
+            onClose={handleClose}
+            severity="warning"
+            sx={{
+              width: "100%",
+            }}
+          >
+            Ha-Ha! Tough luck!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={openError}
+          autoHideDuration={2000}
           onClose={handleClose}
-          severity="error"
-          sx={{ width: "100%" }}
         >
-          Wrong username or password!
-        </Alert>
-      </Snackbar>
-    </div>
-  );
-  }else{
-    return(
+          <Alert
+            variant="filled"
+            onClose={handleClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            Wrong username or password!
+          </Alert>
+        </Snackbar>
+      </div>
+    );
+  } else {
+    return (
       <Box className="App">
         <Box
           sx={{
             height: "100%",
             width: "100%",
-            textAlign: 'center'
+            textAlign: "center",
           }}
         >
-        <Typography
-          variant="h5"
-          sx={{
-            width: "100%",
-            margin: "auto",
-            display: "flex",
-            fontFamily: "monospace",
-            fontWeight: 700,
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          Hi there! <br/>Unfortunately as of yet our app is optimized for mobile only. See you there:<br/>
-        </Typography>
-          <img src={QRcodeUrl} alt="qr code"/>
+          <Typography
+            variant="h5"
+            sx={{
+              width: "fit-content",
+              margin: "auto",
+              display: "flex",
+              fontFamily: "monospace",
+              fontWeight: 700,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            Hi there! <br />
+            Unfortunately as of yet our app is optimized for mobile only. See
+            you there:
+            <br />
+          </Typography>
+          <img src={QRcodeUrl} alt="qr code" />
         </Box>
       </Box>
-    )
+    );
   }
 }
