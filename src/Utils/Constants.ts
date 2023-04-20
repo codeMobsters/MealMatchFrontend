@@ -51,7 +51,7 @@ export const Preferences = {
     "starter",
     "sweets",
   ],
-  MealTypes: ["breakfast", "brunch", "lunch/dinner", "snack", "teatime"],
+  MealTypes: ["breakfast", "brunch", "lunch", "dinner", "snack", "teatime"],
   DietLabels: [
     "balanced",
     "high-fiber",
@@ -124,16 +124,23 @@ export const filter: Filter = {
 };
 
 // export const baseUrl = "https://localhost:7031";
-export const baseUrl = 'https://mealmatchapi.azurewebsites.net'
+export const baseUrl = "https://mealmatchapi.azurewebsites.net";
 
-export const QRcodeUrl = "https://mobster1theblob.blob.core.windows.net/images/MealMatchQR.png";
-export const profilePicMobster1 = "https://mobster1theblob.blob.core.windows.net/images/rodrigo.jpeg";
-export const profilePicMobster2 = "https://mobster1theblob.blob.core.windows.net/images/lajos.png";
+export const QRcodeUrl =
+  "https://mobster1theblob.blob.core.windows.net/images/MealMatchQR.png";
+export const profilePicMobster1 =
+  "https://mobster1theblob.blob.core.windows.net/images/rodrigo.jpeg";
+export const profilePicMobster2 =
+  "https://mobster1theblob.blob.core.windows.net/images/lajos.png";
 export const userIdMobster1 = "2";
 export const userIdMobster2 = "11";
-export const userIdMobster1LinkedIn = "https://www.linkedin.com/in/rodrigo-moncorvo-408a52157";
-export const userIdMobster2LinkedIn = "https://www.linkedin.com/in/lajos-horvath-developer";
+export const userIdMobster1LinkedIn =
+  "https://www.linkedin.com/in/rodrigo-moncorvo-408a52157";
+export const userIdMobster2LinkedIn =
+  "https://www.linkedin.com/in/lajos-horvath-developer";
 export const userIdMobster1Github = "https://www.github.com/romoncorvo";
 export const userIdMobster2Github = "https://www.github.com/HorvathLajos";
-export const linkedInIconBlobUrl = "https://mobster1theblob.blob.core.windows.net/images/linkedin.png";
-export const githubIconBlobUrl = "https://mobster1theblob.blob.core.windows.net/images/github.png";
+export const linkedInIconBlobUrl =
+  "https://mobster1theblob.blob.core.windows.net/images/linkedin.png";
+export const githubIconBlobUrl =
+  "https://mobster1theblob.blob.core.windows.net/images/github.png";
