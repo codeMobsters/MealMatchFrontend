@@ -1,5 +1,9 @@
-import { useQuery, useInfiniteQuery, QueryClient,
-  QueryClientProvider, } from "@tanstack/react-query";
+import {
+  useQuery,
+  useInfiniteQuery,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { Box, Card, Typography } from "@mui/material";
 import { LoginResponse, SetValue, EdamamResponse } from "../Utils/Types";
 import RecipeCard from "../Components/RecipeCard";
@@ -30,110 +34,119 @@ const Home = (props: HomeProps) => {
   } = useInfiniteQuery({
     queryKey: ["favoriteRecipes"],
     queryFn: async ({ pageParam = 1 }) =>
-      (await fetchFollowingFavoriteRecipes(props.user.token, props.user.id, pageParam)),
-        getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+      await fetchFollowingFavoriteRecipes(
+        props.user.token,
+        props.user.id,
+        pageParam
+      ),
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
   });
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const updateWindowDimensions = () => {
       setWindowWidth(window.innerWidth);
-    }
+    };
     window.addEventListener("resize", updateWindowDimensions);
-  },[]);
-  
+  }, []);
+
   if (windowWidth < 600) {
     return (
       <Box className="App">
-        {status === 'loading' ? (
-        <p>Loading...</p>
-      ) : status === 'error' ? (
-        <span>Error: Error loading</span>
-      ) : (
-        <Box
-          sx={{
-            height: "100%",
-            overflow: "scroll",
-            marginTop: "56px",
-            marginBottom: '56px',
-            width: "100%"
-          }}
-        >
-          {data == undefined || !data.pages[0].results.length && 
+        {status === "loading" ? (
+          <p>Loading...</p>
+        ) : status === "error" ? (
+          <span>Error: Error loading</span>
+        ) : (
           <Box
-          sx={{
-            textAlign: "center"
-          }}
+            sx={{
+              height: "100%",
+              overflow: "scroll",
+              marginTop: "56px",
+              marginBottom: "56px",
+              width: "100%",
+            }}
           >
-            <Typography
-              variant="h5"
-              sx={{
-                width: "95%",
-                m: 1,
-                display: "flex",
-                fontFamily: "monospace",
-                fontWeight: 700,
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              Hi there!  <br/>This feed shows the recipes of people you follow.<br/>
-              Follow some people to find some cool recipes =)
-            </Typography>
-          </Box>
-        }
-        <InfiniteScroll
+            {data == undefined ||
+              (!data.pages[0].results.length && (
+                <Box
+                  sx={{
+                    textAlign: "center",
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      width: "95%",
+                      m: 1,
+                      display: "flex",
+                      fontFamily: "monospace",
+                      fontWeight: 700,
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  >
+                    Hi there! <br />
+                    This feed shows the recipes of people you follow.
+                    <br />
+                    Follow some people to find some cool recipes =)
+                  </Typography>
+                </Box>
+              ))}
+            <InfiniteScroll
               threshold={1000}
               hasMore={hasNextPage}
               loadMore={() => fetchNextPage()}
             >
-        {data.pages.map(page =>
-          page.results.map((recipe, index) => (
-            <RecipeCard
-              key={index}
-              recipe={recipe.recipe}
-              user={props.user}
-              setUser={props.setUser}
-            />
-          ))
-        )}
-        </InfiniteScroll> 
-        </Box>
+              {data.pages.map((page) =>
+                page.results.map((recipe, index) => (
+                  <RecipeCard
+                    key={index}
+                    recipe={recipe.recipe}
+                    user={props.user}
+                    setUser={props.setUser}
+                  />
+                ))
+              )}
+            </InfiniteScroll>
+          </Box>
         )}
       </Box>
     );
-  }else{
-    return(
+  } else {
+    return (
       <Box className="App">
         <Box
           sx={{
             height: "100%",
             width: "100%",
-            textAlign: 'center'
+            textAlign: "center",
           }}
         >
-        <Typography
-          variant="h5"
-          sx={{
-            width: "100%",
-            margin: "auto",
-            display: "flex",
-            fontFamily: "monospace",
-            fontWeight: 700,
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          Hi there! <br/>Unfortunately as of yet our app is optimized for mobile only. See you there:<br/>
-        </Typography>
-          <img src={QRcodeUrl} alt="qr code"/>
+          <Typography
+            variant="h5"
+            sx={{
+              width: "fit-content",
+              margin: "auto",
+              display: "flex",
+              fontFamily: "monospace",
+              fontWeight: 700,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            Hi there! <br />
+            Unfortunately as of yet our app is optimized for mobile only. See
+            you there:
+            <br />
+          </Typography>
+          <img src={QRcodeUrl} alt="qr code" />
         </Box>
       </Box>
-    )
+    );
   }
 };
 
 export default Home;
-
 
 // const Home = (props: HomeProps) => {
 //   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -150,14 +163,14 @@ export default Home;
 //         return 1;
 //       }),
 //   });
-  
+
 //   useEffect(()=>{
 //     const updateWindowDimensions = () => {
 //       setWindowWidth(window.innerWidth);
 //     }
 //     window.addEventListener("resize", updateWindowDimensions);
 //   },[]);
-  
+
 //   if (isLoading) {
 //     return <span>Loading...</span>;
 //   }
@@ -177,7 +190,7 @@ export default Home;
 //             width: "100%"
 //           }}
 //         >
-//           {!data.length && 
+//           {!data.length &&
 //           <Box
 //           sx={{
 //             textAlign: "center"
