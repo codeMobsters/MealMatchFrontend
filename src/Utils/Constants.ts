@@ -127,7 +127,7 @@ export const filter: Filter = {
 export const baseUrl = "https://mealmatchapi.azurewebsites.net";
 
 export const QRcodeUrl =
-  "https://mobster1theblob.blob.core.windows.net/images/MealMatchQR.png";
+  "https://mobster1theblob.blob.core.windows.net/images/mealMatchQRnew.JPG";
 export const profilePicMobster1 =
   "https://mobster1theblob.blob.core.windows.net/images/rodrigo.jpeg";
 export const profilePicMobster2 =
